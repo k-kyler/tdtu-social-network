@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon index.js",
+        "dev": "nodemon --inspect index.js",
+        "start": "node index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
@@ -18,7 +19,10 @@
         "md5": "^2.3.0",
         "mongoose": "^5.11.17",
         "multer": "^1.4.2",
-        "nodemon": "^2.0.7",
-        "pug": "^3.0.0"
+        "pug": "^3.0.0",
+        "shortid": "^2.2.16"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
     }
 }

@@ -1,0 +1,23 @@
+/* Body */
+body {
+    background-color: #f1f2f5;
+}
+
+/* Login page */
+.login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 27rem;
+}
+
+.login > form > button {
+    border-radius: 50px;
+}
+
+.btn-circle {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1.75rem;
+}
