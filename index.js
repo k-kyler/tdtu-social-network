@@ -24,7 +24,6 @@ const dashboardRoute = require("./routes/dashboard.route");
 // Require custom middlewares
 const authMiddleware = require("./middlewares/auth.middleware");
 const isAuthMiddleware = require("./middlewares/isAuth.middleware");
-const sessionMiddleware = require("./middlewares/session.middleware");
 
 // App setup
 const app = express();
@@ -35,7 +34,6 @@ app.set("views", "./views");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.SESSION_SECRET)); // Config secret cookie
-app.use(sessionMiddleware);
 app.use(express.static("public"));
 
 // Default app endpoint
