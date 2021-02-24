@@ -1,0 +1,28 @@
+extends ../layouts/layout
+
+block content 
+    //- Dashboard elements
+    div(class="container-fluid dashboard")
+        div(class="row")
+            div(class="dashboard__sideMenu col-md-2 d-flex flex-column bg-white")
+                a(href="/", class="align-self-center mt-3 mb-4") 
+                    img(class="dashboard__sideMenuLogo", src="/images/logo.svg", alt="dashboard", width="70", height="70")
+                div(class="dashboard__sideMenuInfo px-3 py-2 mb-4 d-flex flex-column align-items-center justify-content-center")
+                    img(src="/images/default_avatar.svg", alt="user avatar", width="40", height="40")
+                    div(class="mt-2 text-dark", id="dashboardUsername") #{user.name}
+                        i(class="fas fa-chevron-down ml-1")
+                div(class="dashboard__sideMenuFunctions d-flex flex-column")
+                    block dashboardFunctions
+            div(class="dashboard__content col-md-10 px-0")
+                block dashboardContent
+
+    //- Logout modal
+    #logoutModal.modal.fade(role='dialog')
+        .modal-dialog.modal-lg(role='content')
+            .modal-content
+                .modal-header
+                    h4.modal-title Do you want to log out?
+                    button.close(type='close', data-dismiss='modal') &times;
+                .modal-body.d-flex.justify-content-end
+                    button(class="btn btn-danger", id="dashboardLogoutBtn") Log out
+                    button(class="btn btn-default ml-3", data-dismiss="modal") Close

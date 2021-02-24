@@ -1,0 +1,11 @@
+extends ../layouts/dashboardLayout
+
+block dashboardFunctions
+    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard") Dashboard 
+    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/info") Info 
+
+    if user.type === "admin"
+        a(class="px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard/users") Users
+
+block dashboardContent
+    h1 Users page 
