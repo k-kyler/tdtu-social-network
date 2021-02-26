@@ -5,15 +5,15 @@ block content
     div(class="container-fluid dashboard")
         div(class="row")
             div(class="dashboard__sideMenu col-md-2 d-flex flex-column bg-white")
-                a(href="/", class="align-self-center mt-3 mb-4") 
-                    img(class="dashboard__sideMenuLogo", src="/images/logo.svg", alt="dashboard", width="70", height="70")
+                a(href="/", class="align-self-center mt-3 mb-5") 
+                    img(class="dashboard__sideMenuLogo", src="/images/logo.svg", alt="dashboard", width="60", height="60")
                 div(class="dashboard__sideMenuInfo px-3 py-2 mb-4 d-flex flex-column align-items-center justify-content-center")
                     img(src="/images/default_avatar.svg", alt="user avatar", width="40", height="40")
                     div(class="mt-2 text-dark", id="dashboardUsername") #{user.name}
                         i(class="fas fa-chevron-down ml-1")
                 div(class="dashboard__sideMenuFunctions d-flex flex-column")
                     block dashboardFunctions
-            div(class="dashboard__content col-md-10 px-0")
+            div(class="dashboard__content col-md-10 p-4")
                 block dashboardContent
 
     //- Logout modal

@@ -22,10 +22,22 @@ body {
     border-radius: 1.75rem;
 }
 
-/* Dashboard */
+/* Dashboard pages */
 .dashboard__sideMenu,
 .dashboard__content {
     height: 100vh;
+}
+
+.dashboard__content {
+    background: #a86edb;
+    background: -webkit-linear-gradient(to right, #5e25cf, #a86edb);
+    background: linear-gradient(to right, #5e25cf, #a86edb);
+}
+
+.dashboard__sideMenu,
+.dashboard__contentUsersForm,
+.dashboard__contentUsersList {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.06);
 }
 
 .dashboard__sideMenuInfo {
@@ -58,4 +70,24 @@ body {
     background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
     background: linear-gradient(to right, #4a00e0, #8e2de2);
     color: white !important;
+}
+
+.dashboard__content {
+    overflow: auto;
+}
+
+.dashboard__contentUsersForm,
+.dashboard__contentUsersList,
+.dashboard__contentUsersList > table > thead > tr > th {
+    border-radius: 6px;
+    border-top-width: 0;
+}
+
+.dashboard__contentUsersListHandler {
+    cursor: pointer;
+}
+
+.dashboard__contentUsersListHandler:hover {
+    text-decoration: underline;
+    transition: all 0.3s ease-in-out;
 }
