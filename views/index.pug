@@ -13,9 +13,11 @@ block content
             a.nav-link(href='/') Home
           if userName
             li.nav-item
+              a.nav-link(href='/dashboard') Announce
+            li.nav-item
               a.nav-link(href='/dashboard') Dashboard
             li.nav-item
-              a.nav-link(href='/logout') Logout
+              a.nav-link(href='javascript:void(0)', id="logoutButton") Logout
           else
             li.nav-item
             a.nav-link(href='/auth/login') Login

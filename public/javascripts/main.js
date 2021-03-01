@@ -1,12 +1,12 @@
 // jQuery code
 $(document).ready(() => {
-    // Display log out modal when clicked on username in dashboard page
-    $("#dashboardLogout").click(() => {
+    // Display log out modal when clicked on log out button
+    $("#logoutButton").click(() => {
         $("#logoutModal").modal("toggle");
     });
 
-    // Fetch request for user to log out in dashboard page
-    $("#dashboardLogoutBtn").click(() => {
+    // Fetch request for user to log out
+    $("#modalLogoutButton").click(() => {
         fetch("/logout")
             .then((response) => {
                 if (response.status === 200) {

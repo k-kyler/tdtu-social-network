@@ -12,6 +12,17 @@ html(lang="en")
         //- Content
         block content
 
+        //- Logout modal
+        #logoutModal.modal.fade(role='dialog')
+            .modal-dialog.modal-lg(role='content')
+                .modal-content
+                    .modal-header
+                        h4.modal-title Do you want to logout?
+                        button.close(type='close', data-dismiss='modal') &times;
+                    .modal-body.d-flex.justify-content-end
+                        button(class="btn btn-danger", id="modalLogoutButton") Logout
+                        button(class="btn btn-default ml-3", data-dismiss="modal") Close
+
         script(src="https://kit.fontawesome.com/a65ad4e019.js", crossorigin="anonymous")
         script(src="https://code.jquery.com/jquery-3.2.1.slim.min.js", integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN", crossorigin="anonymous")
         script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q", crossorigin="anonymous")

@@ -25,6 +25,15 @@ module.exports.postLogin = async (req, res) => {
         return;
     }
 
+    // Check if email is not TDTU type
+    if (!email.includes("@tdtu.edu.vn")) {
+        res.render("auth/login", {
+            error: "Email is not TDTU type",
+            loginInput: req.body,
+        });
+        return;
+    }
+
     // Check user input password
     if (user.password !== hashedPassword) {
         res.render("auth/login", {

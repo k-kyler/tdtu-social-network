@@ -44,15 +44,22 @@ module.exports.users = async (req, res) => {
 
 module.exports.createNewStaff = async (req, res) => {
     let uploader = upload.single("avatar");
-    let user = await User.findById(req.signedCookies.userId);
-    let users = await User.find();
-    let listOfficeFaculty = await ListOfficeFaculty.find();
-    let checkUser = await User.findOne({ email: req.body.email });
 
-    uploader(req, res, (error) => {
+    uploader(req, res, async (error) => {
         let { email, password, name, phone, workplace, permission } = req.body;
         let avatar = req.file;
-        let errorMessage = undefined;
+        let errorMessage = "";
+        let checkUser = await User.findOne({ email: req.body.email });
+        let user = await User.findById(req.signedCookies.userId);
+        let users = await User.find();
+        let listOfficeFaculty = await ListOfficeFaculty.find();
+        let avatarPath = `public/uploads/${avatar.originalname}`;
+
+        // Rename avatar in public folder
+        fs.renameSync(avatar.path, avatarPath);
+
+        // Re-path to store in db
+        avatarPath = `/uploads/${avatar.originalname}`;
 
         // Check if image too large
         if (error) {
@@ -60,12 +67,12 @@ module.exports.createNewStaff = async (req, res) => {
         }
 
         // Check if email was used
-        else if (checkUser) {
+        if (checkUser) {
             errorMessage = "Email has been used";
         }
 
         // Check if email is not tdtu
-        else if (!email.includes("@tdtu.edu.vn")) {
+        if (!email.includes("@tdtu.edu.vn")) {
             errorMessage = "Email is not TDTU type";
         }
 
@@ -85,18 +92,13 @@ module.exports.createNewStaff = async (req, res) => {
             });
         } else {
             let u = new User();
+
+            // Convert array to object
             let permissionObj = permission.map((p) => {
                 return {
                     postName: p,
                 };
             });
-            let avatarPath = `public/uploads/${avatar.originalname}`;
-
-            // Rename avatar in public folder
-            fs.renameSync(avatar.path, avatarPath);
-
-            // Re-path to store in db
-            avatarPath = `/uploads/${avatar.originalname}`;
 
             // Store to db
             u.userId = shortid.generate();

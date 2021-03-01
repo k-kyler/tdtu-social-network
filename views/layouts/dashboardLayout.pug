@@ -15,13 +15,3 @@ block content
             div(class="dashboard__content col-md-10 p-3")
                 block dashboardContent
 
-    //- Logout modal
-    #logoutModal.modal.fade(role='dialog')
-        .modal-dialog.modal-lg(role='content')
-            .modal-content
-                .modal-header
-                    h4.modal-title Do you want to log out?
-                    button.close(type='close', data-dismiss='modal') &times;
-                .modal-body.d-flex.justify-content-end
-                    button(class="btn btn-danger", id="dashboardLogoutBtn") Log out
-                    button(class="btn btn-default ml-3", data-dismiss="modal") Close
