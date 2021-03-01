@@ -6,6 +6,7 @@ let router = express.Router();
 router.get("/", controller.dashboard);
 router.get("/users", controller.users);
 router.post("/users", controller.createNewStaff);
-router.get("/info", controller.info);
+router.get("/communication", controller.communication);
+router.get("/notification", controller.notification);
 
 module.exports = router;

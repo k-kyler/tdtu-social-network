@@ -12,10 +12,6 @@ const cookieParser = require("cookie-parser");
 
 // Initial mongoose
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
 
 // Require routes
 const authRoute = require("./routes/auth.route");
@@ -35,6 +31,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.SESSION_SECRET)); // Config secret cookie
 app.use(express.static("public"));
+
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 // Default app endpoint
 app.get("/", (req, res) => {

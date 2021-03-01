@@ -14,6 +14,7 @@ const upload = multer({
     limits: { fileSize: 5000000 }, // 5 MB limit
 });
 
+// Dashboard
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
@@ -22,14 +23,25 @@ module.exports.dashboard = async (req, res) => {
     });
 };
 
-module.exports.info = async (req, res) => {
+// Communication
+module.exports.communication = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
-    res.render("dashboards/info", {
+    res.render("dashboards/communication", {
         user: user,
     });
 };
 
+// Notification
+module.exports.notification = async (req, res) => {
+    let user = await User.findById(req.signedCookies.userId);
+
+    res.render("dashboards/notification", {
+        user: user,
+    });
+};
+
+// Users
 module.exports.users = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
     let users = await User.find();

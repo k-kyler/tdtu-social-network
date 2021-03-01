@@ -8,7 +8,12 @@ block content
                 a(href="/", class="align-self-center mt-3 mb-5") 
                     img(class="dashboard__sideMenuLogo", src="/images/logo.svg", alt="dashboard", width="60", height="60")
                 div(class="dashboard__sideMenuInfo px-3 py-2 mb-4 d-flex flex-column align-items-center justify-content-center")
-                    img(src="/images/default_avatar.svg", alt="user avatar", width="40", height="40")
+                    
+                    if user.avatar === ""
+                        img(src="/images/default_avatar.svg", alt="user avatar", width="40", height="40")
+                    else 
+                        img(src=user.avatar, alt="user avatar", width="40", height="40")
+
                     div(class="mt-2 text-dark") #{user.name}
                 div(class="dashboard__sideMenuFunctions d-flex flex-column")
                     block dashboardFunctions
