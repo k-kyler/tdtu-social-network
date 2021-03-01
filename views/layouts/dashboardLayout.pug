@@ -9,11 +9,10 @@ block content
                     img(class="dashboard__sideMenuLogo", src="/images/logo.svg", alt="dashboard", width="60", height="60")
                 div(class="dashboard__sideMenuInfo px-3 py-2 mb-4 d-flex flex-column align-items-center justify-content-center")
                     img(src="/images/default_avatar.svg", alt="user avatar", width="40", height="40")
-                    div(class="mt-2 text-dark", id="dashboardUsername") #{user.name}
-                        i(class="fas fa-chevron-down ml-1")
+                    div(class="mt-2 text-dark") #{user.name}
                 div(class="dashboard__sideMenuFunctions d-flex flex-column")
                     block dashboardFunctions
-            div(class="dashboard__content col-md-10 p-4")
+            div(class="dashboard__content col-md-10 p-3")
                 block dashboardContent
 
     //- Logout modal

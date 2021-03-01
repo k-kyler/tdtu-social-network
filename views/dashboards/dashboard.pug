@@ -4,8 +4,10 @@ block dashboardFunctions
     a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard") Dashboard 
     a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/info") Info 
 
-    if user.type === "admin"
-        a(class="px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/users") Users 
+    if user.type === "Admin"
+        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/users") Users 
+
+    a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="dashboardLogout") Log out
 
 block dashboardContent
     h1 Dashboard page

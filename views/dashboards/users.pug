@@ -4,35 +4,38 @@ block dashboardFunctions
     a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard") Dashboard 
     a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/info") Info 
 
-    if user.type === "admin"
-        a(class="px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard/users") Users
+    if user.type === "Admin"
+        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard/users") Users
+
+    a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="dashboardLogout") Log out
 
 block dashboardContent
     div(class="dashboard__contentUsers container")
         div(class="row")
             div(class="dashboard__contentUsersForm bg-white col-md-12")
-                form(action="/dashboard/users", method="POST", class="p-3")
+                form(action="/dashboard/users", method="POST", class="p-3", enctype="multipart/form-data")
                     h3(class="mb-4 text-primary text-center") Create Account Office/Faculty (O/F) Staff
 
                     div(class="form-group row")
                         label(for="email", class="col-form-label col-md-1") Email
                         div(class="col-md-5")
-                            input(type="email", name="email", id="email", class="form-control", required) 
+                            input(type="email", name="email", id="email", class="form-control", required, value=email) 
                         label(for="password", class="col-form-label col-md-1") Password
                         div(class="col-md-5")
-                            input(type="password", name="password", id="password", class="form-control", required)
+                            input(type="password", name="password", id="password", class="form-control", required, value=password)
 
                     div(class="form-group row")
                         label(for="name", class="col-form-label col-md-1") Name
                         div(class="col-md-5")
-                            input(type="text", name="name", id="name", class="form-control", required) 
+                            input(type="text", name="name", id="name", class="form-control", required, value=name) 
                         label(for="phone", class="col-form-label col-md-1") Phone
                         div(class="col-md-5")
-                            input(type="tel", name="phone", id="phone", class="form-control", required) 
+                            input(type="tel", name="phone", id="phone", class="form-control", required, value=phone) 
 
                     div(class="form-group row")
                         label(for="workplace", class="col-form-label col-md-1") Workplace
                         div(class="col-md-5")
+                            input(type="hidden", id="workplaceHidden", value=workplace)
                             select(name="workplace", id="workplace", class="form-control", required) 
                                 option(value="") (Choose Office/Faculty)
 
@@ -42,11 +45,12 @@ block dashboardContent
 
                         label(for="avatar", class="col-form-label col-md-1") Avatar
                         div(class="col-md-5")
-                            input(type="file", name="avatar", id="avatar", class="form-control", required) 
+                            input(accept="image/*", type="file", name="avatar", id="avatar", class="form-control", required) 
 
                     div(class="form-group row")
                         label(for="permission", class="col-form-label col-md-1") Permission (Multiple)
                         div(class="col-md-5")
+                            input(type="hidden", id="permissionHidden", value=permission)
                             select(name="permission", id="permission", class="form-control", required, multiple) 
 
                                 if listOfficeFaculty 
@@ -54,7 +58,8 @@ block dashboardContent
                                         option(value=item.name)= item.name
                  
                     div(class="form-group row")
-                        div(class="col-md-12 d-flex justify-content-end")
+                        div(class="col-md-12 d-flex align-items-center justify-content-end")
+                            p(class="text-danger mb-0 mr-3") #{errorMessage}
                             button(type="submit", class="btn btn-success") Submit
 
             div(class="dashboard__contentUsersList bg-white col-md-12 mt-4 px-0 table-responsive")
@@ -72,10 +77,11 @@ block dashboardContent
                     tbody
                         if users
                             each user, index in users 
-                                if user.type != "admin"
+                                if user.type != "Admin"
                                     tr
-                                        th(scope='row')= index + 1
-                                        td= user.avatar
+                                        th(scope='row')= index
+                                        td
+                                            img(src=user.avatar, width="35", height="35")
                                         td= user.userId
                                         td= user.name
                                         td= user.email

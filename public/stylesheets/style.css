@@ -22,6 +22,17 @@ body {
     border-radius: 1.75rem;
 }
 
+.login > form > p {
+    width: 100%;
+    border-bottom: 1px solid rgb(160, 160, 160);
+    line-height: 0.1em;
+    color: rgb(160, 160, 160);
+}
+
+.login > form > p > span {
+    background: #f1f2f5;
+}
+
 /* Dashboard pages */
 .dashboard__sideMenu,
 .dashboard__content {
@@ -42,10 +53,6 @@ body {
 
 .dashboard__sideMenuInfo {
     font-weight: 600;
-}
-
-.dashboard__sideMenuInfo > div {
-    cursor: pointer;
 }
 
 .dashboard__sideMenuInfo > div:hover {
@@ -90,4 +97,8 @@ body {
 .dashboard__contentUsersListHandler:hover {
     text-decoration: underline;
     transition: all 0.3s ease-in-out;
+}
+
+.dashboard__contentUsersList img {
+    border-radius: 50px;
 }

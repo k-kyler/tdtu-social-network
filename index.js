@@ -4,10 +4,10 @@ require("dotenv").config();
 // Initial express
 const express = require("express");
 
-// Initial use of body-parser
+// Initial body-parser
 const bodyParser = require("body-parser");
 
-// Initial use of cookie-parser
+// Initial cookie-parser
 const cookieParser = require("cookie-parser");
 
 // Initial mongoose

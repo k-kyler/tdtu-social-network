@@ -1,7 +1,7 @@
 // jQuery code
 $(document).ready(() => {
     // Display log out modal when clicked on username in dashboard page
-    $("#dashboardUsername").click(() => {
+    $("#dashboardLogout").click(() => {
         $("#logoutModal").modal("toggle");
     });
 
@@ -15,6 +15,22 @@ $(document).ready(() => {
             })
             .catch((error) => console.error(error));
     });
+
+    // Select workplace handler
+    $("#workplace").val($("#workplaceHidden").val());
+
+    // Select permission handler
+    let permission = $("#permissionHidden").val();
+
+    $.each(
+        permission.split("[")[1].split("]")[0].split('"').join("").split(","),
+        (index, element) => {
+            $("#permission option[value='" + element + "']").prop(
+                "selected",
+                true
+            );
+        }
+    );
 });
 
 // JavaScript code
