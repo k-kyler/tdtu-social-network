@@ -1,8 +1,78 @@
 extends ./layouts/layout
 
 block content 
-    h1 Hello world
+    // Header
+    nav.navbar.navbar-expand-md.navbar-dark.bg-homebar
+      img(src='/images/logo.svg')
+      a.navbar-brand(href='/') &nbsp;&nbsp; TDTU Social Network
+      button.navbar-toggler(type='button' data-toggle='collapse' data-target='#collapsibleNavbar')
+        span.navbar-toggler-icon
+      #collapsibleNavbar.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+          li.nav-item.active
+            a.nav-link(href='/') Home
+          if userName
+            li.nav-item
+              a.nav-link(href='/dashboard') Dashboard
+            li.nav-item
+              a.nav-link(href='/logout') Logout
+          else
+            li.nav-item
+            a.nav-link(href='/auth/login') Login
+    .imghome
+        img(src='./images/TDTU_logo.png' alt='Homepage Picture')
+    // Content
+    h1 Welcome to TDTU's Miniature Social Network!
+    h4 The best place to interact between school and students
+    
+    .container
+      #textfocus
+        h3 Some pictures of TDTU
+      #demo.carousel.slide(data-ride='carousel')
+        ul.carousel-indicators
+          li.active(data-target='#demo' data-slide-to='0')
+          li(data-target='#demo' data-slide-to='1')
+          li(data-target='#demo' data-slide-to='2')
+          li(data-target='#demo' data-slide-to='3')
+          li(data-target='#demo' data-slide-to='4')
+          li(data-target='#demo' data-slide-to='5')
+          li(data-target='#demo' data-slide-to='6')
+          li(data-target='#demo' data-slide-to='7')
+        .carousel-inner
+          .carousel-item.active
+            img(src='./images/Tdtu_pic1.jpg')
+          .carousel-item
+            img(src='./images/Tdtu_pic2.jpg')
+          .carousel-item
+            img(src='./images/Tdtu_pic3.jpg')
+          .carousel-item
+            img(src='./images/Tdtu_pic4.jpg')
+          .carousel-item
+            img(src='./images/Tdtu_pic5.jpg')
+          .carousel-item
+            img(src='./images/Tdtu_pic6.jpg')
+          .carousel-item
+            img(src='./images/Tdtu_pic7.jpg')
+          .carousel-item
+            img(src='./images/Tdtu_pic8.jpg')
+          .carousel-item
+            img(src='./images/Tdtu_pic3.jpg')
+        a.carousel-control-prev(href='#demo' data-slide='prev')
+          span.carousel-control-prev-icon
+        a.carousel-control-next(href='#demo' data-slide='next')
+          span.carousel-control-next-icon
 
-    if userName
-        a(href="/dashboard") Dashboard
-        a(href="/logout") Logout
+    #footer
+      div.infofoot
+        h Miniature Social Network Software Development Team TDTU Network
+        br
+        h 19 Nguyen Huu Tho, Tan Phong, District 07, HCM City
+        br
+        h Phone: 0987654321
+        br
+        h Email: kkd_support@gmail.com
+        br
+        h Copyright © 2021 by socialnetwork.tdtu.edu.vn
+        br
+      div.logoproducted
+        img(src='./images/kkd.png')
