@@ -128,3 +128,12 @@ module.exports.createNewStaff = async (req, res) => {
         }
     });
 };
+
+// Admin statistic
+module.exports.statistic = async (req, res) => {
+    let user = await User.findById(req.signedCookies.userId);
+
+    res.render("dashboards/statistic", {
+        user: user,
+    });
+};

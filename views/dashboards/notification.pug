@@ -2,11 +2,12 @@ extends ../layouts/dashboardLayout
 
 block dashboardFunctions
     a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard") Dashboard 
-    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/communication") Communication 
 
     if user.type === "Admin"
         a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/users") Create staff
+        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/statistic") Statistic
 
+    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/communication") Communication 
     a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard/notification") Notification 
     a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Logout
 
