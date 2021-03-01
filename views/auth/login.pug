@@ -3,8 +3,8 @@ extends ../layouts/layout
 block content 
     .container(class="login")
         form(action="/auth/login", method="POST", class="d-flex align-items-center justify-content-center flex-column")
-            img.mb-4(src='/images/logo.svg', width="90", height="90", alt='signin')
-            h3.mb-3.font-weight-normal Connect to TDTU Network
+            img.mb-4.imglogin(src='/images/logo.svg', alt='Login')
+            h3.mb-3.font-weight-normal.text-center Connect to TDTU Social Network
 
             if loginInput
                 input#email.form-control.mb-3(type='email', placeholder="Email", name='email', autofocus, required, value=loginInput.email)
