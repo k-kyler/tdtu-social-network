@@ -55,9 +55,7 @@ function onGoogleSignIn(googleUser) {
         if (xhr.responseText === "Sign in successful with Google") {
             onGoogleSignOut();
             window.location.href = "/";
-        } else if (
-            xhr.responseText === "Your email is not for TDTU's student"
-        ) {
+        } else if (xhr.responseText === "Your email is not for TDTU Student") {
             onGoogleSignOut();
             document.getElementById("signInErrorMessage").innerHTML =
                 xhr.responseText;
