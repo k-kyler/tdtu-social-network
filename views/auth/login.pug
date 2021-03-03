@@ -13,8 +13,10 @@ block content
                 input#email.form-control.mb-3(type='email', placeholder="Email", name='email', autofocus, required)
                 input#password.form-control.mb-3(type='password', placeholder="Password", name='password', required)
 
+            //- Area to display error
             if error
                 p(class="mb-3 text-danger") #{error}
+            span(class="mb-3 text-danger", id="signInErrorMessage")
 
             button.btn.btn-primary.btn-lg.btn-block Sign in
             p(class="my-4 text-center") 

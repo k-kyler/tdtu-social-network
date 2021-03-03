@@ -46,13 +46,21 @@ function onGoogleSignIn(googleUser) {
     let googleIdToken = googleUser.getAuthResponse().id_token;
     let xhr = new XMLHttpRequest();
 
-    // Send AJAX POST request to server, if receive successful message then sign out the user old token if it existed
+    // Send AJAX POST Google sign in request to server,
+    // if receive successful message then redirect back to home page
+    // if it's not type of Student TDTU email then display error
     xhr.open("POST", "/auth/login");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = () => {
         if (xhr.responseText === "Sign in successful with Google") {
             onGoogleSignOut();
             window.location.href = "/";
+        } else if (
+            xhr.responseText === "Your email is not for TDTU's student"
+        ) {
+            onGoogleSignOut();
+            document.getElementById("signInErrorMessage").innerHTML =
+                xhr.responseText;
         }
     };
     xhr.send(JSON.stringify({ googleIdToken: googleIdToken }));

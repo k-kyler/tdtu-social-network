@@ -103,10 +103,7 @@ module.exports.postLogin = async (req, res) => {
 
                 // Check if email is not Student TDTU type
                 if (!userGoogleEmail.includes("@student.tdtu.edu.vn")) {
-                    res.render("auth/login", {
-                        error: "Email is not Student TDTU type",
-                    });
-                    return;
+                    res.send("Your email is not for TDTU Student");
                 }
 
                 // If login success then generating user's cookie
