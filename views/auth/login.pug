@@ -16,7 +16,7 @@ block content
             if error
                 p(class="mb-3 text-danger") #{error}
 
-            button.btn.btn-primary.btn-lg.btn-block Log in
+            button.btn.btn-primary.btn-lg.btn-block Sign in
             p(class="my-4 text-center") 
                 span(class="px-2") For student
-            div(data-onsuccess="onSignIn", class="g-signin2")
+            div(data-onsuccess="onGoogleSignIn", data-longtitle="true", class="g-signin2")

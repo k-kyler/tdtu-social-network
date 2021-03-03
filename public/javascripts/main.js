@@ -34,4 +34,12 @@ $(document).ready(() => {
 });
 
 // JavaScript code
-// ...
+// Google Auth handler
+function onGoogleSignIn(googleUser) {
+    let student = googleUser.getBasicProfile();
+
+    // console.log("ID: " + student.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log("Name: " + student.getName());
+    console.log("Image URL: " + student.getImageUrl());
+    console.log("Email: " + student.getEmail()); // This is null if the 'email' scope is not present.
+}
