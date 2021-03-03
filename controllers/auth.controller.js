@@ -81,7 +81,7 @@ module.exports.postLogin = async (req, res) => {
             let checkUser = await User.findOne({ email: payload.email });
             let u = new User();
 
-            if (!checkUser) {
+            if (!checkUser && payload.email.split("@student.tdtu.edu.vn")[1]) {
                 u.userId = payload.email.split("@student.tdtu.edu.vn")[0];
                 u.name = payload.name;
                 u.email = payload.email;
@@ -104,6 +104,7 @@ module.exports.postLogin = async (req, res) => {
                 // Check if email is not Student TDTU type
                 if (!userGoogleEmail.includes("@student.tdtu.edu.vn")) {
                     res.send("Your email is not for TDTU Student");
+                    return;
                 }
 
                 // If login success then generating user's cookie
