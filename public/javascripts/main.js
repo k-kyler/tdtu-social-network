@@ -22,24 +22,43 @@ $(document).ready(() => {
     // Select permission handler
     let permission = $("#permissionHidden").val();
 
-    $.each(
-        permission.split("[")[1].split("]")[0].split('"').join("").split(","),
-        (index, element) => {
-            $("#permission option[value='" + element + "']").prop(
-                "selected",
-                true
-            );
-        }
-    );
+    if (permission) {
+        $.each(
+            permission
+                .split("[")[1]
+                .split("]")[0]
+                .split('"')
+                .join("")
+                .split(","),
+            (index, element) => {
+                $("#permission option[value='" + element + "']").prop(
+                    "selected",
+                    true
+                );
+            }
+        );
+    }
 });
 
 // JavaScript code
 // Google Auth handler
 function onGoogleSignIn(googleUser) {
-    let student = googleUser.getBasicProfile();
+    let googleIdToken = googleUser.getAuthResponse().id_token;
+    let xhr = new XMLHttpRequest();
 
-    // console.log("ID: " + student.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log("Name: " + student.getName());
-    console.log("Image URL: " + student.getImageUrl());
-    console.log("Email: " + student.getEmail()); // This is null if the 'email' scope is not present.
+    // Send AJAX POST request to server, if receive successful message then sign out the user old token if it existed
+    xhr.open("POST", "/auth/login");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = () => {
+        if (xhr.responseText === "Sign in successful with Google") {
+            onGoogleSignOut();
+            window.location.href = "/";
+        }
+    };
+    xhr.send(JSON.stringify({ googleIdToken: googleIdToken }));
+}
+
+function onGoogleSignOut() {
+    let authentication2 = gapi.auth2.getAuthInstance();
+    authentication2.signOut();
 }

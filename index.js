@@ -48,10 +48,11 @@ app.get("/", (req, res) => {
     }
 });
 
-// User log out endpoint
+// User sign out endpoint
 app.get("/logout", (req, res) => {
     res.clearCookie("userId");
     res.clearCookie("userName");
+    res.clearCookie("token");
     res.redirect("/");
 });
 
