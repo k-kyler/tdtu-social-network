@@ -81,7 +81,7 @@ module.exports.postLogin = async (req, res) => {
             let checkUser = await User.findOne({ email: payload.email });
             let u = new User();
 
-            if (!checkUser && payload.email.split("@student.tdtu.edu.vn")[1]) {
+            if (!checkUser && payload.email.includes("@student.tdtu.edu.vn")) {
                 u.userId = payload.email.split("@student.tdtu.edu.vn")[0];
                 u.name = payload.name;
                 u.email = payload.email;
