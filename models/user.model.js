@@ -7,6 +7,7 @@ let userSchema = new mongoose.Schema({
     password: String,
     phone: String,
     class: String,
+    faculty: String,
     avatar: String,
     permission: [{ postName: String }],
     type: String,

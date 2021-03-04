@@ -4,6 +4,7 @@ const fs = require("fs");
 const multer = require("multer");
 const md5 = require("md5");
 const shortid = require("shortid");
+
 const upload = multer({
     dest: "./public/uploads/",
     fileFilter: (req, file, callback) => {
@@ -21,6 +22,11 @@ module.exports.dashboard = async (req, res) => {
     res.render("dashboards/dashboard", {
         user: user,
     });
+};
+
+module.exports.changeUserInfo = async (req, res) => {
+    // Import libraries above
+    // Code here.....
 };
 
 // Communication

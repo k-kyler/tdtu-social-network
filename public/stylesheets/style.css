@@ -249,3 +249,18 @@ h4 {
 .dashboard__contentUsersList img {
     border-radius: 50px;
 }
+
+/* User info dashboard */
+.dashboard__contentInfo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 25rem;
+    border-radius: 6px;
+    width: 30rem;
+}
+
+.dashboard__contentInfo > img {
+    border-radius: 50px;
+}

@@ -86,6 +86,7 @@ module.exports.postLogin = async (req, res) => {
                 u.name = payload.name;
                 u.email = payload.email;
                 u.avatar = payload.picture;
+                u.password = "";
                 u.phone = "";
                 u.permission = [];
                 u.class = "";
