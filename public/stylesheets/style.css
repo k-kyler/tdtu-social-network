@@ -251,6 +251,7 @@ h4 {
     border-radius: 50px;
 }
 
+
 /*---------------------*/
 /* User info dashboard */
 /*---------------------*/
@@ -279,6 +280,25 @@ h4 {
 hr {
     border: 1px solid #f1f1f1;
     border-radius: 5px;
+}
+.td-justify{
+    text-align: justify;
+}
+
+/*---------------------*/
+/* User info dashboard */
+/*---------------------*/
+.dashboard__contentInfo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 25rem;
+    border-radius: 6px;
+    width: 30rem;
+}
+.dashboard__contentInfo > img {
+    border-radius: 50px;
 }
 
 /*--------------------*/
