@@ -176,7 +176,7 @@ h4 {
     }
 }
 
-.line-style {
+.login > form > p {
     width: 100%;
     border-bottom: 1px solid rgb(160, 160, 160);
     line-height: 0.1em;
@@ -187,6 +187,7 @@ h4 {
     background: #f1f2f5;
 }
 
+/*-----------------*/
 /* Dashboard pages */
 /*-----------------*/
 .dashboard__sideMenu {
@@ -238,11 +239,21 @@ h4 {
     border-radius: 6px;
     border-top-width: 0;
 }
+.dashboard__contentUsersListHandler {
+    cursor: pointer;
+}
+.dashboard__contentUsersListHandler:hover {
+    text-decoration: underline;
+    transition: all 0.3s ease-in-out;
+}
+
 .dashboard__contentUsersList img {
     border-radius: 50px;
 }
 
+/*---------------------*/
 /* User info dashboard */
+/*---------------------*/
 .dashboard__contentInfo {
     position: absolute;
     top: 50%;
@@ -252,7 +263,57 @@ h4 {
     border-radius: 6px;
     width: 30rem;
 }
-
 .dashboard__contentInfo > img {
     border-radius: 50px;
 }
+
+/*--------------------*/
+/* Communication page */
+/*--------------------*/
+.dashboard__contentCommunication {
+    border-radius: 6px;
+    border-top-width: 0;
+    width: 100%;
+}
+.btn-postStatus > div:hover {
+    opacity: 0.6;
+    transition: opacity 0.3s ease-in-out;
+    background: #8e2de2;
+    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    color: white !important;
+    border-radius: 8px;
+}
+.btn-postStatus > div > span{
+    margin-left: 15px;
+}
+hr{
+    border: 1px solid #F1F1F1;
+    border-radius: 5px;
+}
+
+/*--------------------*/
+/* Notification pages */
+/*--------------------*/
+.dashboard__contentNotificationForm,
+.dashboard__contentNotificationList,
+.dashboard__contentNotificationList > table > thead > tr > th {
+    border-radius: 6px;
+    border-top-width: 0;
+}
+.dashboard__contentNotificationListHandler {
+    cursor: pointer;
+}
+.dashboard__contentNotificationListHandler:hover {
+    text-decoration: underline;
+    transition: all 0.3s ease-in-out;
+}
+
+.dashboard__contentNotificationList img {
+    border-radius: 50px;
+}
+.imageNotification > div {
+    width: 100px;
+    height: 100px;
+}
+

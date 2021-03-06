@@ -12,4 +12,72 @@ block dashboardFunctions
     a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Sign out
 
 block dashboardContent
+    div(class="container")
+        div(class="dashboard__contentCommunication bg-white pt-3 pl-3 pr-3 pb-1 mb-4")
+            div(class="form-group row")
+                div(class="col-md-1")
+                    if user.avatar === ""
+                        img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
+                    else 
+                        img(src=user.avatar, alt="user avatar", width="45", height="45")
+                div(class="col-md-11")
+                    input(type="email", name="email", id="email", class="form-control", required, value=email, placeholder="What are you thinking?")
+            hr
+            div(class="m-3")
+                div(class="btn-postStatus form-group row")
+                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Photos/Videos')")
+                        img(src="/images/pic_icon.png", alt="pic-icon", width="35", height="35")
+                        span Photos/Videos
+                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Tag Friends')")
+                        img(src="/images/tag_icon.png", alt="pic-icon", width="35", height="35")
+                        span Tag friends
+                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Feeling/Activity')")
+                        img(src="/images/feel_icon.png", alt="pic-icon", width="35", height="35")
+                        span Feeling/Activity
+
+    div(class="container")
+        div(class="dashboard__contentCommunication bg-white p-3")
+            div(class="form-group row")
+                div(class="col-md-1")
+                    if user.avatar === ""
+                        img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
+                    else 
+                        img(src=user.avatar, alt="user avatar", width="45", height="45")
+                div(class="col-md-11")
+                    strong John Edison
+                    p 5 giờ
+            p Hello everyone, this is my new motorbike!! :D
+            img(src="/uploads/Ducati.jpg", width="100%", height="100%")
+            hr
+            div(class="m-3")
+                div(class="btn-postStatus form-group row")
+                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Like')")
+                        img(src="/images/like_icon.png", alt="pic-icon", width="35", height="35")
+                        span Like
+                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Comment')")
+                        img(src="/images/comment_icon.png", alt="pic-icon", width="35", height="35")
+                        span Comment
+                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Share')")
+                        img(src="/images/share_icon.png", alt="pic-icon", width="35", height="35")
+                        span Share
+                
+                //Users Comments
+                div(class="form-group row")
+                    div(class="col-md-1")
+                        if user.avatar === ""
+                            img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
+                        else 
+                            img(src=user.avatar, alt="user avatar", width="45", height="45")
+                    div(class="col-md-11")
+                        strong Alex Slayder
+                        p Wow! That's so coollll.
+                div(class="form-group row")
+                    div(class="col-md-1")
+                        if user.avatar === ""
+                            img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
+                        else 
+                            img(src=user.avatar, alt="user avatar", width="45", height="45")
+                    div(class="col-md-11")
+                        strong Ben Thomas
+                        p Is that real bro?? :D
     
