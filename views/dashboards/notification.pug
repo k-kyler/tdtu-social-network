@@ -14,7 +14,7 @@ block dashboardFunctions
 block dashboardContent
     div(class="dashboard__contentUsers container")
         div(class="row")
-            if user.type === "Admin"
+            if user.type === "Admin" || user.type === "Staff"
                 div(class="dashboard__contentNotificationForm bg-white col-md-12")
                     form(action="/dashboard/notification", method="POST", class="p-3", enctype="multipart/form-data")
                         h3(class="mb-4 text-primary text-center") Create Notification
@@ -23,9 +23,9 @@ block dashboardContent
                             label(for="tittle", class="col-form-label col-md-1") Tittle
                             div(class="col-md-5")
                                 input(type="text", name="tittleNotification", id="tittleNotification", class="form-control", required) 
-                            label(for="image", class="col-form-label col-md-1") Image
+                            label(for="image", class="col-form-label col-md-1") Attachment
                             div(class="col-md-5")
-                                input(accept="image/*", type="file", name="imageNotification", id="imageNotification", class="form-control", required)
+                                input(accept="image/*", type="file", name="imageNotification", id="imageNotification", class="form-control")
                         div(class="form-group row")
                             label(for="content", class="col-form-label col-md-1") Content
                             div(class="col-md-11")
@@ -43,16 +43,30 @@ block dashboardContent
                                 th(scope='col') #
                                 th(scope='col') Tittles
                                 th(scope='col') Contents
-                                th(scope='col') Images
+                                th(scope='col') Attachment
                                 th(scope='col' style="width:100px;") Handler
                         tbody
                             tr
                                 th(scope='row')= 1
-                                td ĐI HỌC LẠI BÌNH THƯỜNG
-                                td HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.
+                                td(class="td-justify") HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020
+                                td(class="td-justify") 
+                                    p HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.
                                 td(class="imageNotification")
                                     div
-                                        img(src="/uploads/Ducati.jpg", width="100%", height="100%")
+                                        //file attached here
+                                td
+                                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Edit')")
+                                        img(src="/images/edit_icon.png", width="30", height="30")
+                                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Delete')")
+                                        img(src="/images/delete_icon.png", width="30", height="30")
+                            tr
+                                th(scope='row')= 2
+                                td(class="td-justify") NỘP HỌC PHÍ HỌC KỲ 2/2020-2021
+                                td(class="td-justify") 
+                                    p Sinh viên thực hiện quy trình đăng ký môn học và đóng học phí mới bắt đầu áp dụng cho HK2/2020-2021 trở về sau. Thời gian thu: ngày 25/01/2021 đến 03/02/2021. 2. Hình thức thanh toán: sinh viên đăng nhập vào "Cổng thông tin sinh viên" chọn mục "Học phí" chọn “HD Thanh toán học phí” để xem các hướng dẫn thanh toán học phí tại Ngân hàng Vietcombank..
+                                td(class="imageNotification")
+                                    div
+                                        //file attached here
                                 td
                                     div(class="col-md-4 text-center p-2" onclick="alert('Clicked Edit')")
                                         img(src="/images/edit_icon.png", width="30", height="30")

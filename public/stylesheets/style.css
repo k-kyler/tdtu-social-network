@@ -250,26 +250,6 @@ h4 {
 .dashboard__contentUsersList img {
     border-radius: 50px;
 }
-
-/*---------------------*/
-/* User info dashboard */
-/*---------------------*/
-.dashboard__contentInfo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 25rem;
-    border-radius: 6px;
-    width: 30rem;
-}
-.dashboard__contentInfo > img {
-    border-radius: 50px;
-}
-
-/*--------------------*/
-/* Communication page */
-/*--------------------*/
 .dashboard__contentCommunication {
     border-radius: 6px;
     border-top-width: 0;
@@ -290,6 +270,25 @@ h4 {
 hr{
     border: 1px solid #F1F1F1;
     border-radius: 5px;
+}
+.td-justify{
+    text-align: justify;
+}
+
+/*---------------------*/
+/* User info dashboard */
+/*---------------------*/
+.dashboard__contentInfo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 25rem;
+    border-radius: 6px;
+    width: 30rem;
+}
+.dashboard__contentInfo > img {
+    border-radius: 50px;
 }
 
 /*--------------------*/
