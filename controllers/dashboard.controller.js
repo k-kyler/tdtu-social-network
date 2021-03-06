@@ -103,13 +103,22 @@ module.exports.createNewStaff = async (req, res) => {
             });
         } else {
             let u = new User();
+            let permissionObj;
 
-            // Convert array to object
-            let permissionObj = permission.map((p) => {
-                return {
-                    postName: p,
-                };
-            });
+            // Check if permission input is string (one choice) or array (multiple)
+            if (typeof permission !== "string") {
+                permissionObj = permission.map((p) => {
+                    return {
+                        postName: p,
+                    };
+                });
+            } else {
+                permissionObj = [
+                    {
+                        postName: permission,
+                    },
+                ];
+            }
 
             // Store to db
             u.userId = shortid.generate();
