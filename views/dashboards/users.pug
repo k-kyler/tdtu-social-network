@@ -4,11 +4,11 @@ block dashboardFunctions
     a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard") Dashboard 
 
     if user.type === "Admin"
-        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard/users") Create staff
-        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/statistic") Statistic
+        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard/users") Management
 
-    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/communication") Communication 
-    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/notification") Notification 
+    if (user.type === "Admin" || user.type === "Staff")
+        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/notification") Notification 
+    
     a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Sign out
 
 block dashboardContent
@@ -78,16 +78,21 @@ block dashboardContent
                             th(scope='col') Handler
                     tbody
                         if users
-                            each user, index in users 
-                                if user.type != "Admin"
+                            - var index = 0
+                            each user in users 
+                                if user.type !== "Admin" && user.type !== "Student"
                                     tr
-                                        th(scope='row')= index
+                                        th(scope='row')= index + 1
                                         td
-                                            img(src=user.avatar, width="35", height="35")
+                                            if user.avatar === ""
+                                                img(src="/images/default_avatar.svg", alt="user avatar", width="35", height="35")
+                                            else 
+                                                img(src=user.avatar, alt="user avatar", width="35", height="35")
                                         td= user.userId
                                         td= user.name
                                         td= user.email
                                         td= user.phone
                                         td= user.type
                                         td
-                                            span(class="dashboard__contentUsersListHandler text-primary") Show
+                                            button(class="btn btn-outline-primary mr-2") Edit
+                                            button(class="btn btn-outline-danger") Delete

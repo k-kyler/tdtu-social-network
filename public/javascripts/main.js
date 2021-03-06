@@ -54,7 +54,7 @@ function onGoogleSignIn(googleUser) {
     xhr.onload = () => {
         if (xhr.responseText === "Sign in successful with Google") {
             onGoogleSignOut();
-            window.location.href = "/";
+            window.location.href = "/dashboard";
         } else if (xhr.responseText === "Your email is not for TDTU Student") {
             onGoogleSignOut();
             document.getElementById("signInErrorMessage").innerHTML =

@@ -16,6 +16,8 @@ const upload = multer({
 });
 
 // Dashboard
+
+// Info
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
@@ -27,15 +29,6 @@ module.exports.dashboard = async (req, res) => {
 module.exports.changeUserInfo = async (req, res) => {
     // Import libraries above
     // Code here.....
-};
-
-// Communication
-module.exports.communication = async (req, res) => {
-    let user = await User.findById(req.signedCookies.userId);
-
-    res.render("dashboards/communication", {
-        user: user,
-    });
 };
 
 // Notification
@@ -127,19 +120,11 @@ module.exports.createNewStaff = async (req, res) => {
             u.workplace = workplace;
             u.permission = permissionObj;
             u.avatar = avatarPath;
+            u.faculty = "";
             u.class = "";
             u.type = "Staff";
             u.save();
             res.redirect("/dashboard/users");
         }
-    });
-};
-
-// Admin statistic
-module.exports.statistic = async (req, res) => {
-    let user = await User.findById(req.signedCookies.userId);
-
-    res.render("dashboards/statistic", {
-        user: user,
     });
 };

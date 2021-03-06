@@ -64,8 +64,8 @@ module.exports.postLogin = async (req, res) => {
             signed: true,
         });
 
-        // Redirect user back to home page
-        res.redirect("/");
+        // Redirect user to dashboard
+        res.redirect("/dashboard");
     }
 
     // Google log in processing
@@ -90,6 +90,8 @@ module.exports.postLogin = async (req, res) => {
                 u.phone = "";
                 u.permission = [];
                 u.class = "";
+                u.faculty = "";
+                u.workplace = "";
                 u.type = "Student";
                 u.save();
             }
@@ -121,7 +123,7 @@ module.exports.postLogin = async (req, res) => {
                     signed: true,
                 });
 
-                // Send request to Front-end to redirect to home page
+                // Send request to Front-end to redirect to dashboard
                 res.send("Sign in successful with Google");
             })
             .catch((error) => {

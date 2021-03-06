@@ -176,7 +176,7 @@ h4 {
     }
 }
 
-.login > form > p {
+.line-style {
     width: 100%;
     border-bottom: 1px solid rgb(160, 160, 160);
     line-height: 0.1em;
@@ -238,14 +238,6 @@ h4 {
     border-radius: 6px;
     border-top-width: 0;
 }
-.dashboard__contentUsersListHandler {
-    cursor: pointer;
-}
-.dashboard__contentUsersListHandler:hover {
-    text-decoration: underline;
-    transition: all 0.3s ease-in-out;
-}
-
 .dashboard__contentUsersList img {
     border-radius: 50px;
 }

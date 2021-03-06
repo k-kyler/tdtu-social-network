@@ -15,10 +15,10 @@ block content
 
             //- Area to display error
             if error
-                p(class="mb-3 text-danger") #{error}
+                p(class="text-danger mb-0") #{error}
             span(class="mb-3 text-danger", id="signInErrorMessage")
 
             button.btn.btn-primary.btn-lg.btn-block Sign in
-            p(class="my-4 text-center") 
+            p(class="my-4 text-center line-style") 
                 span(class="px-2") For student
             div(data-onsuccess="onGoogleSignIn", data-longtitle="true", class="g-signin2")
