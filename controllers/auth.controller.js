@@ -52,14 +52,26 @@ module.exports.postLogin = async (req, res) => {
 
         // Check if email is not TDTU type
         if (!email.includes("@tdtu.edu.vn")) {
-            req.flash("errorSignIn", "Email is not TDTU type");
+            req.flash("errorSignIn", {
+                error: "Email is not TDTU type",
+                loginInput: {
+                    email,
+                    password,
+                },
+            });
             res.redirect("/auth/login");
             return;
         }
 
         // Check user input password
         if (user.password !== hashedPassword) {
-            req.flash("errorSignIn", "Wrong password");
+            req.flash("errorSignIn", {
+                error: "Wrong password",
+                loginInput: {
+                    email,
+                    password,
+                },
+            });
             res.redirect("/auth/login");
             return;
         }

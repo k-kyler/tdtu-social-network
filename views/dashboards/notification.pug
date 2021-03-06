@@ -12,4 +12,49 @@ block dashboardFunctions
     a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Sign out
 
 block dashboardContent
-    h1 Notification page 
+    div(class="dashboard__contentUsers container")
+        div(class="row")
+            if user.type === "Admin"
+                div(class="dashboard__contentNotificationForm bg-white col-md-12")
+                    form(action="/dashboard/notification", method="POST", class="p-3", enctype="multipart/form-data")
+                        h3(class="mb-4 text-primary text-center") Create Notification
+
+                        div(class="form-group row")
+                            label(for="tittle", class="col-form-label col-md-1") Tittle
+                            div(class="col-md-5")
+                                input(type="text", name="tittleNotification", id="tittleNotification", class="form-control", required) 
+                            label(for="image", class="col-form-label col-md-1") Image
+                            div(class="col-md-5")
+                                input(accept="image/*", type="file", name="imageNotification", id="imageNotification", class="form-control", required)
+                        div(class="form-group row")
+                            label(for="content", class="col-form-label col-md-1") Content
+                            div(class="col-md-11")
+                                textarea(class="form-control", id="contentNotification", rows="4" , required)
+                 
+                        div(class="form-group row")
+                            div(class="col-md-12 d-flex align-items-center justify-content-end")
+                                p(class="text-danger mb-0 mr-3") #{errorMessage}
+                                button(type="submit", class="btn btn-success") Submit
+
+                div(class="dashboard__contentNotificationList bg-white col-md-12 mt-4 px-0 table-responsive")
+                    table.table.table-hover
+                        thead.thead
+                            tr
+                                th(scope='col') #
+                                th(scope='col') Tittles
+                                th(scope='col') Contents
+                                th(scope='col') Images
+                                th(scope='col' style="width:100px;") Handler
+                        tbody
+                            tr
+                                th(scope='row')= 1
+                                td ĐI HỌC LẠI BÌNH THƯỜNG
+                                td HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.
+                                td(class="imageNotification")
+                                    div
+                                        img(src="/uploads/Ducati.jpg", width="100%", height="100%")
+                                td
+                                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Edit')")
+                                        img(src="/images/edit_icon.png", width="30", height="30")
+                                    div(class="col-md-4 text-center p-2" onclick="alert('Clicked Delete')")
+                                        img(src="/images/delete_icon.png", width="30", height="30")
