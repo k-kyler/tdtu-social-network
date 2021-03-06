@@ -13,6 +13,12 @@ const cookieParser = require("cookie-parser");
 // Initial mongoose
 const mongoose = require("mongoose");
 
+// Initial express flash
+const flash = require("express-flash");
+
+// Initial express session
+const session = require("express-session");
+
 // Require routes
 const authRoute = require("./routes/auth.route");
 const dashboardRoute = require("./routes/dashboard.route");
@@ -31,6 +37,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.SESSION_SECRET)); // Config secret cookie
 app.use(express.static("public"));
+app.use(session({ cookie: { maxAge: 60000 } }));
+app.use(flash());
 
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,

@@ -6,7 +6,16 @@ const clientId = process.env.CLIENT_ID;
 const client = new OAuth2Client(clientId);
 
 module.exports.login = (req, res) => {
-    res.render("auth/login");
+    let error = req.flash("errorSignIn")[0];
+
+    if (error) {
+        res.render("auth/login", {
+            error: error.error,
+            loginInput: error.loginInput,
+        });
+    } else {
+        res.render("auth/login");
+    }
 };
 
 module.exports.postLogin = async (req, res) => {
@@ -30,28 +39,40 @@ module.exports.postLogin = async (req, res) => {
 
         // Check user info
         if (!user) {
-            res.render("auth/login", {
+            req.flash("errorSignIn", {
                 error: "Account does not exist",
-                loginInput: req.body,
+                loginInput: {
+                    email,
+                    password,
+                },
             });
+            res.redirect("/auth/login");
             return;
         }
 
         // Check if email is not TDTU type
         if (!email.includes("@tdtu.edu.vn")) {
-            res.render("auth/login", {
+            req.flash("errorSignIn", {
                 error: "Email is not TDTU type",
-                loginInput: req.body,
+                loginInput: {
+                    email,
+                    password,
+                },
             });
+            res.redirect("/auth/login");
             return;
         }
 
         // Check user input password
         if (user.password !== hashedPassword) {
-            res.render("auth/login", {
+            req.flash("errorSignIn", {
                 error: "Wrong password",
-                loginInput: req.body,
+                loginInput: {
+                    email,
+                    password,
+                },
             });
+            res.redirect("/auth/login");
             return;
         }
 

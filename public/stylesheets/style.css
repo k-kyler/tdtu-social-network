@@ -176,7 +176,7 @@ h4 {
     }
 }
 
-.login > form > p {
+.line-style {
     width: 100%;
     border-bottom: 1px solid rgb(160, 160, 160);
     line-height: 0.1em;
@@ -250,6 +250,16 @@ h4 {
 .dashboard__contentUsersList img {
     border-radius: 50px;
 }
+
+
+/*---------------------*/
+/* User info dashboard */
+/*---------------------*/
+/* ...On working... */
+
+/*--------------------*/
+/* Communication page */
+/*--------------------*/
 .dashboard__contentCommunication {
     border-radius: 6px;
     border-top-width: 0;
@@ -264,11 +274,11 @@ h4 {
     color: white !important;
     border-radius: 8px;
 }
-.btn-postStatus > div > span{
+.btn-postStatus > div > span {
     margin-left: 15px;
 }
-hr{
-    border: 1px solid #F1F1F1;
+hr {
+    border: 1px solid #f1f1f1;
     border-radius: 5px;
 }
 .td-justify{
@@ -315,4 +325,3 @@ hr{
     width: 100px;
     height: 100px;
 }
-
