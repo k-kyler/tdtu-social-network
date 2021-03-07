@@ -314,6 +314,10 @@ hr {
 .td-justify {
     text-align: justify;
 }
+.dashboard__contentCommunication > div > div > img,
+.dashboard__contentCommunication > div > div > div > img{
+    border-radius: 50%;
+}
 
 /*--------------------*/
 /* Notification pages */
