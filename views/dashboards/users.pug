@@ -12,87 +12,86 @@ block dashboardFunctions
     a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Sign out
 
 block dashboardContent
-    div(class="dashboard__contentUsers container")
-        div(class="row")
-            div(class="dashboard__contentUsersForm bg-white col-md-12")
-                form(action="/dashboard/users", method="POST", class="p-3", enctype="multipart/form-data")
-                    h3(class="mb-4 text-primary text-center") Create Account Office/Faculty (O/F) Staff
+    div(class="dashboard__contentUsers row")
+        div(class="container dashboard__contentUsersForm bg-white col-md-12")
+            form(action="/dashboard/users", method="POST", class="p-3", enctype="multipart/form-data")
+                h3(class="mb-4 text-primary text-center") Create Account Office/Faculty (O/F) Staff
 
-                    div(class="form-group row")
-                        label(for="email", class="col-form-label col-md-1") Email
-                        div(class="col-md-5")
-                            input(type="email", name="email", id="email", class="form-control", required, value=email) 
-                        label(for="password", class="col-form-label col-md-1") Password
-                        div(class="col-md-5")
-                            input(type="password", name="password", id="password", class="form-control", required, value=password)
+                div(class="form-group row")
+                    label(for="email", class="col-form-label col-md-1") Email
+                    div(class="col-md-5")
+                        input(type="email", name="email", id="email", class="form-control", required, value=email) 
+                    label(for="password", class="col-form-label col-md-1") Password
+                    div(class="col-md-5")
+                        input(type="password", name="password", id="password", class="form-control", required, value=password)
 
-                    div(class="form-group row")
-                        label(for="name", class="col-form-label col-md-1") Name
-                        div(class="col-md-5")
-                            input(type="text", name="name", id="name", class="form-control", required, value=name) 
-                        label(for="phone", class="col-form-label col-md-1") Phone
-                        div(class="col-md-5")
-                            input(type="tel", name="phone", id="phone", class="form-control", required, value=phone) 
+                div(class="form-group row")
+                    label(for="name", class="col-form-label col-md-1") Name
+                    div(class="col-md-5")
+                        input(type="text", name="name", id="name", class="form-control", required, value=name) 
+                    label(for="phone", class="col-form-label col-md-1") Phone
+                    div(class="col-md-5")
+                        input(type="tel", name="phone", id="phone", class="form-control", required, value=phone) 
 
-                    div(class="form-group row")
-                        label(for="workplace", class="col-form-label col-md-1") Workplace
-                        div(class="col-md-5")
-                            input(type="hidden", id="workplaceHidden", value=workplace)
-                            select(name="workplace", id="workplace", class="form-control", required) 
-                                option(value="") (Choose Office/Faculty)
+                div(class="form-group row")
+                    label(for="workplace", class="col-form-label col-md-1") Workplace
+                    div(class="col-md-5")
+                        input(type="hidden", id="workplaceHidden", value=workplace)
+                        select(name="workplace", id="workplace", class="form-control", required) 
+                            option(value="") (Choose Office/Faculty)
 
-                                if listOfficeFaculty 
-                                    each item, index in listOfficeFaculty 
-                                        option(value=item.name)= item.name
+                            if listOfficeFaculty 
+                                each item, index in listOfficeFaculty 
+                                    option(value=item.name)= item.name
 
-                        label(for="avatar", class="col-form-label col-md-1") Avatar
-                        div(class="col-md-5")
-                            input(accept="image/*", type="file", name="avatar", id="avatar", class="form-control", required) 
+                    label(for="avatar", class="col-form-label col-md-1") Avatar
+                    div(class="col-md-5")
+                        input(accept="image/*", type="file", name="avatar", id="avatar", class="form-control", required) 
 
-                    div(class="form-group row")
-                        label(for="permission", class="col-form-label col-md-1") Permission (Multiple)
-                        div(class="col-md-5")
-                            input(type="hidden", id="permissionHidden", value=permission)
-                            select(name="permission", id="permission", class="form-control", required, multiple) 
+                div(class="form-group row")
+                    label(for="permission", class="col-form-label col-md-1") Permission (Multiple)
+                    div(class="col-md-5")
+                        input(type="hidden", id="permissionHidden", value=permission)
+                        select(name="permission", id="permission", class="form-control", required, multiple) 
 
-                                if listOfficeFaculty 
-                                    each item, index in listOfficeFaculty 
-                                        option(value=item.name)= item.name
-                 
-                    div(class="form-group row")
-                        div(class="col-md-12 d-flex align-items-center justify-content-end")
-                            p(class="text-danger mb-0 mr-3") #{errorMessage}
-                            button(type="submit", class="btn btn-success") Submit
+                            if listOfficeFaculty 
+                                each item, index in listOfficeFaculty 
+                                    option(value=item.name)= item.name
+             
+                div(class="form-group row")
+                    div(class="col-md-12 d-flex align-items-center justify-content-end")
+                        p(class="text-danger mb-0 mr-3") #{errorMessage}
+                        button(type="submit", class="btn btn-success") Submit
 
-            div(class="dashboard__contentUsersList bg-white col-md-12 mt-4 px-0 table-responsive")
-                table.table.table-hover
-                    thead.thead
-                        tr
-                            th(scope='col') #
-                            th(scope='col') Avatar
-                            th(scope='col') ID
-                            th(scope='col') Name
-                            th(scope='col') Email
-                            th(scope='col') Phone
-                            th(scope='col') Type
-                            th(scope='col') Handler
-                    tbody
-                        if users
-                            - var index = 0
-                            each user in users 
-                                if user.type !== "Admin" && user.type !== "Student"
-                                    tr
-                                        th(scope='row')= index + 1
-                                        td
-                                            if user.avatar === ""
-                                                img(src="/images/default_avatar.svg", alt="user avatar", width="35", height="35")
-                                            else 
-                                                img(src=user.avatar, alt="user avatar", width="35", height="35")
-                                        td= user.userId
-                                        td= user.name
-                                        td= user.email
-                                        td= user.phone
-                                        td= user.type
-                                        td
-                                            button(class="btn btn-outline-primary mr-2") Edit
-                                            button(class="btn btn-outline-danger") Delete
+        div(class="container dashboard__contentUsersList bg-white col-md-12 mt-4 px-0 table-responsive")
+            table.table.table-hover
+                thead.thead
+                    tr
+                        th(scope='col') #
+                        th(scope='col') Avatar
+                        th(scope='col') ID
+                        th(scope='col') Name
+                        th(scope='col') Email
+                        th(scope='col') Phone
+                        th(scope='col') Type
+                        th(scope='col') Handler
+                tbody
+                    if users
+                        - var index = 0
+                        each user in users 
+                            if user.type !== "Admin" && user.type !== "Student"
+                                tr
+                                    th(scope='row')= index + 1
+                                    td
+                                        if user.avatar === ""
+                                            img(src="/images/default_avatar.svg", alt="user avatar", width="35", height="35")
+                                        else 
+                                            img(src=user.avatar, alt="user avatar", width="35", height="35")
+                                    td= user.userId
+                                    td= user.name
+                                    td= user.email
+                                    td= user.phone
+                                    td= user.type
+                                    td
+                                        button(class="btn btn-outline-primary mr-2") Edit
+                                        button(class="btn btn-outline-danger") Delete
