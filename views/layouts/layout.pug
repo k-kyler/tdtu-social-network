@@ -24,16 +24,40 @@ html(lang="en")
                         button(class="btn btn-danger", id="modalLogoutButton", onclick="onGoogleSignOut()") Sign out
                         button(class="btn btn-default ml-3", data-dismiss="modal") Close
 
-        //- Status modal
-        #statusModal.modal.fade(role='dialog')
+        //- Post modal
+        #postModal.modal.fade(role='dialog')
             .modal-dialog.modal-lg(role='content')
                 .modal-content
                     .modal-header
                         h4.modal-title Create post
                         button.close(type='close', data-dismiss='modal') &times;
-                    .modal-body.d-flex.justify-content-end
-                        button(class="btn btn-danger", id="modalLogoutButton") Post
-                        button(class="btn btn-default ml-3", data-dismiss="modal") Close
+                    .modal-body
+                        form 
+                            if user 
+                                .form-group.row.d-flex.align-items-center
+                                    .col-md-1
+
+                                            if user.avatar === ""
+                                                img(id="profileAvatar", width="40", height="40", src="/images/default_avatar.svg", alt="user avatar")
+                                            else
+                                                img(id="profileAvatar", width="40", height="40", src=user.avatar, alt="user avatar")
+
+                                    .col-md-11 
+                                        span(id="owner") #{user.name}
+
+                                .form-group.row 
+                                    .col-md-12 
+                                        textarea(placeholder='What are you thinking?', class="form-control", required, id="content", name="content", rows="5")
+                                .form-group.row 
+                                    .col-md-12
+                                        input(type="file", name="image", id="image", class="form-control")
+                                .form-group.row 
+                                    .col-md-12
+                                        input(class="form-control", type="text", name="video", id="video", placeholder="Youtube URL only")
+                                .form-group.row
+                                    .col-md-12.justify-content-end.d-flex
+                                        button(class="btn btn-danger", id="modalPostButton") Post
+                                        button(class="btn btn-default ml-3", data-dismiss="modal") Close
 
         //- Info modal
         #infoModal.modal.fade(role='dialog')

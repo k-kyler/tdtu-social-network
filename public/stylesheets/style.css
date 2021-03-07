@@ -299,7 +299,7 @@ h4 {
 }
 .btn-postStatus > div:hover {
     opacity: 0.6;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 500ms ease-in;
     background: #8e2de2;
     background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
     background: linear-gradient(to right, #4a00e0, #8e2de2);
@@ -322,6 +322,10 @@ hr {
 }
 #textThinking {
     border-width: 0;
+}
+
+#profileAvatar {
+    border-radius: 50px;
 }
 
 /*--------------------*/

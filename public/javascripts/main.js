@@ -65,9 +65,9 @@ $(document).ready(() => {
         $("#faculty").attr("disabled", false);
     });
 
-    // Status handler
+    // Post handler
     $("#textThinking").click(() => {
-        $("#statusModal").modal("toggle");
+        $("#postModal").modal("toggle");
     });
 });
 
