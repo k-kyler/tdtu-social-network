@@ -12,15 +12,15 @@ block dashboardFunctions
     a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Sign out
 
 block dashboardContent
-    div(class="dashboard__contentCommunication bg-white pt-3 pb-1 mb-4 col-md-12")
-        div(class="form-group row container")
+    div(class="dashboard__contentCommunication container bg-white pt-3 pb-1 mb-4 col-md-12")
+        div(class="form-group row")
             div(class="col-md-1")
                 if user.avatar === ""
                     img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
                 else 
                     img(src=user.avatar, alt="user avatar", width="45", height="45")
             div(class="col-md-11")
-                input(type="email", name="email", id="email", class="form-control", required, value=email, placeholder="What are you thinking?")
+                input(type="email", name="email", id="email", class="form-control", required, value=email, autocomplete="off", placeholder="What are you thinking?")
         hr
         div(class="m-3")
             div(class="btn-postStatus form-group row")
@@ -34,8 +34,8 @@ block dashboardContent
                     img(src="/images/feel_icon.png", alt="pic-icon", width="35", height="35")
                     span Feeling/Activity
 
-    div(class="dashboard__contentCommunication bg-white p-3 col-md-12")
-        div(class="form-group row container")
+    div(class="dashboard__contentCommunication container bg-white p-3 col-md-12")
+        div(class="form-group row")
             div(class="col-md-1")
                 if user.avatar === ""
                     img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
