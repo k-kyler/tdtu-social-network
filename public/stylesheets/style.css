@@ -258,6 +258,9 @@ h4 {
 #infoForm span {
     cursor: pointer;
 }
+#avatarInfo {
+    border-radius: 50px;
+}
 
 /*--------------------*/
 /* Communication page */

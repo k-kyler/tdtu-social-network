@@ -26,7 +26,7 @@ module.exports.dashboard = async (req, res) => {
     });
 };
 
-module.exports.changeUserInfo = async (req, res) => {
+module.exports.updateUserInfo = async (req, res) => {
     // Import libraries above
     // Code here.....
 };
