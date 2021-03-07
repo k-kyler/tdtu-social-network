@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-let statusSchema = new mongoose.Schema({
+let postSchema = new mongoose.Schema({
     name: String,
     timestamp: String,
     profileAvatar: String,
@@ -9,6 +9,6 @@ let statusSchema = new mongoose.Schema({
     video: String,
 });
 
-let Status = mongoose.model("Status", statusSchema, "status");
+let Post = mongoose.model("Post", postSchema, "posts");
 
-module.exports = Status;
+module.exports = Post;

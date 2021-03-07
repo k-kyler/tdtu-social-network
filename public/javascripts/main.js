@@ -64,6 +64,11 @@ $(document).ready(() => {
     $("label[for='faculty']").click(() => {
         $("#faculty").attr("disabled", false);
     });
+
+    // Status handler
+    $("#textThinking").click(() => {
+        $("#statusModal").modal("toggle");
+    });
 });
 
 // JavaScript code
