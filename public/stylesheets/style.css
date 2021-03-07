@@ -252,21 +252,20 @@ h4 {
     border-radius: 50px;
 }
 @media only screen and (max-width: 1024px) {
-    .btn-postStatus > div > span{
+    .btn-postStatus > div > span {
         font-size: 80%;
     }
 }
 @media only screen and (max-width: 560px) {
-    .btn-postStatus > div > span{
+    .btn-postStatus > div > span {
         display: none;
     }
-    
 }
 @media only screen and (max-width: 480px) {
     .dashboard__sideMenu {
         height: 54vh;
     }
-    #textThinking{
+    #textThinking {
         font-size: 80%;
     }
 }
@@ -274,7 +273,7 @@ h4 {
     .dashboard__sideMenu {
         height: 60vh;
     }
-    #textThinking{
+    #textThinking {
         font-size: 70%;
     }
 }
@@ -318,8 +317,11 @@ hr {
     text-align: justify;
 }
 .dashboard__contentCommunication > div > div > img,
-.dashboard__contentCommunication > div > div > div > img{
+.dashboard__contentCommunication > div > div > div > img {
     border-radius: 50%;
+}
+#textThinking {
+    border-width: 0;
 }
 
 /*--------------------*/
