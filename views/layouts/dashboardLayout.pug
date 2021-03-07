@@ -10,9 +10,9 @@ block content
                 div(class="dashboard__sideMenuInfo px-3 py-2 mb-4 d-flex flex-column align-items-center justify-content-center")
                     
                     if user.avatar === ""
-                        img(src="/images/default_avatar.svg", alt="user avatar", width="40", height="40")
+                        img(id="displayInfo", src="/images/default_avatar.svg", alt="user avatar", width="40", height="40")
                     else 
-                        img(src=user.avatar, alt="user avatar", width="40", height="40")
+                        img(id="displayInfo", src=user.avatar, alt="user avatar", width="40", height="40")
 
                     div(class="mt-2 text-dark") #{user.name}
                 div(class="dashboard__sideMenuFunctions d-flex flex-column")

@@ -29,11 +29,83 @@ html(lang="en")
             .modal-dialog.modal-lg(role='content')
                 .modal-content
                     .modal-header
-                        h4.modal-title User Information
+                        h4.modal-title Self Information
                         button.close(type='close', data-dismiss='modal') &times;
-                    .modal-body.d-flex.justify-content-end
-                        button(class="btn btn-danger", id="modalLogoutButton", onclick="onSignOut()") Sign out
-                        button(class="btn btn-default ml-3", data-dismiss="modal") Close
+                    .modal-body
+                        form(action="", method="POST", id="infoForm", enctype="multipart/form-data")
+                            
+                            if (user.avatar === "")
+                                div(class="mb-2 d-flex justify-content-center")
+                                    label(class="d-flex flex-column justify-content-end align-items-end", for="newAvatar") 
+                                        img(id="avatarInfo", width="80", height="80", src="/images/default_avatar.svg", alt="user avatar")
+                                        span
+                                            i(class="fas fa-pen")
+                                    input(onchange="displayAvatarHandler(this);", accept="image/*", class="d-none", type="file", name="newAvatar", id="newAvatar")
+                            else 
+                                div(class="mb-2 d-flex justify-content-center")
+                                    label(class="d-flex flex-column justify-content-end align-items-end", for="newAvatar") 
+                                        img(id="avatarInfo", width="80", height="80", src=user.avatar, alt="user avatar")
+                                        span
+                                            i(class="fas fa-pen")
+                                    input(onchange="displayAvatarHandler(this);", accept="image/*", class="d-none", type="file", name="newAvatar", id="newAvatar")
+
+                            if (user.type === "Admin" || user.type === "Staff")
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='useremail') Email
+                                    .col-md-12 
+                                        input(required, disabled, class="form-control", type="text", name="useremail", id="useremail", value=user.email)
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='name') Name
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="name", id="name", value=user.name)
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='phone') Phone
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="phone", id="phone", value=user.phone)
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='new-password') Change password
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  placeholder="Enter new password", class="form-control", type="password", name="new-password", id="new-password")
+                            else if (user.type === "Student")
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='email') Email
+                                    .col-md-12 
+                                        input(required, disabled, class="form-control", type="text", name="email", id="email", value=user.email)
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='name') Name
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="name", id="name", value=user.name)
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='phone') Phone
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="phone", id="phone", value=user.phone)
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='class') Class
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="class", id="class", value=user.class)
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='faculty') Faculty
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="faculty", id="faculty", value=user.faculty)
+
+                            .form-group.row
+                                .col-md-12.justify-content-end.d-flex
+                                    button.btn.btn-primary(type='button', disabled) Update 
+                                    button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close
 
         script(src="https://apis.google.com/js/platform.js", async, defer)
         script(src="https://kit.fontawesome.com/a65ad4e019.js", crossorigin="anonymous")

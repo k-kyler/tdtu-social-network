@@ -209,6 +209,7 @@ h4 {
 }
 .dashboard__sideMenuInfo > img {
     border-radius: 50px;
+    cursor: pointer;
 }
 .dashboard__sideMenuInfo > div:hover {
     opacity: 0.6;
@@ -251,10 +252,12 @@ h4 {
     border-radius: 50px;
 }
 
-/*---------------------*/
-/* User info dashboard */
-/*---------------------*/
-/* ...On working... */
+/*-----------*/
+/* User info */
+/*-----------*/
+#infoForm span {
+    cursor: pointer;
+}
 
 /*--------------------*/
 /* Communication page */
