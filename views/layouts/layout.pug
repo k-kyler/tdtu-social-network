@@ -25,7 +25,15 @@ html(lang="en")
                         button(class="btn btn-default ml-3", data-dismiss="modal") Close
 
         //- Info modal
-        
+        #infoModal.modal.fade(role='dialog')
+            .modal-dialog.modal-lg(role='content')
+                .modal-content
+                    .modal-header
+                        h4.modal-title User Information
+                        button.close(type='close', data-dismiss='modal') &times;
+                    .modal-body.d-flex.justify-content-end
+                        button(class="btn btn-danger", id="modalLogoutButton", onclick="onSignOut()") Sign out
+                        button(class="btn btn-default ml-3", data-dismiss="modal") Close
 
         script(src="https://apis.google.com/js/platform.js", async, defer)
         script(src="https://kit.fontawesome.com/a65ad4e019.js", crossorigin="anonymous")
