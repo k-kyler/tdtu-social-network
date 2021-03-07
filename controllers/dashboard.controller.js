@@ -16,8 +16,6 @@ const upload = multer({
 });
 
 // Dashboard
-
-// Info
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
