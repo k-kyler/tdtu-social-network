@@ -5,6 +5,11 @@ $(document).ready(() => {
         $("#logoutModal").modal("toggle");
     });
 
+    // Display info modal when clicked on avatar
+    $("#displayInfo").click(() => {
+        $("#infoModal").modal("toggle");
+    });
+
     // Fetch request for user to log out
     $("#modalLogoutButton").click(() => {
         fetch("/logout")
@@ -38,6 +43,27 @@ $(document).ready(() => {
             }
         );
     }
+
+    // Edit info form field handler
+    $("label[for='name']").click(() => {
+        $("#name").attr("disabled", false);
+    });
+
+    $("label[for='phone']").click(() => {
+        $("#phone").attr("disabled", false);
+    });
+
+    $("label[for='new-password']").click(() => {
+        $("#new-password").attr("disabled", false);
+    });
+
+    $("label[for='class']").click(() => {
+        $("#class").attr("disabled", false);
+    });
+
+    $("label[for='faculty']").click(() => {
+        $("#faculty").attr("disabled", false);
+    });
 });
 
 // JavaScript code
@@ -67,4 +93,16 @@ function onGoogleSignIn(googleUser) {
 function onGoogleSignOut() {
     let authentication2 = gapi.auth2.getAuthInstance();
     authentication2.signOut();
+}
+
+// Edit info form avatar handler
+function displayAvatarHandler(avatar) {
+    if (avatar.files && avatar.files[0]) {
+        let fileReader = new FileReader();
+
+        fileReader.onload = (event) => {
+            $("#avatarInfo").attr("src", event.target.result);
+        };
+        fileReader.readAsDataURL(avatar.files[0]);
+    }
 }
