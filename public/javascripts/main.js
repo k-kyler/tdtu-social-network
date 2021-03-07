@@ -1,3 +1,6 @@
+// Socket.io setup for client
+const socket = io("/");
+
 // jQuery code
 $(document).ready(() => {
     // Display log out modal when clicked on log out button
@@ -65,9 +68,81 @@ $(document).ready(() => {
         $("#faculty").attr("disabled", false);
     });
 
-    // Post handler
+    // Display post modal handler
     $("#textThinking").click(() => {
         $("#postModal").modal("toggle");
+    });
+
+    $("#postModal").on("shown.bs.modal", () => {
+        $("#content").trigger("focus");
+    });
+
+    // Post handler
+    $("#modalPostButton").click((event) => {
+        let profileAvatar = $("#profileAvatar").attr("src");
+        let name = $("#owner").text();
+        let content = $("#content");
+        let image = $("#image").val();
+        let video = $("#video").val();
+        let timestamp =
+            new Date().toLocaleDateString() +
+            ", " +
+            new Date().toLocaleTimeString();
+
+        event.preventDefault();
+
+        // Check if content is not empty
+        if (content.val() !== "") {
+            // Emitting an message to announce server about the post information
+            socket.emit("Add new post", {
+                profileAvatar,
+                name,
+                content: content.val(),
+                timestamp,
+                image,
+                video,
+            });
+
+            // Clear content textarea and close modal
+            content.val("");
+            $("#postModal").modal("hide");
+        }
+    });
+
+    // Client listen to the rendering message from server to render new post
+    socket.on("Rendering new post", (post) => {
+        $("#postArea").append(`
+            <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12">
+                <div class="form-group row">
+                    <div class="col-md-1 col-sm-2 col-3">
+                        <img src=${post.profileAvatar} alt="user avatar" width="45" height="45"/>
+                    </div>
+                    <div class="col-md-11 col-sm-9 col-8">
+                        <strong>${post.name}</strong>
+                        <p>${post.timestamp}</p>
+                    </div>
+                </div>
+                <p>${post.content}</p>
+                <!-- <img src="/uploads/Ducati.jpg" width="100%" max-height="100%"/> -->
+                <hr/>
+                <div class="m-3">
+                    <div class="btn-postStatus form-group row">
+                        <div class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Like')">
+                            <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <span>Like</span>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Comment')">
+                            <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <span>Comment</span>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Share')">
+                            <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <span>Share</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
     });
 });
 

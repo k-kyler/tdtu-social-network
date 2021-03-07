@@ -322,6 +322,7 @@ hr {
 }
 #textThinking {
     border-width: 0;
+    border-radius: 50px;
 }
 
 #profileAvatar {

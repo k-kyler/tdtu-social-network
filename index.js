@@ -30,6 +30,8 @@ const isAuthMiddleware = require("./middlewares/isAuth.middleware");
 // App setup
 const app = express();
 const port = process.env.PORT || 5555;
+const httpServer = require("http").createServer(app);
+const io = require("socket.io")(httpServer); // Initial socket.io
 
 app.set("view engine", "pug");
 app.set("views", "./views");
@@ -43,6 +45,12 @@ app.use(flash());
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+});
+
+io.on("connection", (socket) => {
+    socket.on("Add new post", (post) => {
+        io.sockets.emit("Rendering new post", post);
+    });
 });
 
 // Default app endpoint
@@ -69,6 +77,6 @@ app.use("/auth", isAuthMiddleware.preventWhenLogged, authRoute);
 app.use("/dashboard", authMiddleware.requireAuth, dashboardRoute);
 
 // Server listen
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });

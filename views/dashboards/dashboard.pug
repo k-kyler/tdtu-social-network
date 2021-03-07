@@ -15,7 +15,7 @@ block dashboardContent
     div(class="row")
         div(class="col-md-8 pl-md-0")
             div(class="container-fluid")
-                div(class="row")
+                div(class="row", id="postArea")
                     div(class="dashboard__contentCommunication bg-white pt-3 pb-1 mb-4 col-md-12")
                         div(class="form-group row d-flex align-items-center")
                             div(class="col-md-1 col-sm-2 col-3")
@@ -24,7 +24,7 @@ block dashboardContent
                                 else 
                                     img(src=user.avatar, alt="user avatar", width="45", height="45")
                             div(class="col-md-11 col-sm-10 col-9")
-                                input(type="text", name="textThinking", id="textThinking", class="form-control", required, value=email, autocomplete="off", placeholder="What are you thinking?")
+                                input(type="text", name="textThinking", id="textThinking", class="form-control", readonly, autocomplete="off", placeholder="What are you thinking?")
                         hr
                         div(class="m-3")
                             div(class="btn-postStatus form-group row")
@@ -38,52 +38,8 @@ block dashboardContent
                                     img(src="/images/feel_icon.png", alt="pic-icon", width="35", height="35")
                                     span Feeling/Activity
 
-                    //- Posts
-                    div(class="dashboard__contentCommunication bg-white p-3 col-md-12")
-                        div(class="form-group row")
-                            div(class="col-md-1 col-sm-2 col-3")
-                                if user.avatar === ""
-                                    img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
-                                else 
-                                    img(src=user.avatar, alt="user avatar", width="45", height="45")
-                            div(class="col-md-11 col-sm-9 col-8")
-                                strong John Edison
-                                p 5 giờ
-                        p Hello everyone, this is my new motorbike!! :D
-                        img(src="/uploads/Ducati.jpg", width="100%", max-height="100%")
-                        hr
-                        div(class="m-3")
-                            div(class="btn-postStatus form-group row")
-                                div(class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Like')")
-                                    img(src="/images/like_icon.png", alt="pic-icon", width="35", height="35")
-                                    span Like
-                                div(class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Comment')")
-                                    img(src="/images/comment_icon.png", alt="pic-icon", width="35", height="35")
-                                    span Comment
-                                div(class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Share')")
-                                    img(src="/images/share_icon.png", alt="pic-icon", width="35", height="35")
-                                    span Share
-                            
-                            //- User comment
-                            div(class="form-group row")
-                                div(class="col-md-1 col-sm-2 col-3")
-                                    if user.avatar === ""
-                                        img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
-                                    else 
-                                        img(src=user.avatar, alt="user avatar", width="45", height="45")
-                                div(class="col-md-11 col-sm-9 col-8")
-                                    strong Alex Slayder
-                                    p Wow! That's so coollll.
-                            div(class="form-group row")
-                                div(class="col-md-1 col-sm-2 col-3")
-                                    if user.avatar === ""
-                                        img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
-                                    else 
-                                        img(src=user.avatar, alt="user avatar", width="45", height="45")
-                                div(class="col-md-11 col-sm-9 col-8")
-                                    strong Ben Thomas
-                                    p Is that real bro?? :D
-
+                    //- Posts here...
+                    
         div(class="col-md-4 pr-md-0")
             div(class="container-fluid sticky-top")
                 div(class="row")
