@@ -33,11 +33,11 @@ $(document).ready(() => {
     if (permission) {
         $.each(
             permission
-            .split("[")[1]
-            .split("]")[0]
-            .split('"')
-            .join("")
-            .split(","),
+                .split("[")[1]
+                .split("]")[0]
+                .split('"')
+                .join("")
+                .split(","),
             (index, element) => {
                 $("#permission option[value='" + element + "']").prop(
                     "selected",
@@ -241,9 +241,6 @@ function displayAvatarHandler(avatar) {
     }
 }
 
-
-
-
 // Update info form handler
 document.getElementById("infoForm").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -280,38 +277,42 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
     }
 
     fetch("/dashboard/info", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                userEmail: userEmail,
-                userName: userName,
-                userPhone: userPhone,
-                newPassword: newPassword,
-                studentClass: studentClass,
-                studentFaculty: studentFaculty,
-            }),
-        })
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            userEmail: userEmail,
+            userName: userName,
+            userPhone: userPhone,
+            newPassword: newPassword,
+            studentClass: studentClass,
+            studentFaculty: studentFaculty,
+        }),
+    })
         .then((res) => res.json())
         .then((result) => {
             let userName = document.getElementById("userName");
             let userPhone = document.getElementById("userPhone");
             let newPassword = document.getElementById("newPassword");
+            let btnUpdate = document.getElementById("btnUpdate");
 
             let messageError = document.getElementById("updateInfoError");
             let messageSuccess = document.getElementById("updateInfoSuccess");
 
-
             if (result.success) {
-                messageError.innerHTML = ""
+                messageError.innerHTML = "";
                 messageSuccess.innerHTML = result.success;
-                userName.setAttribute('disabled', 'disabled');
-                userPhone.setAttribute('disabled', 'disabled');
-                newPassword.setAttribute('disabled', 'disabled');
+                userName.setAttribute("disabled", "disabled");
+                userPhone.setAttribute("disabled", "disabled");
+                newPassword.setAttribute("disabled", "disabled");
+                btnUpdate.setAttribute("disabled", "disabled");
 
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 2000);
             } else if (result.error) {
-                messageSuccess.innerHTML = ""
+                messageSuccess.innerHTML = "";
                 messageError.innerHTML = result.error;
             } else {
                 messageError.innerHTML = "";
