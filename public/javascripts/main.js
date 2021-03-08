@@ -33,11 +33,11 @@ $(document).ready(() => {
     if (permission) {
         $.each(
             permission
-                .split("[")[1]
-                .split("]")[0]
-                .split('"')
-                .join("")
-                .split(","),
+            .split("[")[1]
+            .split("]")[0]
+            .split('"')
+            .join("")
+            .split(","),
             (index, element) => {
                 $("#permission option[value='" + element + "']").prop(
                     "selected",
@@ -50,14 +50,17 @@ $(document).ready(() => {
     // Edit info form field handler
     $("label[for='userName']").click(() => {
         $("#userName").attr("disabled", false);
+        $("#btnUpdate").attr("disabled", false);
     });
 
     $("label[for='userPhone']").click(() => {
         $("#userPhone").attr("disabled", false);
+        $("#btnUpdate").attr("disabled", false);
     });
 
     $("label[for='newPassword']").click(() => {
         $("#newPassword").attr("disabled", false);
+        $("#btnUpdate").attr("disabled", false);
     });
 
     $("label[for='class']").click(() => {
@@ -238,6 +241,9 @@ function displayAvatarHandler(avatar) {
     }
 }
 
+
+
+
 // Update info form handler
 document.getElementById("infoForm").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -274,25 +280,43 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
     }
 
     fetch("/dashboard/info", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            userEmail: userEmail,
-            userName: userName,
-            userPhone: userPhone,
-            newPassword: newPassword,
-            studentClass: studentClass,
-            studentFaculty: studentFaculty,
-        }),
-    })
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userEmail: userEmail,
+                userName: userName,
+                userPhone: userPhone,
+                newPassword: newPassword,
+                studentClass: studentClass,
+                studentFaculty: studentFaculty,
+            }),
+        })
         .then((res) => res.json())
         .then((result) => {
-            // do something...
-            console.log(result);
-        })
-        .catch((error) => console.log(error));
+            let userName = document.getElementById("userName");
+            let userPhone = document.getElementById("userPhone");
+            let newPassword = document.getElementById("newPassword");
+
+            let messageError = document.getElementById("updateInfoError");
+            let messageSuccess = document.getElementById("updateInfoSuccess");
+
+
+            if (result.success) {
+                messageError.innerHTML = ""
+                messageSuccess.innerHTML = result.success;
+                userName.setAttribute('disabled', 'disabled');
+                userPhone.setAttribute('disabled', 'disabled');
+                newPassword.setAttribute('disabled', 'disabled');
+
+            } else if (result.error) {
+                messageSuccess.innerHTML = ""
+                messageError.innerHTML = result.error;
+            } else {
+                messageError.innerHTML = "";
+            }
+        });
 });
 
 // Comment handler

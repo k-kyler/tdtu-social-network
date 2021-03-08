@@ -5,6 +5,8 @@ const fs = require("fs");
 const multer = require("multer");
 const md5 = require("md5");
 const shortid = require("shortid");
+const mongoose = require('mongoose');
+const { assert } = require("console");
 
 const upload = multer({
     dest: "./public/uploads/",
@@ -17,7 +19,7 @@ const upload = multer({
 });
 
 // Dashboard
-module.exports.dashboard = async (req, res) => {
+module.exports.dashboard = async(req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
     res.render("dashboards/dashboard", {
@@ -25,12 +27,62 @@ module.exports.dashboard = async (req, res) => {
     });
 };
 
-module.exports.updateUserInfo = (req, res) => {
-    console.log(req.body);
+module.exports.updateUserInfo = async(req, res) => {
+    //let uploader = upload.single('avatar')
+    //let avatar = req.file
+    /* let avatarPath = `public/uploads/${avatar.originalname}`;
+
+    // Rename avatar in public folder
+    fs.renameSync(avatar.path, avatarPath);
+
+    // Re-path to store in db
+    avatarPath = `/uploads/${avatar.originalname}`; */
+    var id = req.signedCookies.userId;
+    let user = await User.findById(req.signedCookies.userId);
+    if (user.type == "Student") {
+        var item = {
+            name: req.body.userName,
+            phone: req.body.userPhone,
+            class: req.body.class,
+            faculty: req.body.faculty,
+        }
+    } else {
+        if (req.body.newPassword == "") {
+            var item = {
+                name: req.body.userName,
+                phone: req.body.userPhone,
+            }
+        } else {
+            var item = {
+                name: req.body.userName,
+                phone: req.body.userPhone,
+                password: md5(req.body.newPassword)
+            }
+        }
+    }
+    if (md5(req.body.newPassword) == user.password) {
+        res.json({
+            error: "New password and current password cannot be the same"
+        })
+    } else {
+        User.updateOne({ "_id": mongoose.Types.ObjectId(id) }, { $set: item }, function(err, result) {
+            if (result) {
+                res.json({
+                    success: "Update user information success"
+                })
+            }
+            if (err) {
+                res.json({
+                    error: "New password and current password cannot be the same"
+                })
+            }
+        })
+    }
+
 };
 
 // Notification
-module.exports.notification = async (req, res) => {
+module.exports.notification = async(req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
     res.render("dashboards/notification", {
@@ -39,7 +91,7 @@ module.exports.notification = async (req, res) => {
 };
 
 // Users
-module.exports.users = async (req, res) => {
+module.exports.users = async(req, res) => {
     let user = await User.findById(req.signedCookies.userId);
     let users = await User.find();
     let listOfficeFaculty = await ListOfficeFaculty.find();
@@ -51,10 +103,10 @@ module.exports.users = async (req, res) => {
     });
 };
 
-module.exports.createNewStaff = async (req, res) => {
+module.exports.createNewStaff = async(req, res) => {
     let uploader = upload.single("avatar");
 
-    uploader(req, res, async (error) => {
+    uploader(req, res, async(error) => {
         let { email, password, name, phone, workplace, permission } = req.body;
         let avatar = req.file;
         let errorMessage = "";
@@ -111,11 +163,9 @@ module.exports.createNewStaff = async (req, res) => {
                     };
                 });
             } else {
-                permissionObj = [
-                    {
-                        postName: permission,
-                    },
-                ];
+                permissionObj = [{
+                    postName: permission,
+                }, ];
             }
 
             // Store to db
