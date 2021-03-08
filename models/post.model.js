@@ -7,6 +7,14 @@ let postSchema = new mongoose.Schema({
     content: String,
     image: String,
     video: String,
+    comment: [
+        {
+            guestAvatar: String,
+            guestComment: String,
+            guestName: String,
+            commentTimeStamp: String,
+        },
+    ],
 });
 
 let Post = mongoose.model("Post", postSchema, "posts");

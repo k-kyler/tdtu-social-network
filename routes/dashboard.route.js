@@ -8,5 +8,6 @@ router.post("/info", controller.updateUserInfo);
 router.get("/users", controller.users);
 router.post("/users", controller.createNewStaff);
 router.get("/notification", controller.notification);
+router.post("/post", controller.addNewPost);
 
 module.exports = router;

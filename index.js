@@ -48,6 +48,10 @@ io.on("connection", (socket) => {
     socket.on("Add new post", (post) => {
         io.sockets.emit("Rendering new post", post);
     });
+
+    socket.on("New post", (comment) => {
+        io.sockets.emit("Rendering new comment", comment);
+    });
 });
 
 // Default app endpoint
