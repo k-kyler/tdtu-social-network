@@ -213,17 +213,33 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
 
     let userEmail = document.getElementById("userEmail").value;
     let userName = document.getElementById("userName").value;
-    let userPhone = document.getElementById("userPhone").value;
-    let newPassword = document.getElementById("newPassword").value;
+    let userPhone = document.getElementById("userPhone");
+    let newPassword = document.getElementById("newPassword");
     let studentClass = document.getElementById("class");
     let studentFaculty = document.getElementById("faculty");
 
-    if (!studentClass || !studentFaculty) {
+    if (!studentClass) {
         studentClass = "";
-        studentFaculty = "";
     } else {
         studentClass = studentClass.value;
+    }
+
+    if (!studentFaculty) {
+        studentFaculty = "";
+    } else {
         studentFaculty = studentFaculty.value;
+    }
+
+    if (!newPassword) {
+        newPassword = "";
+    } else {
+        newPassword = newPassword.value;
+    }
+
+    if (!userPhone) {
+        userPhone = "";
+    } else {
+        userPhone = userPhone.value;
     }
 
     fetch("/dashboard/info", {
