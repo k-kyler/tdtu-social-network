@@ -4,9 +4,6 @@ require("dotenv").config();
 // Initial express
 const express = require("express");
 
-// Initial body-parser
-const bodyParser = require("body-parser");
-
 // Initial cookie-parser
 const cookieParser = require("cookie-parser");
 
@@ -35,8 +32,8 @@ const io = require("socket.io")(httpServer); // Initial socket.io
 
 app.set("view engine", "pug");
 app.set("views", "./views");
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.SESSION_SECRET)); // Config secret cookie
 app.use(express.static("public"));
 app.use(session({ cookie: { maxAge: 60000 } }));

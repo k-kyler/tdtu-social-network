@@ -80,8 +80,10 @@ block dashboardContent
                         - var index = 0
                         each user in users 
                             if user.type !== "Admin" && user.type !== "Student"
+                                - index = index + 1
+
                                 tr
-                                    th(scope='row')= index + 1
+                                    th(scope='row')= index
                                     td
                                         if user.avatar === ""
                                             img(src="/images/default_avatar.svg", alt="user avatar", width="35", height="35")

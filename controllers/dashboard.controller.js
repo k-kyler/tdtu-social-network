@@ -24,9 +24,10 @@ module.exports.dashboard = async (req, res) => {
     });
 };
 
-module.exports.updateUserInfo = async (req, res) => {
-    // Import libraries above
-    // Code here.....
+module.exports.updateUserInfo = (req, res) => {
+    console.log(req.body);
+    res.send(req.body);
+    // res.redirect("/dashboard");
 };
 
 // Notification

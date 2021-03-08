@@ -67,8 +67,7 @@ html(lang="en")
                         h4.modal-title Self Information
                         button.close(type='close', data-dismiss='modal') &times;
                     .modal-body
-                        form(action="/dashboard", method="POST", id="infoForm", enctype="multipart/form-data")
-                            
+                        form(id="infoForm")
                             if user
                                 if (user.avatar === "")
                                     div(class="mb-2 d-flex justify-content-center")
@@ -87,44 +86,44 @@ html(lang="en")
 
                                 if (user.type === "Admin" || user.type === "Staff")
                                     .form-group.row
-                                        label.col-md-12.col-form-label(for='useremail') Email
+                                        label.col-md-12.col-form-label(for='userEmail') Email
                                         .col-md-12 
-                                            input(required, disabled, class="form-control", type="text", name="useremail", id="useremail", value=user.email)
+                                            input(required, disabled, class="form-control", type="text", name="userEmail", id="userEmail", value=user.email)
                                     .form-group.row
-                                        label.col-md-12.col-form-label(for='name') Name
+                                        label.col-md-12.col-form-label(for="userName") Name
                                             span 
                                                 i(class="fas fa-pen")
                                         .col-md-12
-                                            input(required, disabled,  class="form-control", type="text", name="name", id="name", value=user.name)
+                                            input(required, disabled,  class="form-control", type="text", name="userName", id="userName", value=user.name)
                                     .form-group.row
-                                        label.col-md-12.col-form-label(for='phone') Phone
+                                        label.col-md-12.col-form-label(for='userPhone') Phone
                                             span 
                                                 i(class="fas fa-pen")
                                         .col-md-12
-                                            input(required, disabled,  class="form-control", type="text", name="phone", id="phone", value=user.phone)
+                                            input(required, disabled,  class="form-control", type="text", name="userPhone", id="userPhone", value=user.phone)
                                     .form-group.row
-                                        label.col-md-12.col-form-label(for='new-password') Change password
+                                        label.col-md-12.col-form-label(for='newPassword') Change password
                                             span 
                                                 i(class="fas fa-pen")
                                         .col-md-12
-                                            input(required, disabled,  placeholder="Enter new password", class="form-control", type="password", name="new-password", id="new-password")
+                                            input(required, disabled,  placeholder="Enter new password", class="form-control", type="password", name="newPassword", id="newPassword")
                                 else if (user.type === "Student")
                                     .form-group.row
-                                        label.col-md-12.col-form-label(for='email') Email
+                                        label.col-md-12.col-form-label(for="userEmail") Email
                                         .col-md-12 
-                                            input(required, disabled, class="form-control", type="text", name="email", id="email", value=user.email)
+                                            input(required, disabled, class="form-control", type="text", name="userEmail", id="userEmail", value=user.email)
                                     .form-group.row
-                                        label.col-md-12.col-form-label(for='name') Name
+                                        label.col-md-12.col-form-label(for="userName") Name
                                             span 
                                                 i(class="fas fa-pen")
                                         .col-md-12
-                                            input(required, disabled,  class="form-control", type="text", name="name", id="name", value=user.name)
+                                            input(required, disabled,  class="form-control", type="text", name="userName", id="userName", value=user.name)
                                     .form-group.row
-                                        label.col-md-12.col-form-label(for='phone') Phone
+                                        label.col-md-12.col-form-label(for='userPhone') Phone
                                             span 
                                                 i(class="fas fa-pen")
                                         .col-md-12
-                                            input(required, disabled,  class="form-control", type="text", name="phone", id="phone", value=user.phone)
+                                            input(required, disabled,  class="form-control", type="text", name="userPhone", id="userPhone", value=user.phone)
                                     .form-group.row
                                         label.col-md-12.col-form-label(for='class') Class
                                             span 
@@ -139,6 +138,9 @@ html(lang="en")
                                             input(required, disabled,  class="form-control", type="text", name="faculty", id="faculty", value=user.faculty)
 
                                 .form-group.row
+                                    .col-md-12.justify-content-center.d-flex
+                                            p(class="mb-0 text-success", id="updateInfoSuccess")
+                                            p(class="mb-0 text-danger", id="updateInfoError")
                                     .col-md-12.justify-content-end.d-flex
                                         button.btn.btn-primary(type='submit') Update 
                                         button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close

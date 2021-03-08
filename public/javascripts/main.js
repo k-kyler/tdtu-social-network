@@ -48,16 +48,16 @@ $(document).ready(() => {
     }
 
     // Edit info form field handler
-    $("label[for='name']").click(() => {
-        $("#name").attr("disabled", false);
+    $("label[for='userName']").click(() => {
+        $("#userName").attr("disabled", false);
     });
 
-    $("label[for='phone']").click(() => {
-        $("#phone").attr("disabled", false);
+    $("label[for='userPhone']").click(() => {
+        $("#userPhone").attr("disabled", false);
     });
 
-    $("label[for='new-password']").click(() => {
-        $("#new-password").attr("disabled", false);
+    $("label[for='newPassword']").click(() => {
+        $("#newPassword").attr("disabled", false);
     });
 
     $("label[for='class']").click(() => {
@@ -127,17 +127,37 @@ $(document).ready(() => {
                 <hr/>
                 <div class="m-3">
                     <div class="btn-postStatus form-group row">
-                        <div class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Like')">
+                        <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                             <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
                             <span>Like</span>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Comment')">
+                        <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                             <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
                             <span>Comment</span>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-4 text-center p-2" onclick="alert('Clicked Share')">
+                        <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                             <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
                             <span>Share</span>
+                        </div>
+                    </div>
+
+                    <!-- Comment -->
+                    <div class="form-group row" id="commentSection">
+                        <div class="col-md-1 col-sm-2 col-3">
+                            <img src="/images/default_avatar.svg" alt="user avatar" width="45" height="45"/>
+                        </div>
+                        <div class="col-md-11 col-sm-9 col-8">
+                            <strong>Quang Khai</strong>
+                            <p>Waooooo</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="px-0 col-md-12 d-flex">
+                            <input type="text" placeholder="Comment..." class="form-control" id="inputComment" />
+                            <button class="ml-1 btn btn-primary">
+                                <i class="fas fa-external-link-square-alt"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -186,3 +206,43 @@ function displayAvatarHandler(avatar) {
         fileReader.readAsDataURL(avatar.files[0]);
     }
 }
+
+// Update info form handler
+document.getElementById("infoForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    let userEmail = document.getElementById("userEmail").value;
+    let userName = document.getElementById("userName").value;
+    let userPhone = document.getElementById("userPhone").value;
+    let newPassword = document.getElementById("newPassword").value;
+    let studentClass = document.getElementById("class");
+    let studentFaculty = document.getElementById("faculty");
+
+    if (!studentClass || !studentFaculty) {
+        studentClass = "";
+        studentFaculty = "";
+    } else {
+        studentClass = studentClass.value;
+        studentFaculty = studentFaculty.value;
+    }
+
+    fetch("/dashboard/info", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            userEmail: userEmail,
+            userName: userName,
+            userPhone: userPhone,
+            newPassword: newPassword,
+            studentClass: studentClass,
+            studentFaculty: studentFaculty,
+        }),
+    })
+        .then((res) => res.json())
+        .then((result) => {
+            // do something...
+            console.log(result);
+        });
+});

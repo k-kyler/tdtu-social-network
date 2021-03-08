@@ -4,7 +4,7 @@ const controller = require("../controllers/dashboard.controller");
 let router = express.Router();
 
 router.get("/", controller.dashboard);
-router.post("/", controller.updateUserInfo);
+router.post("/info", controller.updateUserInfo);
 router.get("/users", controller.users);
 router.post("/users", controller.createNewStaff);
 router.get("/notification", controller.notification);
