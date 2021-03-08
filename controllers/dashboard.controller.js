@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const ListOfficeFaculty = require("../models/ListOfficeFaculty.model");
+const Post = require("../models/post.model");
 const fs = require("fs");
 const multer = require("multer");
 const md5 = require("md5");
@@ -183,4 +184,9 @@ module.exports.createNewStaff = async(req, res) => {
             res.redirect("/dashboard/users");
         }
     });
+};
+
+// Post
+module.exports.addNewPost = async (req, res) => {
+    console.log(req.body);
 };

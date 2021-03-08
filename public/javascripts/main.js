@@ -145,20 +145,14 @@ $(document).ready(() => {
                     </div>
 
                     <!-- Comment -->
-                    <div class="form-group row" id="commentSection">
-                        <div class="col-md-1 col-sm-2 col-3">
-                            <img src="/images/default_avatar.svg" alt="user avatar" width="45" height="45"/>
-                        </div>
-                        <div class="col-md-11 col-sm-9 col-8">
-                            <strong>Quang Khai</strong>
-                            <p>Waooooo</p>
-                        </div>
+                    <div id="commentContainer">
+                        <div id="commentSection"></div>
                     </div>
 
                     <div class="row">
-                        <div class="px-0 col-md-12 d-flex">
-                            <input type="text" placeholder="Comment..." class="form-control" id="inputComment" />
-                            <button class="ml-1 btn btn-primary">
+                        <div class="px-0 pt-3 col-md-12 d-flex">
+                            <input type="text" placeholder="Write your comment..." class="form-control" onkeypress="emitComment(event)" id="inputComment" />
+                            <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton()">
                                 <i class="fas fa-external-link-square-alt"></i>
                             </button>
                         </div>
@@ -166,6 +160,43 @@ $(document).ready(() => {
                 </div>
             </div>
         `);
+
+        // Send request to store post to db
+        fetch("/dashboard/post", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                profileAvatar: post.profileAvatar,
+                name: post.name,
+                timestamp: post.timestamp,
+                content: post.content,
+            }),
+        })
+            .then((res) => res.json())
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => console.log(error));
+    });
+
+    // Client listen to the rendering message from server to render new comment
+    socket.on("Rendering new comment", (comment) => {
+        $("#commentSection").append(`
+        <div class="form-group row">
+            <div class="col-md-1 col-sm-2 col-3">
+                <img src=${comment.guestAvatar} alt="user avatar" width="45" height="45"/>
+            </div>
+            <div class="col-md-11 col-sm-9 col-8">
+                <strong>${comment.guestName}</strong><span> - ${comment.commentTimeStamp}</span>
+                <p>${comment.guestComment}</p>
+            </div>
+        </div>
+        `);
+        document.getElementById(
+            "commentContainer"
+        ).scrollTop = document.getElementById("commentContainer").scrollHeight;
     });
 });
 
@@ -287,3 +318,49 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
             }
         });
 });
+
+// Comment handler
+const emitComment = (event) => {
+    if (event.keyCode === 13) {
+        let inputComment = document.getElementById("inputComment").value;
+        let sidebarUsername = document.getElementById("sidebarUsername")
+            .innerHTML;
+        let displayInfo = document
+            .getElementById("displayInfo")
+            .getAttribute("src");
+
+        if (inputComment !== "") {
+            socket.emit("New post", {
+                guestAvatar: displayInfo,
+                guestComment: inputComment,
+                guestName: sidebarUsername,
+                commentTimeStamp:
+                    new Date().toLocaleDateString() +
+                    ", " +
+                    new Date().toLocaleTimeString(),
+            });
+            document.getElementById("inputComment").value = "";
+        }
+    }
+};
+
+const emitCommentOnButton = () => {
+    let inputComment = document.getElementById("inputComment").value;
+    let sidebarUsername = document.getElementById("sidebarUsername").innerHTML;
+    let displayInfo = document
+        .getElementById("displayInfo")
+        .getAttribute("src");
+
+    if (inputComment !== "") {
+        socket.emit("New post", {
+            guestAvatar: displayInfo,
+            guestComment: inputComment,
+            guestName: sidebarUsername,
+            commentTimeStamp:
+                new Date().toLocaleDateString() +
+                ", " +
+                new Date().toLocaleTimeString(),
+        });
+        document.getElementById("inputComment").value = "";
+    }
+};

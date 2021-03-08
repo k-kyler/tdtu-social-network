@@ -45,8 +45,14 @@ mongoose.connect(process.env.MONGO_URL, {
 });
 
 io.on("connection", (socket) => {
+    // Server wait for emitting message from client to allow client to render post
     socket.on("Add new post", (post) => {
         io.sockets.emit("Rendering new post", post);
+    });
+
+    // Server wait for emitting message from client to allow client to render comment
+    socket.on("New post", (comment) => {
+        io.sockets.emit("Rendering new comment", comment);
     });
 });
 

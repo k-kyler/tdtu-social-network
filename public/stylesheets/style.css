@@ -327,8 +327,10 @@ hr {
 #profileAvatar {
     border-radius: 50px;
 }
-#commentSection {
-    max-height: 10rem;
+#commentContainer {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 20rem;
 }
 
 /*--------------------*/
