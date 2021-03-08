@@ -43,5 +43,48 @@ block dashboardContent
         div(class="col-md-4 pr-md-0")
             div(class="container-fluid sticky-top")
                 div(class="row")
-                    div(class="dashboard__contentListNotifications bg-white pt-3 pb-1 mb-4 col-md-12")
-                        //- Notifications here
+                    div(class="dashboard__contentNotificationList notifList-height bg-white pt-3 pb-1 mb-4 col-md-12")
+                        p(class="text-center font-weight-bold") Notification List
+                        input(type="hidden", id="notifHidden", value=notifHidden)
+                        select(name="notifs", id="notifs", class="rounded align-center form-control") 
+                            option(value="all") Tất cả
+                            option(value="tuition") Học phí
+                            option(value="schedule") Thời khóa biểu
+                            option(value="exam") Lịch thi
+                            option(value="academic") Học vụ
+                            option(value="mos") Tin học MOS
+                            option(value="apprenticeship") Tập sự nghề nghiệp
+                            option(value="career") Học phần nghề nghiệp
+                            option(value="graduate") Tốt nghiệp
+                            option(value="homeroomActivity") Sinh hoạt chủ nhiệm
+                            option(value="guide") Hướng dẫn
+                            option(value="statuteRegulations") Qui chế qui định
+                            option(value="others") Khác
+                        hr
+                        .tableNotifListScroll
+                            table.table.table-bordered.tableNotifList
+                                tbody
+                                    tr
+                                        td 
+                                            span(onclick="alert('Clicked')") HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020
+                                    tr
+                                        td 
+                                            span(onclick="alert('Clicked')") NỘP HỌC PHÍ HỌC KỲ 2 NĂM HỌC 2020-2021
+                                    tr
+                                        td
+                                            span(onclick="alert('Clicked')") LỊCH THI GIỮA HỌC KỲ 2 NĂM HỌC 2020-2021
+                                    tr
+                                        td
+                                            span(onclick="alert('Clicked')") MỞ LỚP TIN HỌC MOS ĐỢT THÁNG 4/2021
+                                    tr
+                                        td 
+                                            span(onclick="alert('Clicked')") HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020
+                                    tr
+                                        td 
+                                            span(onclick="alert('Clicked')") NỘP HỌC PHÍ HỌC KỲ 2 NĂM HỌC 2020-2021
+                                    tr
+                                        td
+                                            span(onclick="alert('Clicked')") LỊCH THI GIỮA HỌC KỲ 2 NĂM HỌC 2020-2021
+                                    tr
+                                        td
+                                            span(onclick="alert('Clicked')") MỞ LỚP TIN HỌC MOS ĐỢT THÁNG 4/2021

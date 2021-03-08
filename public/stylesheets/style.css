@@ -357,3 +357,18 @@ hr {
     width: 100px;
     height: 100px;
 }
+
+/*------------------------*/
+/* Notification dashboard */
+/*------------------------*/
+#notifs{
+    text-align-last: center;
+}
+.tableNotifListScroll{ 
+    overflow-y: auto; 
+    height: 500px;
+}
+.tableNotifList > tbody > tr:hover{
+    background-color: #F1F1F1;
+    color: #8e2de2;
+}
