@@ -145,6 +145,24 @@ html(lang="en")
                                         button.btn.btn-primary(type='submit', id='btnUpdate', disabled='disabled') Update
                                         button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close
 
+        //- Notification modal
+        #NotifDetailsModal.modal.fade(role='dialog')
+            .modal-dialog.modal-lg(role='content')
+                .modal-content
+                    .modal-header
+                        h4.modal-title Notification Details
+                        button.close(type='close', data-dismiss='modal') &times;
+                    .modal-body
+                        form 
+                            if user 
+                                .col-md-12 
+                                    p(class="font-weight-bold") HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020
+                                .col-md-12
+                                    p(class="text-justify") HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.
+                                .form-group.row
+                                    .col-md-12.justify-content-end.d-flex
+                                        button(class="btn btn-default ml-3", data-dismiss="modal") Close
+
         script(src="https://cdn.socket.io/3.1.1/socket.io.min.js") 
         script(src="https://apis.google.com/js/platform.js", async, defer)
         script(src="https://kit.fontawesome.com/a65ad4e019.js", crossorigin="anonymous")

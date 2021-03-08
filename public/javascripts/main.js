@@ -80,6 +80,11 @@ $(document).ready(() => {
         $("#content").trigger("focus");
     });
 
+    // Display notification details modal
+    $(".NotifDetails").click(() => {
+        $("#NotifDetailsModal").modal("toggle");
+    });
+
     // Post handler
     $("#modalPostButton").click((event) => {
         let profileAvatar = $("#profileAvatar").attr("src");
