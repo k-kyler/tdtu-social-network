@@ -312,7 +312,7 @@ const emitComment = (event) => {
                     ", " +
                     new Date().toLocaleTimeString(),
             });
-            inputComment.value = "";
+            document.getElementById("inputComment").value = "";
         }
     }
 };
