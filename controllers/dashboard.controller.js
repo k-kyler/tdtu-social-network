@@ -26,8 +26,6 @@ module.exports.dashboard = async (req, res) => {
 
 module.exports.updateUserInfo = (req, res) => {
     console.log(req.body);
-    res.send(req.body);
-    // res.redirect("/dashboard");
 };
 
 // Notification
