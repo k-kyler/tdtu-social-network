@@ -142,14 +142,14 @@ $(document).ready(() => {
                     </div>
 
                     <!-- Comment -->
-                    <div id="commentSection">
-                        
+                    <div id="commentContainer">
+                        <div id="commentSection"></div>
                     </div>
 
                     <div class="row">
-                        <div class="px-0 col-md-12 d-flex">
-                            <input type="text" placeholder="Comment..." class="form-control" onkeypress="emitComment(event)" id="inputComment" />
-                            <button class="ml-1 btn btn-primary" id="inputCommentBtn">
+                        <div class="px-0 pt-3 col-md-12 d-flex">
+                            <input type="text" placeholder="Write your comment..." class="form-control" onkeypress="emitComment(event)" id="inputComment" />
+                            <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton()">
                                 <i class="fas fa-external-link-square-alt"></i>
                             </button>
                         </div>
@@ -191,6 +191,9 @@ $(document).ready(() => {
             </div>
         </div>
         `);
+        document.getElementById(
+            "commentContainer"
+        ).scrollTop = document.getElementById("commentContainer").scrollHeight;
     });
 });
 
@@ -314,5 +317,26 @@ const emitComment = (event) => {
             });
             document.getElementById("inputComment").value = "";
         }
+    }
+};
+
+const emitCommentOnButton = () => {
+    let inputComment = document.getElementById("inputComment").value;
+    let sidebarUsername = document.getElementById("sidebarUsername").innerHTML;
+    let displayInfo = document
+        .getElementById("displayInfo")
+        .getAttribute("src");
+
+    if (inputComment !== "") {
+        socket.emit("New post", {
+            guestAvatar: displayInfo,
+            guestComment: inputComment,
+            guestName: sidebarUsername,
+            commentTimeStamp:
+                new Date().toLocaleDateString() +
+                ", " +
+                new Date().toLocaleTimeString(),
+        });
+        document.getElementById("inputComment").value = "";
     }
 };
