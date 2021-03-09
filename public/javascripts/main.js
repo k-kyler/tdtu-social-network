@@ -118,7 +118,7 @@ $(document).ready(() => {
     });
 
     // Client listen to the rendering message from server to render new post
-    socket.on("Rendering new post", (post) => {
+    socket.on("Rendering new post", (post, postUniqueId) => {
         $("#postArea").append(`
             <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12">
                 <div class="form-group row">
@@ -150,14 +150,14 @@ $(document).ready(() => {
                     </div>
 
                     <!-- Comment -->
-                    <div id="commentContainer">
-                        <div id="commentSection"></div>
+                    <div class="dashboard__contentCommunicationComment" id=${postUniqueId}>
+                        <div id="commentSection" data-postUniqueId=${postUniqueId}></div>
                     </div>
 
                     <div class="row">
                         <div class="px-0 pt-3 col-md-12 d-flex">
-                            <input type="text" placeholder="Write your comment..." class="form-control" onkeypress="emitComment(event)" id="inputComment" />
-                            <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton()">
+                            <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" id="inputComment" />
+                            <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
                                 <i class="fas fa-external-link-square-alt"></i>
                             </button>
                         </div>
@@ -183,12 +183,12 @@ $(document).ready(() => {
             .then((result) => {
                 console.log(result);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.error(error));
     });
 
     // Client listen to the rendering message from server to render new comment
     socket.on("Rendering new comment", (comment) => {
-        $("#commentSection").append(`
+        $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
         <div class="form-group row">
             <div class="col-md-1 col-sm-2 col-3">
                 <img src=${comment.guestAvatar} alt="user avatar" width="45" height="45"/>
@@ -200,8 +200,10 @@ $(document).ready(() => {
         </div>
         `);
         document.getElementById(
-            "commentContainer"
-        ).scrollTop = document.getElementById("commentContainer").scrollHeight;
+            comment.postUniqueId
+        ).scrollTop = document.getElementById(
+            comment.postUniqueId
+        ).scrollHeight;
     });
 });
 
@@ -322,21 +324,24 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
             } else {
                 messageError.innerHTML = "";
             }
-        });
+        })
+        .catch((error) => console.error(error));
 });
 
 // Comment handler
 const emitComment = (event) => {
     if (event.keyCode === 13) {
-        let inputComment = document.getElementById("inputComment").value;
         let sidebarUsername = document.getElementById("sidebarUsername")
             .innerHTML;
         let displayInfo = document
             .getElementById("displayInfo")
             .getAttribute("src");
+        let postUniqueId = event.target.getAttribute("data-inputComment");
+        let inputComment = event.target.value;
 
         if (inputComment !== "") {
             socket.emit("New post", {
+                postUniqueId: postUniqueId,
                 guestAvatar: displayInfo,
                 guestComment: inputComment,
                 guestName: sidebarUsername,
@@ -345,28 +350,37 @@ const emitComment = (event) => {
                     ", " +
                     new Date().toLocaleTimeString(),
             });
-            document.getElementById("inputComment").value = "";
+            event.target.value = "";
         }
     }
 };
 
-const emitCommentOnButton = () => {
-    let inputComment = document.getElementById("inputComment").value;
+const emitCommentOnButton = (event) => {
     let sidebarUsername = document.getElementById("sidebarUsername").innerHTML;
     let displayInfo = document
         .getElementById("displayInfo")
         .getAttribute("src");
+    let postUniqueId = event.target.getAttribute("data-postUniqueId");
 
-    if (inputComment !== "") {
+    if (
+        document.body.querySelector(
+            `input[data-inputComment="${postUniqueId}"]`
+        ).value !== ""
+    ) {
         socket.emit("New post", {
+            postUniqueId: postUniqueId,
             guestAvatar: displayInfo,
-            guestComment: inputComment,
+            guestComment: document.body.querySelector(
+                `input[data-inputComment="${postUniqueId}"]`
+            ).value,
             guestName: sidebarUsername,
             commentTimeStamp:
                 new Date().toLocaleDateString() +
                 ", " +
                 new Date().toLocaleTimeString(),
         });
-        document.getElementById("inputComment").value = "";
+        document.body.querySelector(
+            `input[data-inputComment="${postUniqueId}"]`
+        ).value = "";
     }
 };

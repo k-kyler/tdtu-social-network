@@ -327,10 +327,14 @@ hr {
 #profileAvatar {
     border-radius: 50px;
 }
-#commentContainer {
+.dashboard__contentCommunicationComment {
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 20rem;
+    max-height: 15rem;
+}
+.dashboard__contentCommunication > p {
+    word-wrap: break-word;
+    text-align: justify;
 }
 
 /*--------------------*/
@@ -361,14 +365,14 @@ hr {
 /*------------------------*/
 /* Notification dashboard */
 /*------------------------*/
-#notifs{
+#notifs {
     text-align-last: center;
 }
-.tableNotifListScroll{ 
-    overflow-y: auto; 
+.tableNotifListScroll {
+    overflow-y: auto;
     height: 500px;
 }
-.tableNotifList > tbody > tr:hover{
-    background-color: #F1F1F1;
+.tableNotifList > tbody > tr:hover {
+    background-color: #f1f1f1;
     color: #8e2de2;
 }
