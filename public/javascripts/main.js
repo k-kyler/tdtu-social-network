@@ -119,6 +119,17 @@ $(document).ready(() => {
         $("#NotifDetailsModal").modal("toggle");
     });
 
+    // Display editNotif modal
+    $(".EditNotif").click(() => {
+        $("#EditNotifModal").modal("toggle");
+    });
+
+    // Display editManagement user modal
+    $(".EditManagement").click(() => {
+        $("#EditManagementModal").modal("toggle");
+    });
+
+
     // Post handler
     $("#modalPostButton").click((event) => {
         let profileAvatar = $("#profileAvatar").attr("src");
