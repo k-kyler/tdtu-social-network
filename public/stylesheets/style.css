@@ -247,7 +247,9 @@ h4 {
     text-decoration: underline;
     transition: all 0.3s ease-in-out;
 }
-
+#textThinking{
+    cursor: pointer;
+}
 .dashboard__contentUsersList img {
     border-radius: 50px;
 }
@@ -361,6 +363,10 @@ hr {
     width: 100px;
     height: 100px;
 }
+.EditNotif,
+.DeleteNotif{
+    cursor: pointer;
+}
 
 /*------------------------*/
 /* Notification dashboard */
@@ -375,4 +381,16 @@ hr {
 .tableNotifList > tbody > tr:hover {
     background-color: #f1f1f1;
     color: #8e2de2;
+}
+.NotifDetails{
+    cursor: pointer;
+}
+
+.EditManagement,
+.DeleteManagement{
+    cursor: pointer;
+}
+
+.fas{
+    cursor: pointer;
 }

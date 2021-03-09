@@ -191,7 +191,7 @@ html(lang="en")
                                         span 
                                             i(class="fas fa-pen")
                                     .col-md-12
-                                        input(required, disabled,  class="form-control", type="text", name="editContent", id="editContent", value="HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.")
+                                        textarea(disabled, class="form-control text-justify", id="editContent", rows="4" , required) HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.
                                 .form-group.row
                                     label.col-md-12.col-form-label(for='editType') Type
                                         span 
@@ -206,10 +206,10 @@ html(lang="en")
                                         input(disabled, accept="image/*", type="file", name="imageNotification", id="editAttachment", class="form-control")
                                 .form-group.row
                                     .col-md-12.justify-content-center.d-flex
-                                            p(class="mb-0 text-success", id="updateInfoSuccess")
-                                            p(class="mb-0 text-danger", id="updateInfoError")
+                                            p(class="mb-0 text-success", id="updateNotifSuccess")
+                                            p(class="mb-0 text-danger", id="updateNotifError")
                                     .col-md-12.justify-content-end.d-flex
-                                        button.btn.btn-primary(type='submit', id='btnUpdate', disabled='disabled') Update
+                                        button.btn.btn-primary(type='submit', id='btnUpdateNotif', disabled='disabled') Update
                                         button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close
 
         //- Edit User Management modal
@@ -217,7 +217,7 @@ html(lang="en")
             .modal-dialog.modal-lg(role='content')
                 .modal-content
                     .modal-header
-                        h4.modal-title Edit Users Management
+                        h4.modal-title Edit Staff Management
                         button.close(type='close', data-dismiss='modal') &times;
                     .modal-body
                         form 
@@ -243,7 +243,7 @@ html(lang="en")
                                         span 
                                             i(class="fas fa-pen")
                                     .col-md-10
-                                        input(type="hidden", id="workplaceHidden", value=workplace)
+                                        input(type="hidden", id="editWorkplaceHidden", value=workplace)
                                         select(name="editWorkplace", id="editWorkplace", class="form-control", required, disabled) 
                                             if listOfficeFaculty 
                                                 each item, index in listOfficeFaculty 
@@ -253,7 +253,7 @@ html(lang="en")
                                         span 
                                             i(class="fas fa-pen")
                                     .col-md-10
-                                        input(type="hidden", id="permissionHidden", value=permission)
+                                        input(type="hidden", id="editPermissionHidden", value=permission)
                                         select(name="editPermission", id="editPermission", class="form-control", required, multiple, disabled) 
 
                                             if listOfficeFaculty 
@@ -262,10 +262,10 @@ html(lang="en")
 
                                 .form-group.row
                                     .col-md-12.justify-content-center.d-flex
-                                            p(class="mb-0 text-success", id="updateInfoSuccess")
-                                            p(class="mb-0 text-danger", id="updateInfoError")
+                                            p(class="mb-0 text-success", id="updateManagementSuccess")
+                                            p(class="mb-0 text-danger", id="updateManagementError")
                                     .col-md-12.justify-content-end.d-flex
-                                        button.btn.btn-primary(type='submit', id='btnUpdate', disabled='disabled') Update
+                                        button.btn.btn-primary(type='submit', id='btnUpdateManagement', disabled='disabled') Update
                                         button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close
 
         script(src="https://cdn.socket.io/3.1.1/socket.io.min.js") 

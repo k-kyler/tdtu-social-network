@@ -74,17 +74,17 @@ $(document).ready(() => {
     // Edit notification form field handler
     $("label[for='editTittle']").click(() => {
         $("#editTittle").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnUpdateNotif").attr("disabled", false);
     });
 
     $("label[for='editContent']").click(() => {
         $("#editContent").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnUpdateNotif").attr("disabled", false);
     });
 
     $("label[for='editType']").click(() => {
         $("#editType").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnUpdateNotif").attr("disabled", false);
     });
 
     $("label[for='editAttachment']").click(() => {
@@ -94,15 +94,15 @@ $(document).ready(() => {
     // Edit management user form field handler
     $("label[for='editPassword']").click(() => {
         $("#editPassword").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnUpdateManagement").attr("disabled", false);
     });
     $("label[for='editWorkplace']").click(() => {
         $("#editWorkplace").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnUpdateManagement").attr("disabled", false);
     });
     $("label[for='editPermission']").click(() => {
         $("#editPermission").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnUpdateManagement").attr("disabled", false);
     });
 
 
@@ -373,6 +373,14 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
         })
         .catch((error) => console.error(error));
 });
+
+
+// Update notification form handler
+// HERE
+
+// Update staff management form handler
+// HERE
+
 
 // Comment handler
 const emitComment = (event) => {
