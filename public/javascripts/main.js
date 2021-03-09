@@ -71,41 +71,6 @@ $(document).ready(() => {
         $("#faculty").attr("disabled", false);
     });
 
-    // Edit notification form field handler
-    $("label[for='editTittle']").click(() => {
-        $("#editTittle").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
-    });
-
-    $("label[for='editContent']").click(() => {
-        $("#editContent").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
-    });
-
-    $("label[for='editType']").click(() => {
-        $("#editType").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
-    });
-
-    $("label[for='editAttachment']").click(() => {
-        $("#editAttachment").attr("disabled", false);
-    });
-
-    // Edit management user form field handler
-    $("label[for='editPassword']").click(() => {
-        $("#editPassword").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
-    });
-    $("label[for='editWorkplace']").click(() => {
-        $("#editWorkplace").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
-    });
-    $("label[for='editPermission']").click(() => {
-        $("#editPermission").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
-    });
-
-
     // Display post modal handler
     $("#textThinking").click(() => {
         $("#postModal").modal("toggle");
@@ -119,17 +84,6 @@ $(document).ready(() => {
     $(".NotifDetails").click(() => {
         $("#NotifDetailsModal").modal("toggle");
     });
-
-    // Display editNotif modal
-    $(".EditNotif").click(() => {
-        $("#EditNotifModal").modal("toggle");
-    });
-
-    // Display editManagement user modal
-    $(".EditManagement").click(() => {
-        $("#EditManagementModal").modal("toggle");
-    });
-
 
     // Post handler
     $("#modalPostButton").click((event) => {
