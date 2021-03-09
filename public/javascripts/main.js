@@ -105,7 +105,6 @@ $(document).ready(() => {
         $("#btnUpdateManagement").attr("disabled", false);
     });
 
-
     // Display post modal handler
     $("#textThinking").click(() => {
         $("#postModal").modal("toggle");
@@ -119,17 +118,6 @@ $(document).ready(() => {
     $(".NotifDetails").click(() => {
         $("#NotifDetailsModal").modal("toggle");
     });
-
-    // Display editNotif modal
-    $(".EditNotif").click(() => {
-        $("#EditNotifModal").modal("toggle");
-    });
-
-    // Display editManagement user modal
-    $(".EditManagement").click(() => {
-        $("#EditManagementModal").modal("toggle");
-    });
-
 
     // Post handler
     $("#modalPostButton").click((event) => {
