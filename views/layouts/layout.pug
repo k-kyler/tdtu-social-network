@@ -156,14 +156,117 @@ html(lang="en")
                         form 
                             if user 
                                 .col-md-12 
-                                    p(class="font-weight-bold") HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020
+                                    p(class="font-weight-bold text-justify") HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020
                                 .col-md-12
                                     p(class="text-justify") HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.
                                 .col-md-12
-                                    p(class="font-italic") Phòng Đại học - Ngày đăng: 06/03/2021
+                                    p(class="pr-2" style="display: inline") Tải tập tin đính kèm:
+                                    a(class="font-bold text-danger", href="/uploads/Ducati.jpg", download) Tại đây
+                                    p
+                                .col-md-12
+                                    p(class="font-italic text-secondary") Phòng Đại học - Ngày đăng: 06/03/2021
+                                    p(class="font-italic text-secondary") Nguyễn Văn Anh
                                 .form-group.row
                                     .col-md-12.justify-content-end.d-flex
                                         button(class="btn btn-default ml-3", data-dismiss="modal") Close
+
+        //- Edit Notification modal
+        #EditNotifModal.modal.fade(role='dialog')
+            .modal-dialog.modal-lg(role='content')
+                .modal-content
+                    .modal-header
+                        h4.modal-title Edit Notification
+                        button.close(type='close', data-dismiss='modal') &times;
+                    .modal-body
+                        form 
+                            if user 
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='editTittle') Tittle
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="editTittle", id="editTittle", value="HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020")
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='editContent') Content
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="editContent", id="editContent", value="HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.")
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='editType') Type
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(required, disabled,  class="form-control", type="text", name="editType", id="editType", value="Phòng Đại Học")
+                                .form-group.row
+                                    label.col-md-12.col-form-label(for='editAttachment') Attachment
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-12
+                                        input(disabled, accept="image/*", type="file", name="imageNotification", id="editAttachment", class="form-control")
+                                .form-group.row
+                                    .col-md-12.justify-content-center.d-flex
+                                            p(class="mb-0 text-success", id="updateInfoSuccess")
+                                            p(class="mb-0 text-danger", id="updateInfoError")
+                                    .col-md-12.justify-content-end.d-flex
+                                        button.btn.btn-primary(type='submit', id='btnUpdate', disabled='disabled') Update
+                                        button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close
+
+        //- Edit User Management modal
+        #EditManagementModal.modal.fade(role='dialog')
+            .modal-dialog.modal-lg(role='content')
+                .modal-content
+                    .modal-header
+                        h4.modal-title Edit Users Management
+                        button.close(type='close', data-dismiss='modal') &times;
+                    .modal-body
+                        form 
+                            if user
+                                .form-group.row
+                                    label.col-md-1.col-form-label(for='editEmail') Email
+                                    .col-md-5
+                                        input(required, disabled,  class="form-control", type="text", name="editEmail", id="editEmail", value="staff@tdtu.edu.vn")
+                                    label.col-md-2.col-form-label(for='editPhone') Phone
+                                    .col-md-4
+                                        input(required, disabled,  class="form-control", type="text", name="editPhone", id="editPhone", value="0789456123")
+                                .form-group.row
+                                    label.col-md-1.col-form-label(for='editName') Name
+                                    .col-md-5
+                                        input(required, disabled,  class="form-control", type="text", name="editName", id="editName", value="Nguyên Văn Anh")
+                                    label.col-md-2.col-form-label(for='editPassword') Password
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-4
+                                        input(required, disabled,  class="form-control", type="text", name="editPassword", id="editPassword", value="",placeholder="New password..")
+                                .form-group.row
+                                    label.col-md-2.col-form-label(for='editWorkplace') Workplace
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-10
+                                        input(type="hidden", id="workplaceHidden", value=workplace)
+                                        select(name="editWorkplace", id="editWorkplace", class="form-control", required, disabled) 
+                                            if listOfficeFaculty 
+                                                each item, index in listOfficeFaculty 
+                                                    option(value=item.name)= item.name
+                                .form-group.row
+                                    label.col-md-2.col-form-label(for='editPermission') Permission (Multiple)
+                                        span 
+                                            i(class="fas fa-pen")
+                                    .col-md-10
+                                        input(type="hidden", id="permissionHidden", value=permission)
+                                        select(name="editPermission", id="editPermission", class="form-control", required, multiple, disabled) 
+
+                                            if listOfficeFaculty 
+                                                each item, index in listOfficeFaculty 
+                                                    option(value=item.name)= item.name
+
+                                .form-group.row
+                                    .col-md-12.justify-content-center.d-flex
+                                            p(class="mb-0 text-success", id="updateInfoSuccess")
+                                            p(class="mb-0 text-danger", id="updateInfoError")
+                                    .col-md-12.justify-content-end.d-flex
+                                        button.btn.btn-primary(type='submit', id='btnUpdate', disabled='disabled') Update
+                                        button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close
 
         script(src="https://cdn.socket.io/3.1.1/socket.io.min.js") 
         script(src="https://apis.google.com/js/platform.js", async, defer)

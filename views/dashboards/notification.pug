@@ -50,13 +50,6 @@ block dashboardContent
                                 option(value="statuteRegulations") Qui chế qui định
                                 option(value="others") Khác
 
-                        label(for="type", class="col-form-label col-md-1") Important
-                        div(class="col-md-5")
-                            input(type="hidden", id="importantNotifHidden", value=importantNotif)
-                            select(name="importantNotif", id="importantNotif", class="form-control") 
-                                option(value="") No
-                                option(value="important") Yes
-
                     div(class="form-group row")
                         div(class="col-md-12 d-flex align-items-center justify-content-end")
                             p(class="text-danger mb-0 mr-3") #{errorMessage}
@@ -71,7 +64,6 @@ block dashboardContent
                             th(scope='col') Contents
                             th(scope='col') Type
                             th(scope='col') Attachment
-                            th(scope='col') Important
                             th(scope='col' style="width:100px;") Handler
                     tbody
                         tr
@@ -80,13 +72,11 @@ block dashboardContent
                             td(class="td-justify") 
                                 p HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.
                             td
-                                p Khác
+                                p Phòng Đại Học
                             td
-                                p file.txt
+                                p Ducati.jpg
                             td
-                                p Yes
-                            td
-                                div(class="col-md-4 text-center p-2" onclick="alert('Clicked Edit')")
+                                div(class="col-md-4 text-center p-2 EditNotif")
                                     img(src="/images/edit_icon.png", width="30", height="30")
                                 div(class="col-md-4 text-center p-2" onclick="alert('Clicked Delete')")
                                     img(src="/images/delete_icon.png", width="30", height="30")
@@ -96,14 +86,12 @@ block dashboardContent
                             td(class="td-justify") 
                                 p Sinh viên thực hiện quy trình đăng ký môn học và đóng học phí mới bắt đầu áp dụng cho HK2/2020-2021 trở về sau. Thời gian thu: ngày 25/01/2021 đến 03/02/2021. 2. Hình thức thanh toán: sinh viên đăng nhập vào "Cổng thông tin sinh viên" chọn mục "Học phí" chọn “HD Thanh toán học phí” để xem các hướng dẫn thanh toán học phí tại Ngân hàng Vietcombank..
                             td
-                                p Học phí
+                                p Phòng Tài Chính
 
                             td
-                                p readme.txt
+                                p HocPhi.xlxs
                             td
-                                p No
-                            td
-                                div(class="col-md-4 text-center p-2" onclick="alert('Clicked Edit')")
-                                    img(src="/images/edit_icon.png", width="30", height="30")
+                                div(class="col-md-4 text-center p-2 EditNotif")
+                                    img(src="/images/edit_icon.png", width="28", height="28")
                                 div(class="col-md-4 text-center p-2" onclick="alert('Clicked Delete')")
-                                    img(src="/images/delete_icon.png", width="30", height="30")
+                                    img(src="/images/delete_icon.png", width="28", height="28")
