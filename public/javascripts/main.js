@@ -221,7 +221,7 @@ $(document).ready(() => {
                                     <p>${post.timestamp}</p>
                                 </div>
                                 <button class="btn btn-link text-dark posthandler" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-ellipsis-h"></i>
+                                    <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
                         </div>
@@ -258,7 +258,7 @@ $(document).ready(() => {
                             <div class="px-0 pt-3 col-md-12 d-flex">
                                 <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-paper-plane"></i>
+                                    <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
                         </div>
@@ -279,7 +279,7 @@ $(document).ready(() => {
                                     <p>${post.timestamp}</p>
                                 </div>
                                 <button class="btn btn-link text-dark postHandler" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-ellipsis-h"></i>
+                                    <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
                         </div>
@@ -316,7 +316,7 @@ $(document).ready(() => {
                             <div class="px-0 pt-3 col-md-12 d-flex">
                                 <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-paper-plane"></i>
+                                    <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
                         </div>
@@ -337,7 +337,7 @@ $(document).ready(() => {
                                     <p>${post.timestamp}</p>
                                 </div>
                                 <button class="btn btn-link text-dark postHandler" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-ellipsis-h"></i>
+                                    <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
                         </div>
@@ -377,7 +377,7 @@ $(document).ready(() => {
                             <div class="px-0 pt-3 col-md-12 d-flex">
                                 <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-paper-plane"></i>
+                                    <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
                         </div>
@@ -398,7 +398,7 @@ $(document).ready(() => {
                                     <p>${post.timestamp}</p>
                                 </div>
                                 <button class="btn btn-link text-dark postHandler" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-ellipsis-h"></i>
+                                    <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
                         </div>
@@ -430,7 +430,7 @@ $(document).ready(() => {
                             <div class="px-0 pt-3 col-md-12 d-flex">
                                 <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-paper-plane"></i>
+                                    <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
                         </div>
