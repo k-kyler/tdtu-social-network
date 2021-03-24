@@ -198,6 +198,18 @@ module.exports.createNewStaff = async (req, res) => {
 };
 
 // Post
+module.exports.getPost = async (req, res) => {
+    let { postUniqueId } = req.params;
+    let post = await Post.findOne({ postUniqueId });
+
+    if (post) {
+        res.json({
+            code: 1,
+            data: post,
+        });
+    }
+};
+
 module.exports.addNewPost = async (req, res) => {
     let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
     let posts = await Post.find();

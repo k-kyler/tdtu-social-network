@@ -176,15 +176,34 @@ $(document).ready(() => {
 
         event.preventDefault();
         $("#editPostButton").attr("data-postUniqueId", postUniqueId);
-        fetch(`/dashboard/post/edit`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "PUT",
-            body: JSON.stringify({}),
-        });
+        $("#deletePostButton").attr("data-postUniqueId", postUniqueId);
+        fetch(`/dashboard/post/${postUniqueId}`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#editPostContent").val(result.data.content);
+                    $("#editImage").val(result.data.image);
+                    $("#editVideo").val(result.data.video);
+                }
+            })
+            .catch((error) => console.log(error));
         $("#postHandlerModal").modal("toggle");
     });
+
+    // Edit post handler
+    // $("body").on("click", "#editPostButton", (event) => {
+    //     let postUniqueId = event.target.dataset.postuniqueid;
+
+    //     event.preventDefault();
+    //     fetch(`/dashboard/post/edit`, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         method: "PUT",
+    //         body: JSON.stringify({}),
+    //     });
+    //     $("#postHandlerModal").modal("hide");
+    // });
 
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
