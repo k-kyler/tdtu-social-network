@@ -1,0 +1,54 @@
+#EditManagementModal.modal.fade(role='dialog')
+    .modal-dialog.modal-lg(role='content')
+        .modal-content
+            .modal-header
+                h4.modal-title Edit Staff Management
+                button.close(type='close', data-dismiss='modal') &times;
+            .modal-body
+                form 
+                    if user
+                        .form-group.row
+                            label.col-md-1.col-form-label(for='editEmail') Email
+                            .col-md-5
+                                input(required, disabled,  class="form-control", type="text", name="editEmail", id="editEmail", value="staff@tdtu.edu.vn")
+                            label.col-md-2.col-form-label(for='editPhone') Phone
+                            .col-md-4
+                                input(required, disabled,  class="form-control", type="text", name="editPhone", id="editPhone", value="0789456123")
+                        .form-group.row
+                            label.col-md-1.col-form-label(for='editName') Name
+                            .col-md-5
+                                input(required, disabled,  class="form-control", type="text", name="editName", id="editName", value="Nguyên Văn Anh")
+                            label.col-md-2.col-form-label(for='editPassword') Password
+                                span 
+                                    i(class="fas fa-pen")
+                            .col-md-4
+                                input(required, disabled,  class="form-control", type="text", name="editPassword", id="editPassword", value="",placeholder="New password..")
+                        .form-group.row
+                            label.col-md-2.col-form-label(for='editWorkplace') Workplace
+                                span 
+                                    i(class="fas fa-pen")
+                            .col-md-10
+                                input(type="hidden", id="editWorkplaceHidden", value=workplace)
+                                select(name="editWorkplace", id="editWorkplace", class="form-control", required, disabled) 
+                                    if listOfficeFaculty 
+                                        each item, index in listOfficeFaculty 
+                                            option(value=item.name)= item.name
+                        .form-group.row
+                            label.col-md-2.col-form-label(for='editPermission') Permission (Multiple)
+                                span 
+                                    i(class="fas fa-pen")
+                            .col-md-10
+                                input(type="hidden", id="editPermissionHidden", value=permission)
+                                select(name="editPermission", id="editPermission", class="form-control", required, multiple, disabled) 
+
+                                    if listOfficeFaculty 
+                                        each item, index in listOfficeFaculty 
+                                            option(value=item.name)= item.name
+
+                        .form-group.row
+                            .col-md-12.justify-content-center.d-flex
+                                    p(class="mb-0 text-success", id="updateManagementSuccess")
+                                    p(class="mb-0 text-danger", id="updateManagementError")
+                            .col-md-12.justify-content-end.d-flex
+                                button.btn.btn-primary(type='submit', id='btnUpdateManagement', disabled='disabled') Update
+                                button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close

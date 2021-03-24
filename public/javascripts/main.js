@@ -245,7 +245,7 @@ $(document).ready(() => {
             "comment-" + comment.postUniqueId
         ).scrollHeight;
 
-        // Send request to store comment to db
+        // Send request to store comment of post to db
         fetch(`/dashboard/post/${comment.postUniqueId}`, {
             method: "PUT",
             headers: {

@@ -1,0 +1,9 @@
+#logoutModal.modal.fade(role='dialog')
+    .modal-dialog.modal-lg(role='content')
+        .modal-content
+            .modal-header
+                h4.modal-title Do you want to sign out?
+                button.close(type='close', data-dismiss='modal') &times;
+            .modal-body.d-flex.justify-content-end
+                button(class="btn btn-danger", id="modalLogoutButton", onclick="onGoogleSignOut()") Sign out
+                button(class="btn btn-default ml-3", data-dismiss="modal") Close
