@@ -129,6 +129,11 @@ $(document).ready(() => {
         $("#EditManagementModal").modal("toggle");
     });
 
+    // Display edit post modal
+    $(".editPost").click(() => {
+        $("#editPostModal").modal("toggle");
+    });
+
     // Post handler
     $("#modalPostButton").click((event) => {
         let profileAvatar = $("#profileAvatar").attr("src");
@@ -167,11 +172,18 @@ $(document).ready(() => {
             <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
                 <div class="form-group row">
                     <div class="col-md-1 col-sm-2 col-3">
-                        <img src=${post.profileAvatar} alt="user avatar" width="45" height="45"/>
+                        <img src=${post.profileAvatar} alt="user avatar" width="40" height="40"/>
                     </div>
                     <div class="col-md-11 col-sm-9 col-8">
-                        <strong>${post.name}</strong>
-                        <p>${post.timestamp}</p>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <strong>${post.name}</strong>
+                                <p>${post.timestamp}</p>
+                            </div>
+                            <button class="btn btn-link text-dark editPost" data-postUniqueId=${postUniqueId}>
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <p>${post.content}</p>
@@ -200,7 +212,7 @@ $(document).ready(() => {
 
                     <div class="row">
                         <div class="px-0 pt-3 col-md-12 d-flex">
-                            <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" id="inputComment" />
+                            <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                             <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
                                 <i class="fas fa-paper-plane"></i>
                             </button>
@@ -231,7 +243,7 @@ $(document).ready(() => {
         $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
             <div class="form-group row" id=${commentUniqueId}>
                 <div class="col-md-1 col-sm-2 col-3">
-                    <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="45" height="45"/>
+                    <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
                 </div>
                 <div class="col-md-11 col-sm-9 col-8">
                     <strong>${comment.guestName}</strong><span> - ${comment.commentTimeStamp}</span>

@@ -20,9 +20,9 @@ block dashboardContent
                         div(class="form-group row d-flex align-items-center")
                             div(class="col-md-1 col-sm-2 col-3")
                                 if user.avatar === ""
-                                    img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
+                                    img(src="/images/default_avatar.svg", alt="user avatar", width="40", height="40")
                                 else 
-                                    img(src=user.avatar, alt="user avatar", width="45", height="45")
+                                    img(src=user.avatar, alt="user avatar", width="40", height="40")
                             div(class="col-md-11 col-sm-10 col-9")
                                 input(type="text", name="textThinking", id="textThinking", class="form-control", readonly, autocomplete="off", placeholder="What are you thinking?")
                         hr
@@ -38,17 +38,22 @@ block dashboardContent
                                     img(src="/images/feel_icon.png", alt="pic-icon", width="35", height="35")
                                     span Feeling/Activity
 
-                    //- Posts here...
+                    //- Posts
                     div(id="postArea" class="col-md-12 px-0")
                         if posts
                             each post in posts
                                 div(class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=post.postUniqueId)
                                     div(class="form-group row")
                                         div(class="col-md-1 col-sm-2 col-3")
-                                            img(src=post.profileAvatar alt="user avatar" width="45" height="45")
+                                            img(src=post.profileAvatar alt="user avatar" width="40" height="40")
                                         div(class="col-md-11 col-sm-9 col-8")
-                                            strong= post.name
-                                            p= post.timestamp
+                                            div(class="d-flex align-items-center justify-content-between")
+                                                div
+                                                    strong= post.name
+                                                    p(class="mb-0")= post.timestamp
+                                                button(class="btn btn-link text-dark editPost" data-postUniqueId=post.postUniqueId)
+                                                    i(class="fas fa-ellipsis-h")
+
                                     p= post.content
                                     hr
                                     div(class="m-3")
@@ -69,14 +74,14 @@ block dashboardContent
                                                 each comment in post.comment
                                                     div(class="form-group row" id=comment.commentUniqueId)
                                                         div(class="col-md-1 col-sm-2 col-3")
-                                                            img(class="comment-ProfilePic" src=comment.guestAvatar alt="user avatar" width="45" height="45")
+                                                            img(class="comment-ProfilePic" src=comment.guestAvatar alt="user avatar" width="40" height="40")
                                                         div(class="col-md-11 col-sm-9 col-8")
                                                             strong #{comment.guestName}
                                                             span  - #{comment.commentTimeStamp}
                                                             p #{comment.guestComment}
                                         div(class="row")
                                             div(class="px-0 pt-3 col-md-12 d-flex")
-                                                input(type="text" placeholder="Write your comment..." class="form-control" data-inputComment=post.postUniqueId onkeypress="emitComment(event)" id="inputComment")
+                                                input(type="text" placeholder="Write your comment..." class="form-control" data-inputComment=post.postUniqueId onkeypress="emitComment(event)")
                                                 button(class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=post.postUniqueId)
                                                     i(class="fas fa-paper-plane")
 

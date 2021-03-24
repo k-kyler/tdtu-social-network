@@ -1,8 +1,8 @@
-#postModal.modal.fade(role='dialog')
+#editPostModal.modal.fade(role='dialog')
     .modal-dialog.modal-lg(role='content')
         .modal-content
             .modal-header
-                h4.modal-title Create post
+                h4.modal-title Edit post
                 button.close(type='close', data-dismiss='modal') &times;
             .modal-body
                 form 
@@ -19,14 +19,14 @@
 
                         .form-group.row 
                             .col-md-12 
-                                textarea(placeholder='What are you thinking?', class="form-control", required, id="content", name="content", rows="5")
+                                textarea(placeholder='What are you thinking?', class="form-control", required, id="editPostContent", name="editPostContent", rows="5")
                         .form-group.row 
                             .col-md-12
-                                input(type="file", name="image", id="image", class="form-control")
+                                input(type="file", name="editImage", id="editImage", class="form-control")
                         .form-group.row 
                             .col-md-12
-                                input(class="form-control", type="text", name="video", id="video", placeholder="Put your Youtube URL here")
+                                input(class="form-control", type="text", name="editVideo", id="editVideo", placeholder="Put your Youtube URL here")
                         .form-group.row
                             .col-md-12.justify-content-end.d-flex
-                                button(class="btn btn-danger", id="modalPostButton") Post
+                                button(class="btn btn-primary", id="modalEditPostButton") Update
                                 button(class="btn btn-default ml-3", data-dismiss="modal") Close

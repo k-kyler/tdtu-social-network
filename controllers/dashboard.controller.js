@@ -215,6 +215,25 @@ module.exports.addNewPost = async (req, res) => {
     });
 };
 
+module.exports.editPost = async (req, res) => {
+    let { postUniqueId } = req.params;
+    let post = await Post.findOne({ postUniqueId });
+    let updatePostWithComment = await Post.findOneAndUpdate(
+        { postUniqueId },
+        {
+            comment: [...post.comment, req.body],
+        },
+        {
+            new: true,
+        }
+    );
+
+    res.json({
+        code: 1,
+        message: "You have edited post!",
+    });
+};
+
 // Comment
 module.exports.addNewComment = async (req, res) => {
     let { postUniqueId } = req.params;
