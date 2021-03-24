@@ -200,6 +200,7 @@ module.exports.addNewPost = async (req, res) => {
     let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
 
     res.json({
+        code: 1,
         message: "You have added new post!",
     });
 };

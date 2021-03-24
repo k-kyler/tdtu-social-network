@@ -226,16 +226,18 @@ $(document).ready(() => {
         })
             .then((res) => res.json())
             .then((result) => {
-                $("#postArea").prepend(`
-                    <div class="col-md-12 px-0">
-                        <div class="alert alert-success alert-dismissible fade show w-100 mb-4 rounded" role="alert">
-                            <span>${result.message}</span>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                if (result.code === 1) {
+                    $("#postArea").prepend(`
+                        <div class="col-md-12 px-0">
+                            <div class="alert alert-success alert-dismissible fade show w-100 mb-4 rounded" role="alert">
+                                <span>${result.message}</span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                `);
+                    `);
+                }
             })
             .catch((error) => console.error(error));
     });
