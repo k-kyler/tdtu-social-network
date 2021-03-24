@@ -318,8 +318,7 @@ hr {
 .td-justify {
     text-align: justify;
 }
-.dashboard__contentCommunication > div > div > img,
-.dashboard__contentCommunication > div > div > div > img {
+.dashboard__contentCommunication > div > div > img[alt="user avatar"] {
     border-radius: 50%;
 }
 #textThinking {

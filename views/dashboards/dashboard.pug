@@ -51,10 +51,23 @@ block dashboardContent
                                                 div
                                                     strong= post.name
                                                     p(class="mb-0")= post.timestamp
-                                                button(class="btn btn-link text-dark editPost" data-postUniqueId=post.postUniqueId)
+                                                button(class="btn btn-link text-dark postHandler" data-postUniqueId=post.postUniqueId)
                                                     i(class="fas fa-ellipsis-h")
 
                                     p= post.content
+                                    div(class="row")
+                                        if post.image && !post.video
+                                            div(class="px-0 col-md-12")
+                                                img(src=post.image class="w-100")
+                                        else if post.video && !post.image
+                                            div(class="px-0 col-md-12 embed-responsive")
+                                                iframe(class="embed-responsive-item" src=post.video allowfullscreen)
+                                        else if post.video && post.image
+                                            div(class="px-0 col-md-6")
+                                                img(src=post.image class="w-100")
+                                            div(class="px-0 col-md-6 embed-responsive")
+                                                iframe(class="embed-responsive-item" src=post.video allowfullscreen)                                        
+
                                     hr
                                     div(class="m-3")
                                         div(class="btn-postStatus form-group row")

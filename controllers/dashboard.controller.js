@@ -22,7 +22,7 @@ const upload = multer({
 // Dashboard
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
-    let posts = await Post.find().sort({ timestamp: -1 }); // Get desc posts list
+    let posts = await Post.find().sort({ number: -1 }); // Get desc posts list
 
     res.render("dashboards/dashboard", {
         user,
@@ -200,6 +200,7 @@ module.exports.createNewStaff = async (req, res) => {
 // Post
 module.exports.addNewPost = async (req, res) => {
     let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
+    let posts = await Post.find();
     let post = new Post();
 
     post.postUniqueId = postUniqueId;
@@ -207,6 +208,7 @@ module.exports.addNewPost = async (req, res) => {
     post.profileAvatar = profileAvatar;
     post.timestamp = timestamp;
     post.content = content;
+    post.number = posts.length + 1;
     post.save();
 
     res.json({
@@ -216,13 +218,11 @@ module.exports.addNewPost = async (req, res) => {
 };
 
 module.exports.editPost = async (req, res) => {
-    let { postUniqueId } = req.params;
+    let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
     let post = await Post.findOne({ postUniqueId });
     let updatePostWithComment = await Post.findOneAndUpdate(
         { postUniqueId },
-        {
-            comment: [...post.comment, req.body],
-        },
+        {},
         {
             new: true,
         }
@@ -236,10 +236,9 @@ module.exports.editPost = async (req, res) => {
 
 // Comment
 module.exports.addNewComment = async (req, res) => {
-    let { postUniqueId } = req.params;
-    let post = await Post.findOne({ postUniqueId });
+    let post = await Post.findOne({ postUniqueId: req.body.postUniqueId });
     let updatePostWithComment = await Post.findOneAndUpdate(
-        { postUniqueId },
+        { postUniqueId: req.body.postUniqueId },
         {
             comment: [...post.comment, req.body],
         },

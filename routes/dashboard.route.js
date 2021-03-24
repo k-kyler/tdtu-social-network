@@ -13,7 +13,7 @@ router.post("/users", controller.createNewStaff);
 router.get("/notification", controller.notification);
 
 router.post("/post", controller.addNewPost);
-router.put("/post/edit/:postUniqueId", controller.editPost);
-router.put("/post/:postUniqueId", controller.addNewComment);
+router.put("/post", controller.addNewComment);
+router.put("/post/edit", controller.editPost);
 
 module.exports = router;
