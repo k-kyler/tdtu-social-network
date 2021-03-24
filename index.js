@@ -50,13 +50,16 @@ mongoose.connect(process.env.MONGO_URL, {
 io.on("connection", (socket) => {
     // Server wait for emitting message from client to allow client to render post
     socket.on("Add new post", (post) => {
-        postUniqueId = v4UniqueId();
+        let postUniqueId = v4UniqueId();
+
         io.sockets.emit("Rendering new post", post, postUniqueId);
     });
 
     // Server wait for emitting message from client to allow client to render comment
     socket.on("New post", (comment) => {
-        io.sockets.emit("Rendering new comment", comment);
+        let commentUniqueId = v4UniqueId();
+
+        io.sockets.emit("Rendering new comment", comment, commentUniqueId);
     });
 });
 

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 let postSchema = new mongoose.Schema({
     name: String,
+    postUniqueId: String,
     timestamp: String,
     profileAvatar: String,
     content: String,
@@ -9,6 +10,7 @@ let postSchema = new mongoose.Schema({
     video: String,
     comment: [
         {
+            commentUniqueId: String,
             guestAvatar: String,
             guestComment: String,
             guestName: String,

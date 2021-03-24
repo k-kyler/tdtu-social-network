@@ -247,7 +247,7 @@ h4 {
     text-decoration: underline;
     transition: all 0.3s ease-in-out;
 }
-#textThinking{
+#textThinking {
     cursor: pointer;
 }
 .dashboard__contentUsersList img {
@@ -339,6 +339,10 @@ hr {
     text-align: justify;
 }
 
+.comment-ProfilePic {
+    border-radius: 50px;
+}
+
 /*--------------------*/
 /* Notification pages */
 /*--------------------*/
@@ -364,7 +368,7 @@ hr {
     height: 100px;
 }
 .EditNotif,
-.DeleteNotif{
+.DeleteNotif {
     cursor: pointer;
 }
 
@@ -382,15 +386,15 @@ hr {
     background-color: #f1f1f1;
     color: #8e2de2;
 }
-.NotifDetails{
+.NotifDetails {
     cursor: pointer;
 }
 
 .EditManagement,
-.DeleteManagement{
+.DeleteManagement {
     cursor: pointer;
 }
 
-.fas{
+.fas {
     cursor: pointer;
 }

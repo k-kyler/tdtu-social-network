@@ -129,7 +129,6 @@ $(document).ready(() => {
         $("#EditManagementModal").modal("toggle");
     });
 
-
     // Post handler
     $("#modalPostButton").click((event) => {
         let profileAvatar = $("#profileAvatar").attr("src");
@@ -165,7 +164,7 @@ $(document).ready(() => {
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
         $("#postArea").append(`
-            <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12">
+            <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
                 <div class="form-group row">
                     <div class="col-md-1 col-sm-2 col-3">
                         <img src=${post.profileAvatar} alt="user avatar" width="45" height="45"/>
@@ -195,7 +194,7 @@ $(document).ready(() => {
                     </div>
 
                     <!-- Comment -->
-                    <div class="dashboard__contentCommunicationComment" id=${postUniqueId}>
+                    <div class="dashboard__contentCommunicationComment" id="comment-${postUniqueId}">
                         <div id="commentSection" data-postUniqueId=${postUniqueId}></div>
                     </div>
 
@@ -203,7 +202,7 @@ $(document).ready(() => {
                         <div class="px-0 pt-3 col-md-12 d-flex">
                             <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" id="inputComment" />
                             <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                <i class="fas fa-external-link-square-alt"></i>
+                                <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </div>
@@ -218,6 +217,7 @@ $(document).ready(() => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                postUniqueId,
                 profileAvatar: post.profileAvatar,
                 name: post.name,
                 timestamp: post.timestamp,
@@ -226,29 +226,58 @@ $(document).ready(() => {
         })
             .then((res) => res.json())
             .then((result) => {
-                console.log(result);
+                $("#postArea").prepend(`
+                    <div class="col-md-12 px-0">
+                        <div class="alert alert-success alert-dismissible fade show w-100 mb-4 rounded" role="alert">
+                            <span>${result.message}</span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                `);
             })
             .catch((error) => console.error(error));
     });
 
     // Client listen to the rendering message from server to render new comment
-    socket.on("Rendering new comment", (comment) => {
+    socket.on("Rendering new comment", (comment, commentUniqueId) => {
         $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
-        <div class="form-group row">
-            <div class="col-md-1 col-sm-2 col-3">
-                <img src=${comment.guestAvatar} alt="user avatar" width="45" height="45"/>
+            <div class="form-group row" id=${commentUniqueId}>
+                <div class="col-md-1 col-sm-2 col-3">
+                    <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="45" height="45"/>
+                </div>
+                <div class="col-md-11 col-sm-9 col-8">
+                    <strong>${comment.guestName}</strong><span> - ${comment.commentTimeStamp}</span>
+                    <p>${comment.guestComment}</p>
+                </div>
             </div>
-            <div class="col-md-11 col-sm-9 col-8">
-                <strong>${comment.guestName}</strong><span> - ${comment.commentTimeStamp}</span>
-                <p>${comment.guestComment}</p>
-            </div>
-        </div>
         `);
         document.getElementById(
-            comment.postUniqueId
+            "comment-" + comment.postUniqueId
         ).scrollTop = document.getElementById(
-            comment.postUniqueId
+            "comment-" + comment.postUniqueId
         ).scrollHeight;
+
+        // Send request to store comment to db
+        fetch(`/dashboard/post/${comment.postUniqueId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                commentUniqueId,
+                guestAvatar: comment.guestAvatar,
+                guestName: comment.guestName,
+                guestComment: comment.guestComment,
+                commentTimestamp: comment.commentTimeStamp,
+            }),
+        })
+            .then((res) => res.json())
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => console.error(error));
     });
 });
 
@@ -373,13 +402,11 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
         .catch((error) => console.error(error));
 });
 
-
 // Update notification form handler
 // HERE
 
 // Update staff management form handler
 // HERE
-
 
 // Comment handler
 const emitComment = (event) => {
@@ -413,9 +440,12 @@ const emitCommentOnButton = (event) => {
     let displayInfo = document
         .getElementById("displayInfo")
         .getAttribute("src");
-    let postUniqueId = event.target.getAttribute("data-postUniqueId");
+    let postUniqueId = event.target.dataset.postuniqueid;
 
     if (
+        document.body.querySelector(
+            `input[data-inputComment="${postUniqueId}"]`
+        ) &&
         document.body.querySelector(
             `input[data-inputComment="${postUniqueId}"]`
         ).value !== ""
