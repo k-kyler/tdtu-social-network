@@ -15,7 +15,7 @@ block dashboardContent
     div(class="row")
         div(class="col-md-8 pl-md-0")
             div(class="container-fluid")
-                div(class="row", id="postArea")
+                div(class="row")
                     div(class="dashboard__contentCommunication bg-white pt-3 pb-1 mb-4 col-md-12")
                         div(class="form-group row d-flex align-items-center")
                             div(class="col-md-1 col-sm-2 col-3")
@@ -39,7 +39,47 @@ block dashboardContent
                                     span Feeling/Activity
 
                     //- Posts here...
-                    
+                    div(id="postArea" class="col-md-12 px-0")
+                        if posts
+                            each post in posts
+                                div(class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=post.postUniqueId)
+                                    div(class="form-group row")
+                                        div(class="col-md-1 col-sm-2 col-3")
+                                            img(src=post.profileAvatar alt="user avatar" width="45" height="45")
+                                        div(class="col-md-11 col-sm-9 col-8")
+                                            strong= post.name
+                                            p= post.timestamp
+                                    p= post.content
+                                    hr
+                                    div(class="m-3")
+                                        div(class="btn-postStatus form-group row")
+                                            div(class="col-md-4 col-sm-4 col-4 text-center p-2")
+                                                img(src="/images/like_icon.png" alt="pic-icon" width="35" height="35")
+                                                span Like
+                                            div(class="col-md-4 col-sm-4 col-4 text-center p-2")
+                                                img(src="/images/comment_icon.png" alt="pic-icon" width="35" height="35")
+                                                span Comment
+                                            div(class="col-md-4 col-sm-4 col-4 text-center p-2")
+                                                img(src="/images/share_icon.png" alt="pic-icon" width="35" height="35")
+                                                span Share
+
+                                        //- Comment
+                                        div(class="dashboard__contentCommunicationComment" id="comment-" + post.postUniqueId)
+                                            div(id="commentSection" data-postUniqueId=post.postUniqueId)
+                                                each comment in post.comment
+                                                    div(class="form-group row" id=comment.commentUniqueId)
+                                                        div(class="col-md-1 col-sm-2 col-3")
+                                                            img(class="comment-ProfilePic" src=comment.guestAvatar alt="user avatar" width="45" height="45")
+                                                        div(class="col-md-11 col-sm-9 col-8")
+                                                            strong #{comment.guestName}
+                                                            span  - #{comment.commentTimeStamp}
+                                                            p #{comment.guestComment}
+                                        div(class="row")
+                                            div(class="px-0 pt-3 col-md-12 d-flex")
+                                                input(type="text" placeholder="Write your comment..." class="form-control" data-inputComment=post.postUniqueId onkeypress="emitComment(event)" id="inputComment")
+                                                button(class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=post.postUniqueId)
+                                                    i(class="fas fa-paper-plane")
+
         div(class="col-md-4 pr-md-0")
             div(class="container-fluid sticky-top")
                 div(class="row")

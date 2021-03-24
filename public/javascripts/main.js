@@ -163,7 +163,7 @@ $(document).ready(() => {
 
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
-        $("#postArea").append(`
+        $("#postArea").prepend(`
             <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
                 <div class="form-group row">
                     <div class="col-md-1 col-sm-2 col-3">
@@ -223,21 +223,7 @@ $(document).ready(() => {
                 timestamp: post.timestamp,
                 content: post.content,
             }),
-        })
-            .then((res) => res.json())
-            .then((result) => {
-                if (result.code === 1) {
-                    $("body").append(`
-                        <div class="alert alert-success alert-dismissible fade show rounded newPostAlert" role="alert">
-                            <span>${result.message}</span>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                }
-            })
-            .catch((error) => console.error(error));
+        }).catch((error) => console.error(error));
     });
 
     // Client listen to the rendering message from server to render new comment
@@ -270,14 +256,9 @@ $(document).ready(() => {
                 guestAvatar: comment.guestAvatar,
                 guestName: comment.guestName,
                 guestComment: comment.guestComment,
-                commentTimestamp: comment.commentTimeStamp,
+                commentTimeStamp: comment.commentTimeStamp,
             }),
-        })
-            .then((res) => res.json())
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((error) => console.error(error));
+        }).catch((error) => console.error(error));
     });
 });
 

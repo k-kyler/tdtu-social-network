@@ -22,9 +22,11 @@ const upload = multer({
 // Dashboard
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
+    let posts = await Post.find().sort({ timestamp: -1 }); // Get desc posts list
 
     res.render("dashboards/dashboard", {
-        user: user,
+        user,
+        posts,
     });
 };
 
@@ -214,4 +216,21 @@ module.exports.addNewPost = async (req, res) => {
 };
 
 // Comment
-module.exports.addNewComment = async (req, res) => {};
+module.exports.addNewComment = async (req, res) => {
+    let { postUniqueId } = req.params;
+    let post = await Post.findOne({ postUniqueId });
+    let updatePostWithComment = await Post.findOneAndUpdate(
+        { postUniqueId },
+        {
+            comment: [...post.comment, req.body],
+        },
+        {
+            new: true,
+        }
+    );
+
+    res.json({
+        code: 1,
+        message: "You have added new comment!",
+    });
+};
