@@ -343,6 +343,14 @@ hr {
     border-radius: 50px;
 }
 
+.newPostAlert {
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    transform: translate(-50%, -2%);
+    width: 20rem;
+}
+
 /*--------------------*/
 /* Notification pages */
 /*--------------------*/
