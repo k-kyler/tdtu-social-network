@@ -198,6 +198,14 @@ module.exports.createNewStaff = async (req, res) => {
 // Post
 module.exports.addNewPost = async (req, res) => {
     let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
+    let post = new Post();
+
+    post.postUniqueId = postUniqueId;
+    post.name = name;
+    post.profileAvatar = profileAvatar;
+    post.timestamp = timestamp;
+    post.content = content;
+    post.save();
 
     res.json({
         code: 1,
