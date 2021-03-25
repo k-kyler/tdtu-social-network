@@ -250,6 +250,7 @@ h4 {
 }
 #textThinking {
     cursor: pointer;
+    background-color: #f1f2f5;
 }
 .dashboard__contentUsersList img {
     border-radius: 50px;
@@ -444,4 +445,5 @@ hr {
 
 .myAlert {
     border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }

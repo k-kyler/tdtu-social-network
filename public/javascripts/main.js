@@ -446,7 +446,7 @@ $(document).ready(() => {
                 if (result.code === 1) {
                     $("#alertContainer").prepend(`
                         <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
-                            <strong>${result.message}</strong>
+                            ${result.message}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
