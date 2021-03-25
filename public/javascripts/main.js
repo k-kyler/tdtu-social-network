@@ -533,10 +533,7 @@ $(document).ready(() => {
                 guestComment: comment.guestComment,
                 commentTimeStamp: comment.commentTimeStamp,
             }),
-        })
-            .then((response) => response.json())
-            .then((result) => {})
-            .catch((error) => console.error(error));
+        }).catch((error) => console.error(error));
     });
 });
 
