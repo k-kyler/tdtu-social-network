@@ -144,7 +144,7 @@ $(document).ready(() => {
 
         event.preventDefault();
 
-        // Check if video is a youtube URL
+        // Check if video is a youtube URL then emitting it
         if (video && !video.includes("https://www.youtube.com")) {
             $("#errorPost").html("Not youtube URL");
         } else if (!video) {
@@ -161,6 +161,31 @@ $(document).ready(() => {
                     timestamp,
                     image,
                     video,
+                });
+
+                // Clear content textarea and close modal
+                content.val("");
+                $("#postModal").modal("hide");
+            } else {
+                $("#errorPost").html("Missing content");
+            }
+        } else if (video && video.includes("https://www.youtube.com")) {
+            // Check if content is not empty
+            if (content.val() !== "") {
+                $("#errorPost").html("");
+
+                // Emitting an message to announce server about the post information
+                socket.emit("Add new post", {
+                    ownerId,
+                    profileAvatar,
+                    name,
+                    content: content.val(),
+                    timestamp,
+                    image,
+                    video:
+                        video.split("watch?v=")[0] +
+                        "embed/" +
+                        video.split("watch?v=")[1],
                 });
 
                 // Clear content textarea and close modal
@@ -242,7 +267,7 @@ $(document).ready(() => {
                                 <div class="px-0 col-md-6>
                                     <img src=${post.image} class="w-100" />
                                 </div>
-                                <div class="px-0 col-md-6 embed-responsive">
+                                <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
                                     <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
                                 </div>
                             </div>   
@@ -250,7 +275,7 @@ $(document).ready(() => {
                             : !post.image && post.video
                             ? `
                             <div class="row">
-                                <div class="px-0 col-md-12 embed-responsive">
+                                <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
                                     <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
                                 </div>
                             </div>
@@ -335,7 +360,7 @@ $(document).ready(() => {
                                 <div class="px-0 col-md-6>
                                     <img src=${post.image} class="w-100" />
                                 </div>
-                                <div class="px-0 col-md-6 embed-responsive">
+                                <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
                                     <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
                                 </div>
                             </div>   
@@ -343,7 +368,7 @@ $(document).ready(() => {
                             : !post.image && post.video
                             ? `
                             <div class="row">
-                                <div class="px-0 col-md-12 embed-responsive">
+                                <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
                                     <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
                                 </div>
                             </div>

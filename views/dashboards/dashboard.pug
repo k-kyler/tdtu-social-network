@@ -65,14 +65,14 @@ block dashboardContent
                                             div(class="px-0 col-md-12")
                                                 img(src=post.image class="w-100")
                                         else if post.video && !post.image
-                                            div(class="px-0 col-md-12 embed-responsive")
+                                            div(class="px-0 col-md-12 embed-responsive embed-responsive-16by9")
                                                 iframe(class="embed-responsive-item" src=post.video allowfullscreen)
                                         else if post.video && post.image
                                             div(class="px-0 col-md-6")
                                                 img(src=post.image class="w-100")
-                                            div(class="px-0 col-md-6 embed-responsive")
+                                            div(class="px-0 col-md-6 embed-responsive embed-responsive-16by9")
                                                 iframe(class="embed-responsive-item" src=post.video allowfullscreen)                                        
-
+                                        
                                     div(class="m-3")
                                         hr(class="my-0")
                                         div(class="btn-postStatus form-group row mb-0")

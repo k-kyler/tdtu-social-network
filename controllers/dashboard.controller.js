@@ -218,6 +218,7 @@ module.exports.addNewPost = async (req, res) => {
         timestamp,
         content,
         ownerId,
+        video,
     } = req.body;
     let posts = await Post.find();
     let post = new Post();
@@ -229,6 +230,7 @@ module.exports.addNewPost = async (req, res) => {
     post.timestamp = timestamp;
     post.content = content;
     post.number = posts.length + 1;
+    post.video = video;
     post.save();
 
     res.json({
