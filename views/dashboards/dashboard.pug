@@ -74,9 +74,10 @@ block dashboardContent
                                             div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                                 img(src="/images/like_icon.png" alt="pic-icon" width="35" height="35")
                                                 span Like
-                                            div(class="col-md-4 col-sm-4 col-4 text-center p-2")
-                                                img(src="/images/comment_icon.png" alt="pic-icon" width="35" height="35")
-                                                span Comment
+                                            div(class="col-form-label col-md-4 col-sm-4 col-4 text-center p-2")
+                                                label(class="mb-0" for="commentInput-" + post.postUniqueId)
+                                                    img(src="/images/comment_icon.png" alt="pic-icon" width="35" height="35")
+                                                    span Comment
                                             div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                                 img(src="/images/share_icon.png" alt="pic-icon" width="35" height="35")
                                                 span Share
@@ -94,7 +95,7 @@ block dashboardContent
                                                             p #{comment.guestComment}
                                         div(class="row")
                                             div(class="px-0 pt-3 col-md-12 d-flex")
-                                                input(type="text" placeholder="Write your comment..." class="form-control" data-inputComment=post.postUniqueId onkeypress="emitComment(event)")
+                                                input(type="text" placeholder="Write your comment..." class="form-control" id="commentInput-" + post.postUniqueId data-inputComment=post.postUniqueId onkeypress="emitComment(event)")
                                                 button(class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=post.postUniqueId)
                                                     i(class="fas fa-paper-plane" data-postUniqueId=post.postUniqueId)
 
