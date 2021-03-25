@@ -73,9 +73,9 @@ block dashboardContent
                                             div(class="px-0 col-md-6 embed-responsive")
                                                 iframe(class="embed-responsive-item" src=post.video allowfullscreen)                                        
 
-                                    hr
                                     div(class="m-3")
-                                        div(class="btn-postStatus form-group row")
+                                        hr(class="my-0")
+                                        div(class="btn-postStatus form-group row mb-0")
                                             div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                                 img(src="/images/like_icon.png" alt="pic-icon" width="35" height="35")
                                                 span(class="ml-2") Like
@@ -86,7 +86,8 @@ block dashboardContent
                                             div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                                 img(src="/images/share_icon.png" alt="pic-icon" width="35" height="35")
                                                 span(class="ml-2") Share
-                                        
+                                        hr(class="mt-0 mb-4")
+
                                         //- Comment
                                         div(class="dashboard__contentCommunicationComment" id="comment-" + post.postUniqueId)
                                             div(id="commentSection" data-postUniqueId=post.postUniqueId)

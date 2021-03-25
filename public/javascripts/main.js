@@ -222,9 +222,11 @@ $(document).ready(() => {
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <strong>${post.name}</strong>
-                                    <p class="mb-0 text-secondary">${
-                                        post.timestamp
-                                    }</p>
+                                    <p class="mb-0 text-secondary">
+                                        <small>
+                                            ${post.timestamp}
+                                        </small>
+                                    </p>
                                 </div>
                                 <button class="btn btn-link text-dark posthandler" data-postUniqueId=${postUniqueId}>
                                     <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
@@ -265,9 +267,9 @@ $(document).ready(() => {
                             
                         `
                     }
-                    <hr/>
                     <div class="m-3">
-                        <div class="btn-postStatus form-group row">
+                        <hr class="my-0" />
+                        <div class="btn-postStatus form-group row mb-0">
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
                                 <span class="ml-2">Like</span>
@@ -283,6 +285,7 @@ $(document).ready(() => {
                                 <span class="ml-2">Share</span>
                             </div>
                         </div>
+                        <hr class="mt-0 mb-4" />
 
                         <!-- Comment -->
                         <div class="dashboard__contentCommunicationComment" id="comment-${postUniqueId}">
@@ -293,7 +296,7 @@ $(document).ready(() => {
                             <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
                                 <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <div class="input-group-append">
-                                    <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
+                                    <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
                                         <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
                                     </button>
                                 </div>
@@ -315,9 +318,11 @@ $(document).ready(() => {
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <strong>${post.name}</strong>
-                                    <p class="mb-0 text-secondary">${
-                                        post.timestamp
-                                    }</p>
+                                    <p class="mb-0 text-secondary">
+                                        <small>
+                                            ${post.timestamp}
+                                        </small>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -355,9 +360,9 @@ $(document).ready(() => {
                             
                         `
                     }
-                    <hr/>
                     <div class="m-3">
-                        <div class="btn-postStatus form-group row">
+                        <hr class="my-0" />
+                        <div class="btn-postStatus form-group row mb-0">
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
                                 <span class="ml-2">Like</span>
@@ -373,6 +378,7 @@ $(document).ready(() => {
                                 <span class="ml-2">Share</span>
                             </div>
                         </div>
+                        <hr class="mt-0 mb-4" />
 
                         <!-- Comment -->
                         <div class="dashboard__contentCommunicationComment" id="comment-${postUniqueId}">
@@ -383,7 +389,7 @@ $(document).ready(() => {
                             <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
                                 <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <div class="input-group-append">
-                                    <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
+                                    <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
                                         <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
                                     </button>
                                 </div>
