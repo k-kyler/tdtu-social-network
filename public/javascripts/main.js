@@ -136,6 +136,7 @@ $(document).ready(() => {
         let content = $("#content");
         let image = $("#image").val();
         let video = $("#video").val();
+        let ownerId = $("#userObjectId").val();
         let timestamp =
             new Date().toLocaleDateString() +
             ", " +
@@ -153,6 +154,7 @@ $(document).ready(() => {
 
                 // Emitting an message to announce server about the post information
                 socket.emit("Add new post", {
+                    ownerId,
                     profileAvatar,
                     name,
                     content: content.val(),
@@ -207,18 +209,22 @@ $(document).ready(() => {
 
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
-        if (post.image && !post.video) {
+        if (post.ownerId == document.getElementById("userObjectId").value) {
             $("#postArea").prepend(`
                 <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
                     <div class="form-group row">
                         <div class="col-md-1 col-sm-2 col-3">
-                            <img src=${post.profileAvatar} alt="user avatar" width="40" height="40"/>
+                            <img src=${
+                                post.profileAvatar
+                            } alt="user avatar" width="40" height="40"/>
                         </div>
                         <div class="col-md-11 col-sm-9 col-8">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <strong>${post.name}</strong>
-                                    <p>${post.timestamp}</p>
+                                    <p class="mb-0 text-secondary">${
+                                        post.timestamp
+                                    }</p>
                                 </div>
                                 <button class="btn btn-link text-dark posthandler" data-postUniqueId=${postUniqueId}>
                                     <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
@@ -227,11 +233,38 @@ $(document).ready(() => {
                         </div>
                     </div>
                     <p>${post.content}</p>
-                    <div class="row">
-                        <div class="px-0 col-md-12>
-                            <img src=${post.image} class="w-100" />
-                        </div>
-                    </div>
+                    ${
+                        post.image && post.video
+                            ? `
+                            <div class="row">
+                                <div class="px-0 col-md-6>
+                                    <img src=${post.image} class="w-100" />
+                                </div>
+                                <div class="px-0 col-md-6 embed-responsive">
+                                    <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                </div>
+                            </div>   
+                        `
+                            : !post.image && post.video
+                            ? `
+                            <div class="row">
+                                <div class="px-0 col-md-12 embed-responsive">
+                                    <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        `
+                            : post.image && !post.video
+                            ? `
+                            <div class="row">
+                                <div class="px-0 col-md-12>
+                                    <img src=${post.image} class="w-100" />
+                                </div>
+                            </div>
+                        `
+                            : `
+                            
+                        `
+                    }
                     <hr/>
                     <div class="m-3">
                         <div class="btn-postStatus form-group row">
@@ -257,41 +290,71 @@ $(document).ready(() => {
                         </div>
 
                         <div class="row">
-                            <div class="px-0 pt-3 col-md-12 d-flex">
-                                <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
-                                <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
-                                </button>
+                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
+                                <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
+                                <div class="input-group-append">
+                                    <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
+                                        <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             `);
-        } else if (post.video && !post.image) {
+        } else {
             $("#postArea").prepend(`
                 <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
                     <div class="form-group row">
                         <div class="col-md-1 col-sm-2 col-3">
-                            <img src=${post.profileAvatar} alt="user avatar" width="40" height="40"/>
+                            <img src=${
+                                post.profileAvatar
+                            } alt="user avatar" width="40" height="40"/>
                         </div>
                         <div class="col-md-11 col-sm-9 col-8">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <strong>${post.name}</strong>
-                                    <p>${post.timestamp}</p>
+                                    <p class="mb-0 text-secondary">${
+                                        post.timestamp
+                                    }</p>
                                 </div>
-                                <button class="btn btn-link text-dark postHandler" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
-                                </button>
                             </div>
                         </div>
                     </div>
                     <p>${post.content}</p>
-                    <div class="row">
-                        <div class="px-0 col-md-12 embed-responsive">
-                            <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
-                        </div>
-                    </div>
+                    ${
+                        post.image && post.video
+                            ? `
+                            <div class="row">
+                                <div class="px-0 col-md-6>
+                                    <img src=${post.image} class="w-100" />
+                                </div>
+                                <div class="px-0 col-md-6 embed-responsive">
+                                    <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                </div>
+                            </div>   
+                        `
+                            : !post.image && post.video
+                            ? `
+                            <div class="row">
+                                <div class="px-0 col-md-12 embed-responsive">
+                                    <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        `
+                            : post.image && !post.video
+                            ? `
+                            <div class="row">
+                                <div class="px-0 col-md-12>
+                                    <img src=${post.image} class="w-100" />
+                                </div>
+                            </div>
+                        `
+                            : `
+                            
+                        `
+                    }
                     <hr/>
                     <div class="m-3">
                         <div class="btn-postStatus form-group row">
@@ -317,129 +380,13 @@ $(document).ready(() => {
                         </div>
 
                         <div class="row">
-                            <div class="px-0 pt-3 col-md-12 d-flex">
-                                <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
-                                <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `);
-        } else if (post.video && post.image) {
-            $("#postArea").prepend(`
-                <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
-                    <div class="form-group row">
-                        <div class="col-md-1 col-sm-2 col-3">
-                            <img src=${post.profileAvatar} alt="user avatar" width="40" height="40"/>
-                        </div>
-                        <div class="col-md-11 col-sm-9 col-8">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <strong>${post.name}</strong>
-                                    <p>${post.timestamp}</p>
+                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
+                                <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
+                                <div class="input-group-append">
+                                    <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
+                                        <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
+                                    </button>
                                 </div>
-                                <button class="btn btn-link text-dark postHandler" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <p>${post.content}</p>
-                    <div class="row">
-                        <div class="px-0 col-md-6>
-                            <img src=${post.image} class="w-100" />
-                        </div>
-                        <div class="px-0 col-md-6 embed-responsive">
-                            <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
-                        </div>
-                    </div>
-                    <hr/>
-                    <div class="m-3">
-                        <div class="btn-postStatus form-group row">
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span class="ml-2">Like</span>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <label class="mb-0" for="commentInput-${postUniqueId}">
-                                    <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
-                                    <span class="ml-2">Comment</span>
-                                </label>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span class="ml-2">Share</span>
-                            </div>
-                        </div>
-
-                        <!-- Comment -->
-                        <div class="dashboard__contentCommunicationComment" id="comment-${postUniqueId}">
-                            <div id="commentSection" data-postUniqueId=${postUniqueId}></div>
-                        </div>
-
-                        <div class="row">
-                            <div class="px-0 pt-3 col-md-12 d-flex">
-                                <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
-                                <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `);
-        } else if (!post.video && !post.image) {
-            $("#postArea").prepend(`
-                <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
-                    <div class="form-group row">
-                        <div class="col-md-1 col-sm-2 col-3">
-                            <img src=${post.profileAvatar} alt="user avatar" width="40" height="40"/>
-                        </div>
-                        <div class="col-md-11 col-sm-9 col-8">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <strong>${post.name}</strong>
-                                    <p>${post.timestamp}</p>
-                                </div>
-                                <button class="btn btn-link text-dark postHandler" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <p>${post.content}</p>
-                    <hr/>
-                    <div class="m-3">
-                        <div class="btn-postStatus form-group row">
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span class="ml-2">Like</span>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <label class="mb-0" for="commentInput-${postUniqueId}">
-                                    <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
-                                    <span class="ml-2">Comment</span>
-                                </label>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span class="ml-2">Share</span>
-                            </div>
-                        </div>
-
-                        <!-- Comment -->
-                        <div class="dashboard__contentCommunicationComment" id="comment-${postUniqueId}">
-                            <div id="commentSection" data-postUniqueId=${postUniqueId}></div>
-                        </div>
-
-                        <div class="row">
-                            <div class="px-0 pt-3 col-md-12 d-flex">
-                                <input type="text" placeholder="Write your comment..." class="form-control" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
-                                <button class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -454,6 +401,7 @@ $(document).ready(() => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                ownerId: post.ownerId,
                 postUniqueId,
                 profileAvatar: post.profileAvatar,
                 name: post.name,
@@ -466,17 +414,44 @@ $(document).ready(() => {
 
     // Client listen to the rendering message from server to render new comment
     socket.on("Rendering new comment", (comment, commentUniqueId) => {
-        $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
-            <div class="form-group row" id=${commentUniqueId}>
-                <div class="col-md-1 col-sm-2 col-3">
-                    <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
+        if (comment.guestId == document.getElementById("userObjectId").value) {
+            $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
+                <div class="form-group row" id=${commentUniqueId}>
+                    <div class="col-md-1 col-sm-2 col-3">
+                        <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="35" height="35"/>
+                    </div>
+                    <div class="col-md-11 col-sm-9 col-8">
+                        <div class="commentContainerStyles d-flex align-items-center">
+                            <div class="py-1 px-2">
+                                <strong>${comment.guestName}</strong><span class="text-secondary"> - ${comment.commentTimeStamp}</span>
+                                <p class="mb-0">${comment.guestComment}</p>
+                            </div>
+                            <button class="btn btn-link ml-2 text-dark commentHandler" data-commentUniqueId=${commentUniqueId}>
+                                <i class="fas fa-ellipsis-h" data-commentUniqueId=${commentUniqueId}></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-11 col-sm-9 col-8">
-                    <strong>${comment.guestName}</strong><span> - ${comment.commentTimeStamp}</span>
-                    <p>${comment.guestComment}</p>
+            `);
+        } else {
+            $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
+                <div class="form-group row" id=${commentUniqueId}>
+                    <div class="col-md-1 col-sm-2 col-3">
+                        <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="35" height="35"/>
+                    </div>
+                    <div class="col-md-11 col-sm-9 col-8">
+                        <div class="commentContainerStyles d-flex align-items-center">
+                            <div class="py-1 px-2">
+                                <strong>${comment.guestName}</strong><span class="text-secondary"> - ${comment.commentTimeStamp}</span>
+                                <p class="mb-0">${comment.guestComment}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        `);
+            `);
+        }
+
+        // Auto scroll down when comment
         document.getElementById(
             "comment-" + comment.postUniqueId
         ).scrollTop = document.getElementById(
@@ -490,6 +465,7 @@ $(document).ready(() => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                guestId: comment.guestId,
                 postUniqueId: comment.postUniqueId,
                 commentUniqueId,
                 guestAvatar: comment.guestAvatar,
@@ -636,11 +612,13 @@ const emitComment = (event) => {
         let displayInfo = document
             .getElementById("displayInfo")
             .getAttribute("src");
+        let guestId = document.getElementById("userObjectId").value;
         let postUniqueId = event.target.getAttribute("data-inputComment");
         let inputComment = event.target.value;
 
         if (inputComment !== "") {
             socket.emit("Add new comment", {
+                guestId: guestId,
                 postUniqueId: postUniqueId,
                 guestAvatar: displayInfo,
                 guestComment: inputComment,
@@ -660,6 +638,7 @@ const emitCommentOnButton = (event) => {
     let displayInfo = document
         .getElementById("displayInfo")
         .getAttribute("src");
+    let guestId = document.getElementById("userObjectId").value;
     let postUniqueId = event.target.dataset.postuniqueid;
 
     if (
@@ -671,6 +650,7 @@ const emitCommentOnButton = (event) => {
         ).value !== ""
     ) {
         socket.emit("Add new comment", {
+            guestId: guestId,
             postUniqueId: postUniqueId,
             guestAvatar: displayInfo,
             guestComment: document.body.querySelector(

@@ -12,6 +12,8 @@ block dashboardFunctions
     a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Sign out
 
 block dashboardContent
+    input(type="hidden" value=user._id id="userObjectId")
+
     div(class="row")
         div(class="col-md-8 pl-md-0")
             div(class="container-fluid")
@@ -50,9 +52,12 @@ block dashboardContent
                                             div(class="d-flex align-items-center justify-content-between")
                                                 div
                                                     strong= post.name
-                                                    p(class="mb-0")= post.timestamp
-                                                button(class="btn btn-link text-dark postHandler" data-postUniqueId=post.postUniqueId)
-                                                    i(class="fas fa-ellipsis-h" data-postUniqueId=post.postUniqueId)
+                                                    p(class="mb-0 text-secondary")
+                                                        small= post.timestamp
+
+                                                if post.ownerId == user._id
+                                                    button(class="btn btn-link text-dark postHandler" data-postUniqueId=post.postUniqueId)
+                                                        i(class="fas fa-ellipsis-h" data-postUniqueId=post.postUniqueId)
 
                                     p= post.content
                                     div(class="row")
@@ -88,16 +93,23 @@ block dashboardContent
                                                 each comment in post.comment
                                                     div(class="form-group row" id=comment.commentUniqueId)
                                                         div(class="col-md-1 col-sm-2 col-3")
-                                                            img(class="comment-ProfilePic" src=comment.guestAvatar alt="user avatar" width="40" height="40")
+                                                            img(class="comment-ProfilePic" src=comment.guestAvatar alt="user avatar" width="35" height="35")
                                                         div(class="col-md-11 col-sm-9 col-8")
-                                                            strong #{comment.guestName}
-                                                            span  - #{comment.commentTimeStamp}
-                                                            p #{comment.guestComment}
+                                                            div(class="commentContainerStyles d-flex align-items-center")
+                                                                div(class="py-1 px-2")
+                                                                    strong #{comment.guestName}
+                                                                    span(class="text-secondary")  - #{comment.commentTimeStamp}
+                                                                    p(class="mb-0") #{comment.guestComment}
+                                                                if comment.guestId == user._id
+                                                                    button(class="btn btn-link ml-2 text-dark commentHandler" data-commentUniqueId=comment.commentUniqueId)
+                                                                        i(class="fas fa-ellipsis-h" data-commentUniqueId=comment.commentUniqueId)
+                                                            
                                         div(class="row")
-                                            div(class="px-0 pt-3 col-md-12 d-flex")
-                                                input(type="text" placeholder="Write your comment..." class="form-control" id="commentInput-" + post.postUniqueId data-inputComment=post.postUniqueId onkeypress="emitComment(event)")
-                                                button(class="ml-1 btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=post.postUniqueId)
-                                                    i(class="fas fa-paper-plane" data-postUniqueId=post.postUniqueId)
+                                            div(class="px-0 pt-3 col-md-12 input-group commentInputStyles")
+                                                input(type="text" placeholder="Write your comment..." class="form-control commentInput" id="commentInput-" + post.postUniqueId data-inputComment=post.postUniqueId onkeypress="emitComment(event)")
+                                                div(class="input-group-append")
+                                                    button(class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=post.postUniqueId)
+                                                        i(class="fas fa-paper-plane" data-postUniqueId=post.postUniqueId)
 
         div(class="col-md-4 pr-md-0")
             div(class="container-fluid sticky-top")

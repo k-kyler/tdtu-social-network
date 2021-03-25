@@ -211,10 +211,18 @@ module.exports.getPost = async (req, res) => {
 };
 
 module.exports.addNewPost = async (req, res) => {
-    let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
+    let {
+        postUniqueId,
+        profileAvatar,
+        name,
+        timestamp,
+        content,
+        ownerId,
+    } = req.body;
     let posts = await Post.find();
     let post = new Post();
 
+    post.ownerId = ownerId;
     post.postUniqueId = postUniqueId;
     post.name = name;
     post.profileAvatar = profileAvatar;

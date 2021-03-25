@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 let postSchema = new mongoose.Schema({
+    ownerId: String,
     number: Number,
     name: String,
     postUniqueId: String,
@@ -11,6 +12,7 @@ let postSchema = new mongoose.Schema({
     video: String,
     comment: [
         {
+            guestId: String,
             commentUniqueId: String,
             guestAvatar: String,
             guestComment: String,
