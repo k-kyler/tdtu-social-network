@@ -195,16 +195,14 @@ h4 {
 }
 .dashboard__content {
     height: 100vh;
-    /* background: #a86edb;
-    background: -webkit-linear-gradient(to right, #5e25cf, #a86edb);
-    background: linear-gradient(to right, #5e25cf, #a86edb); */
     background-color: #f1f2f5;
 }
 .dashboard__sideMenu,
 .dashboard__contentUsersForm,
 .dashboard__contentUsersList,
 .dashboard__contentCommunication,
-.dashboard__contentNotificationList {
+.dashboard__contentNotificationList,
+.dashboard__contentNotificationForm {
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.06);
 }
 .dashboard__sideMenuInfo {
