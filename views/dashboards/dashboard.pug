@@ -30,13 +30,13 @@ block dashboardContent
                             div(class="btn-postStatus form-group row")
                                 div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                     img(src="/images/pic_icon.png", alt="pic-icon", width="35", height="35")
-                                    span Photos/Videos
+                                    span(class="ml-2") Photos/Videos
                                 div(class="col-md-4 col-sm-4 col-4 text-center p-2") 
                                     img(src="/images/tag_icon.png", alt="pic-icon", width="35", height="35")
-                                    span Tag friends
+                                    span(class="ml-2") Tag friends
                                 div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                     img(src="/images/feel_icon.png", alt="pic-icon", width="35", height="35")
-                                    span Feeling/Activity
+                                    span(class="ml-2") Feeling/Activity
 
                     //- Posts
                     div(id="postArea" class="col-md-12 px-0")
@@ -73,14 +73,14 @@ block dashboardContent
                                         div(class="btn-postStatus form-group row")
                                             div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                                 img(src="/images/like_icon.png" alt="pic-icon" width="35" height="35")
-                                                span Like
-                                            div(class="col-form-label col-md-4 col-sm-4 col-4 text-center p-2")
+                                                span(class="ml-2") Like
+                                            div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                                 label(class="mb-0" for="commentInput-" + post.postUniqueId)
                                                     img(src="/images/comment_icon.png" alt="pic-icon" width="35" height="35")
-                                                    span Comment
+                                                    span(class="ml-2") Comment
                                             div(class="col-md-4 col-sm-4 col-4 text-center p-2")
                                                 img(src="/images/share_icon.png" alt="pic-icon" width="35" height="35")
-                                                span Share
+                                                span(class="ml-2") Share
                                         
                                         //- Comment
                                         div(class="dashboard__contentCommunicationComment" id="comment-" + post.postUniqueId)

@@ -237,15 +237,17 @@ $(document).ready(() => {
                         <div class="btn-postStatus form-group row">
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Like</span>
+                                <span class="ml-2">Like</span>
                             </div>
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Comment</span>
+                                <label class="mb-0" for="commentInput-${postUniqueId}">
+                                    <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
+                                    <span class="ml-2">Comment</span>
+                                </label>
                             </div>
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Share</span>
+                                <span class="ml-2">Share</span>
                             </div>
                         </div>
 
@@ -295,15 +297,17 @@ $(document).ready(() => {
                         <div class="btn-postStatus form-group row">
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Like</span>
+                                <span class="ml-2">Like</span>
                             </div>
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Comment</span>
+                                <label class="mb-0" for="commentInput-${postUniqueId}">
+                                    <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
+                                    <span class="ml-2">Comment</span>
+                                </label>
                             </div>
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Share</span>
+                                <span class="ml-2">Share</span>
                             </div>
                         </div>
 
@@ -356,15 +360,17 @@ $(document).ready(() => {
                         <div class="btn-postStatus form-group row">
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Like</span>
+                                <span class="ml-2">Like</span>
                             </div>
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Comment</span>
+                                <label class="mb-0" for="commentInput-${postUniqueId}">
+                                    <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
+                                    <span class="ml-2">Comment</span>
+                                </label>
                             </div>
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Share</span>
+                                <span class="ml-2">Share</span>
                             </div>
                         </div>
 
@@ -409,15 +415,17 @@ $(document).ready(() => {
                         <div class="btn-postStatus form-group row">
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Like</span>
+                                <span class="ml-2">Like</span>
                             </div>
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Comment</span>
+                                <label class="mb-0" for="commentInput-${postUniqueId}">
+                                    <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
+                                    <span class="ml-2">Comment</span>
+                                </label>
                             </div>
                             <div class="col-md-4 col-sm-4 col-4 text-center p-2">
                                 <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
-                                <span>Share</span>
+                                <span class="ml-2">Share</span>
                             </div>
                         </div>
 
