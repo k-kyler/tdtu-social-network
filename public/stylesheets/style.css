@@ -260,7 +260,7 @@ h4 {
 }
 .commentContainerStyles > div {
     border-radius: 12px;
-    font-size: small;
+    font-size: 0.9rem;
 }
 .commentHandler {
     display: none;
@@ -353,6 +353,13 @@ hr {
     overflow-x: hidden;
     max-height: 15rem;
 }
+.dashboard__contentCommunicationComment::-webkit-scrollbar {
+    width: 0.5rem;
+}
+.dashboard__contentCommunicationComment::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background-color: #007bff;
+}
 .dashboard__contentCommunication > p {
     word-wrap: break-word;
     text-align: justify;
@@ -401,6 +408,13 @@ hr {
     overflow-y: auto;
     height: 500px;
 }
+.tableNotifListScroll::-webkit-scrollbar {
+    width: 0.5rem;
+}
+.tableNotifListScroll::-webkit-scrollbar-thumb {
+    border-radius: 12px;
+    background-color: #007bff;
+}
 .tableNotifList > tbody > tr:hover {
     background-color: #f1f1f1;
     color: #8e2de2;
@@ -416,4 +430,11 @@ hr {
 
 .fas {
     cursor: pointer;
+}
+
+/* Alert container */
+#alertContainer {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.2rem;
 }

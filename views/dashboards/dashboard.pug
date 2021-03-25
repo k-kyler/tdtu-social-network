@@ -104,7 +104,7 @@ block dashboardContent
                                                                 if comment.guestId == user._id
                                                                     button(class="btn btn-link ml-2 text-dark commentHandler" data-commentUniqueId=comment.commentUniqueId)
                                                                         i(class="fas fa-ellipsis-h" data-commentUniqueId=comment.commentUniqueId)
-                                                            
+
                                         div(class="row")
                                             div(class="px-0 pt-3 col-md-12 input-group commentInputStyles")
                                                 input(type="text" placeholder="Write your comment..." class="form-control commentInput" id="commentInput-" + post.postUniqueId data-inputComment=post.postUniqueId onkeypress="emitComment(event)")

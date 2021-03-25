@@ -207,6 +207,11 @@ module.exports.getPost = async (req, res) => {
             code: 1,
             data: post,
         });
+    } else {
+        res.json({
+            code: 0,
+            message: "Post is not existed!",
+        });
     }
 };
 
@@ -221,56 +226,93 @@ module.exports.addNewPost = async (req, res) => {
         video,
     } = req.body;
     let posts = await Post.find();
-    let post = new Post();
 
-    post.ownerId = ownerId;
-    post.postUniqueId = postUniqueId;
-    post.name = name;
-    post.profileAvatar = profileAvatar;
-    post.timestamp = timestamp;
-    post.content = content;
-    post.number = posts.length + 1;
-    post.video = video;
-    post.save();
+    if (video.includes("https://www.youtube.com/embed/") && content !== "") {
+        let post = new Post();
 
-    res.json({
-        code: 1,
-        message: "You have added new post!",
-    });
+        post.ownerId = ownerId;
+        post.postUniqueId = postUniqueId;
+        post.name = name;
+        post.profileAvatar = profileAvatar;
+        post.timestamp = timestamp;
+        post.content = content;
+        post.number = posts.length + 1;
+        post.video = video;
+        post.save();
+
+        res.json({
+            code: 1,
+            message: "You have added new post!",
+        });
+    } else if (!video && content !== "") {
+        let post = new Post();
+
+        post.ownerId = ownerId;
+        post.postUniqueId = postUniqueId;
+        post.name = name;
+        post.profileAvatar = profileAvatar;
+        post.timestamp = timestamp;
+        post.content = content;
+        post.number = posts.length + 1;
+        post.video = video;
+        post.save();
+
+        res.json({
+            code: 1,
+            message: "You have added new post!",
+        });
+    } else if (!video.includes("https://www.youtube.com/embed/")) {
+        res.json({
+            code: 0,
+            message: "Invalid Youtube URL!",
+        });
+    } else if (content === "") {
+        res.json({
+            code: 0,
+            message: "Content can not be empty!",
+        });
+    }
 };
 
 module.exports.editPost = async (req, res) => {
-    let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
-    let post = await Post.findOne({ postUniqueId });
-    let updatePostWithComment = await Post.findOneAndUpdate(
-        { postUniqueId },
-        {},
-        {
-            new: true,
-        }
-    );
-
-    res.json({
-        code: 1,
-        message: "You have edited post!",
-    });
+    // let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
+    // let post = await Post.findOne({ postUniqueId });
+    // let updatePostWithComment = await Post.findOneAndUpdate(
+    //     { postUniqueId },
+    //     {},
+    //     {
+    //         new: true,
+    //     }
+    // );
+    // res.json({
+    //     code: 1,
+    //     message: "You have edited post!",
+    // });
 };
 
 // Comment
 module.exports.addNewComment = async (req, res) => {
     let post = await Post.findOne({ postUniqueId: req.body.postUniqueId });
-    let updatePostWithComment = await Post.findOneAndUpdate(
-        { postUniqueId: req.body.postUniqueId },
-        {
-            comment: [...post.comment, req.body],
-        },
-        {
-            new: true,
-        }
-    );
 
-    res.json({
-        code: 1,
-        message: "You have added new comment!",
-    });
+    if (req.body.guestComment) {
+        let updatePostWithComment = await Post.findOneAndUpdate(
+            { postUniqueId: req.body.postUniqueId },
+            {
+                comment: [...post.comment, req.body],
+            },
+            {
+                new: true,
+            }
+        );
+
+        res.json({
+            code: 1,
+            message: "You have added new comment!",
+        });
+    } else {
+        res.json({
+            code: 0,
+            message: "Comment can not be empty!",
+        });
+    }
 };

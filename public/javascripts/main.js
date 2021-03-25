@@ -440,7 +440,36 @@ $(document).ready(() => {
                 content: post.content,
                 video: post.video,
             }),
-        }).catch((error) => console.error(error));
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#alertContainer").prepend(`
+                        <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
+                            <span>${result.message}</span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                    setTimeout(() => {
+                        $(".alert").alert("close");
+                    }, 5000);
+                } else if (result.code === 0) {
+                    $("#alertContainer").prepend(`
+                        <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
+                            <span>${result.message}</span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                    setTimeout(() => {
+                        $(".alert").alert("close");
+                    }, 5000);
+                }
+            })
+            .catch((error) => console.error(error));
     });
 
     // Client listen to the rendering message from server to render new comment
@@ -504,7 +533,10 @@ $(document).ready(() => {
                 guestComment: comment.guestComment,
                 commentTimeStamp: comment.commentTimeStamp,
             }),
-        }).catch((error) => console.error(error));
+        })
+            .then((response) => response.json())
+            .then((result) => {})
+            .catch((error) => console.error(error));
     });
 });
 
