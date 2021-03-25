@@ -295,18 +295,18 @@ $(document).ready(() => {
                     <div class="m-3">
                         <hr class="my-0" />
                         <div class="btn-postStatus form-group row mb-0">
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
+                                <i class="far fa-thumbs-up"></i>
                                 <span class="ml-2">Like</span>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <label class="mb-0" for="commentInput-${postUniqueId}">
-                                    <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <div class="col-md-4 col-sm-4 col-4 p-2">
+                                <label class="mb-0 d-flex align-items-center justify-content-center" for="commentInput-${postUniqueId}">
+                                    <i class="far fa-comment-dots"></i>
                                     <span class="ml-2">Comment</span>
                                 </label>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-share-square"></i>
                                 <span class="ml-2">Share</span>
                             </div>
                         </div>
@@ -388,18 +388,18 @@ $(document).ready(() => {
                     <div class="m-3">
                         <hr class="my-0" />
                         <div class="btn-postStatus form-group row mb-0">
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/like_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
+                                <i class="far fa-thumbs-up"></i>
                                 <span class="ml-2">Like</span>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <label class="mb-0" for="commentInput-${postUniqueId}">
-                                    <img src="/images/comment_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <div class="col-md-4 col-sm-4 col-4 p-2">
+                                <label class="mb-0 d-flex align-items-center justify-content-center" for="commentInput-${postUniqueId}">
+                                    <i class="far fa-comment-dots"></i>
                                     <span class="ml-2">Comment</span>
                                 </label>
                             </div>
-                            <div class="col-md-4 col-sm-4 col-4 text-center p-2">
-                                <img src="/images/share_icon.png" alt="pic-icon" width="35" height="35"/>
+                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-share-square"></i>
                                 <span class="ml-2">Share</span>
                             </div>
                         </div>
@@ -445,8 +445,8 @@ $(document).ready(() => {
             .then((result) => {
                 if (result.code === 1) {
                     $("#alertContainer").prepend(`
-                        <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
-                            <span>${result.message}</span>
+                        <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
+                            <strong>${result.message}</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -454,19 +454,7 @@ $(document).ready(() => {
                     `);
                     setTimeout(() => {
                         $(".alert").alert("close");
-                    }, 5000);
-                } else if (result.code === 0) {
-                    $("#alertContainer").prepend(`
-                        <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
-                            <span>${result.message}</span>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                    setTimeout(() => {
-                        $(".alert").alert("close");
-                    }, 5000);
+                    }, 4000);
                 }
             })
             .catch((error) => console.error(error));

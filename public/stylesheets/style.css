@@ -276,6 +276,9 @@ h4 {
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
 }
+.btn-postStatus i {
+    font-size: x-large;
+}
 @media only screen and (max-width: 1024px) {
     .btn-postStatus > div > span {
         font-size: 80%;
@@ -435,6 +438,10 @@ hr {
 /* Alert container */
 #alertContainer {
     position: absolute;
-    bottom: 1.2rem;
-    left: 1.2rem;
+    bottom: 0.1rem;
+    left: 1rem;
+}
+
+.myAlert {
+    border-radius: 6px;
 }

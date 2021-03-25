@@ -30,14 +30,14 @@ block dashboardContent
                         hr
                         div(class="m-3")
                             div(class="btn-postStatus form-group row")
-                                div(class="col-md-4 col-sm-4 col-4 text-center p-2")
-                                    img(src="/images/pic_icon.png", alt="pic-icon", width="35", height="35")
+                                div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center")
+                                    i(class="text-danger fas fa-images")
                                     span(class="ml-2") Photos/Videos
-                                div(class="col-md-4 col-sm-4 col-4 text-center p-2") 
-                                    img(src="/images/tag_icon.png", alt="pic-icon", width="35", height="35")
+                                div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center") 
+                                    i(class="text-success fas fa-tags")
                                     span(class="ml-2") Tag friends
-                                div(class="col-md-4 col-sm-4 col-4 text-center p-2")
-                                    img(src="/images/feel_icon.png", alt="pic-icon", width="35", height="35")
+                                div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center")
+                                    i(class="text-warning far fa-laugh-squint")
                                     span(class="ml-2") Feeling/Activity
 
                     //- Posts
@@ -76,15 +76,15 @@ block dashboardContent
                                     div(class="m-3")
                                         hr(class="my-0")
                                         div(class="btn-postStatus form-group row mb-0")
-                                            div(class="col-md-4 col-sm-4 col-4 text-center p-2")
-                                                img(src="/images/like_icon.png" alt="pic-icon" width="35" height="35")
+                                            div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center")
+                                                i(class="far fa-thumbs-up")
                                                 span(class="ml-2") Like
-                                            div(class="col-md-4 col-sm-4 col-4 text-center p-2")
-                                                label(class="mb-0" for="commentInput-" + post.postUniqueId)
-                                                    img(src="/images/comment_icon.png" alt="pic-icon" width="35" height="35")
+                                            div(class="col-md-4 col-sm-4 col-4 p-2")
+                                                label(class="mb-0 d-flex align-items-center justify-content-center" for="commentInput-" + post.postUniqueId)
+                                                    i(class="far fa-comment-dots")
                                                     span(class="ml-2") Comment
-                                            div(class="col-md-4 col-sm-4 col-4 text-center p-2")
-                                                img(src="/images/share_icon.png" alt="pic-icon" width="35" height="35")
+                                            div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center")
+                                                i(class="fas fa-share-square")
                                                 span(class="ml-2") Share
                                         hr(class="mt-0 mb-4")
 
