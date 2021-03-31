@@ -59,19 +59,20 @@ block dashboardContent
                                                     button(class="btn btn-link text-dark postHandler" data-postUniqueId=post.postUniqueId)
                                                         i(class="fas fa-ellipsis-h" data-postUniqueId=post.postUniqueId)
 
-                                    p= post.content
-                                    div(class="row")
-                                        if post.image && !post.video
-                                            div(class="px-0 col-md-12")
-                                                img(src=post.image class="w-100")
-                                        else if post.video && !post.image
-                                            div(class="px-0 col-md-12 embed-responsive embed-responsive-16by9")
-                                                iframe(class="embed-responsive-item" src=post.video allowfullscreen)
-                                        else if post.video && post.image
-                                            div(class="px-0 col-md-6")
-                                                img(src=post.image class="w-100")
-                                            div(class="px-0 col-md-6 embed-responsive embed-responsive-16by9")
-                                                iframe(class="embed-responsive-item" src=post.video allowfullscreen)                                        
+                                    p(class="post-content")= post.content
+                                    div(id="imageAndVideoContainer")
+                                        div(class="row")
+                                            if post.image && !post.video
+                                                div(class="px-0 col-md-12")
+                                                    img(src=post.image class="w-100")
+                                            else if post.video && !post.image
+                                                div(class="px-0 col-md-12 embed-responsive embed-responsive-16by9")
+                                                    iframe(class="embed-responsive-item" src=post.video allowfullscreen)
+                                            else if post.video && post.image
+                                                div(class="px-0 col-md-6")
+                                                    img(src=post.image class="w-100")
+                                                div(class="px-0 col-md-6 embed-responsive embed-responsive-16by9")
+                                                    iframe(class="embed-responsive-item" src=post.video allowfullscreen)                                        
                                         
                                     div(class="m-3")
                                         hr(class="my-0")

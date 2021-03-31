@@ -55,6 +55,11 @@ io.on("connection", (socket) => {
         io.sockets.emit("Rendering new post", post, postUniqueId);
     });
 
+    // Server wait for emitting message from client to allow client to update post
+    socket.on("Update post", (updatePost) => {
+        io.sockets.emit("Rendering update post", updatePost);
+    });
+
     // Server wait for emitting message from client to allow client to render comment
     socket.on("Add new comment", (comment) => {
         let commentUniqueId = v4UniqueId();

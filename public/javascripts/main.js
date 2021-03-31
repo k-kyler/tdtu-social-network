@@ -197,13 +197,15 @@ $(document).ready(() => {
         }
     });
 
-    // display post handler modal
+    // Display post handler modal
     $("body").on("click", ".postHandler", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
 
         event.preventDefault();
+
         $("#editPostButton").attr("data-postUniqueId", postUniqueId);
         $("#deletePostButton").attr("data-postUniqueId", postUniqueId);
+
         fetch(`/dashboard/post/${postUniqueId}`)
             .then((response) => response.json())
             .then((result) => {
@@ -214,23 +216,145 @@ $(document).ready(() => {
                 }
             })
             .catch((error) => console.log(error));
+
         $("#postHandlerModal").modal("toggle");
     });
 
     // Edit post handler
-    // $("body").on("click", "#editPostButton", (event) => {
-    //     let postUniqueId = event.target.dataset.postuniqueid;
+    $("body").on("click", "#editPostButton", (event) => {
+        let postUniqueId = event.target.dataset.postuniqueid;
+        let timestamp =
+            "Đã chỉnh sửa - " +
+            new Date().toLocaleDateString() +
+            ", " +
+            new Date().toLocaleTimeString();
+        let video = $("#editVideo").val();
+        let image = $("#editImage").val();
+        let content = $("#editPostContent");
 
-    //     event.preventDefault();
-    //     fetch(`/dashboard/post/edit`, {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         method: "PUT",
-    //         body: JSON.stringify({}),
-    //     });
-    //     $("#postHandlerModal").modal("hide");
-    // });
+        event.preventDefault();
+
+        // Check if video is a youtube URL then emitting it
+        if (video && !video.includes("https://www.youtube.com")) {
+            $("#errorPostHandler").html("Not youtube URL");
+        } else if (!video) {
+            // Check if content is not empty
+            if (content.val() !== "") {
+                $("#errorPostHandler").html("");
+
+                // Emitting an message to announce server about the post information
+                socket.emit("Update post", {
+                    content: content.val(),
+                    timestamp,
+                    image,
+                    video,
+                    postUniqueId,
+                });
+
+                // Send request to update post in db
+                fetch(`/dashboard/post/edit`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: "PUT",
+                    body: JSON.stringify({
+                        postUniqueId,
+                        content: content.val(),
+                        video,
+                        timestamp,
+                        image,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (result.code === 1) {
+                            $("#alertContainer").prepend(`
+                                <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
+                                    <i class="far fa-bell mr-2"></i>
+                                    ${result.message}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
+                            setTimeout(() => {
+                                $(".myAlert").alert("close");
+                            }, 4000);
+                        } else {
+                            $("#errorPostHandler").html(result.message);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+
+                // Clear content textarea and close modal
+                content.val("");
+                $("#postHandlerModal").modal("hide");
+            } else {
+                $("#errorPostHandler").html("Missing content");
+            }
+        } else if (video && video.includes("https://www.youtube.com")) {
+            // Check if content is not empty
+            if (content.val() !== "") {
+                $("#errorPostHandler").html("");
+
+                // Emitting an message to announce server about the post information
+                socket.emit("Update post", {
+                    postUniqueId,
+                    content: content.val(),
+                    timestamp,
+                    image,
+                    video:
+                        video.split("watch?v=")[0] +
+                        "embed/" +
+                        video.split("watch?v=")[1],
+                });
+
+                // Send request to update post in db
+                fetch(`/dashboard/post/edit`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: "PUT",
+                    body: JSON.stringify({
+                        postUniqueId,
+                        content: content.val(),
+                        timestamp,
+                        image,
+                        video:
+                            video.split("watch?v=")[0] +
+                            "embed/" +
+                            video.split("watch?v=")[1],
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (result.code === 1) {
+                            $("#alertContainer").prepend(`
+                                <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
+                                    <i class="far fa-bell mr-2"></i>
+                                    ${result.message}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
+                            setTimeout(() => {
+                                $(".myAlert").alert("close");
+                            }, 4000);
+                        } else {
+                            $("#errorPostHandler").html(result.message);
+                        }
+                    })
+                    .catch((error) => console.log(error));
+
+                // Clear content textarea and close modal
+                content.val("");
+                $("#postHandlerModal").modal("hide");
+            } else {
+                $("#errorPostHandler").html("Missing content");
+            }
+        }
+    });
 
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
@@ -259,39 +383,41 @@ $(document).ready(() => {
                             </div>
                         </div>
                     </div>
-                    <p>${post.content}</p>
-                    ${
-                        post.image && post.video
-                            ? `
-                            <div class="row">
-                                <div class="px-0 col-md-6>
-                                    <img src=${post.image} class="w-100" />
+                    <p class="post-content">${post.content}</p>
+                    <div id="imageAndVideoContainer">
+                        ${
+                            post.image && post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-6>
+                                        <img src=${post.image} class="w-100" />
+                                    </div>
+                                    <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                    </div>
+                                </div>   
+                            `
+                                : !post.image && post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                    </div>
                                 </div>
-                                <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                            `
+                                : post.image && !post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-12>
+                                        <img src=${post.image} class="w-100" />
+                                    </div>
                                 </div>
-                            </div>   
-                        `
-                            : !post.image && post.video
-                            ? `
-                            <div class="row">
-                                <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        `
-                            : post.image && !post.video
-                            ? `
-                            <div class="row">
-                                <div class="px-0 col-md-12>
-                                    <img src=${post.image} class="w-100" />
-                                </div>
-                            </div>
-                        `
-                            : `
-                            
-                        `
-                    }
+                            `
+                                : `
+                                
+                            `
+                        }
+                    </div>
                     <div class="m-3">
                         <hr class="my-0" />
                         <div class="btn-postStatus form-group row mb-0">
@@ -352,39 +478,41 @@ $(document).ready(() => {
                             </div>
                         </div>
                     </div>
-                    <p>${post.content}</p>
-                    ${
-                        post.image && post.video
-                            ? `
-                            <div class="row">
-                                <div class="px-0 col-md-6>
-                                    <img src=${post.image} class="w-100" />
+                    <p class="post-content">${post.content}</p>
+                    <div id="imageAndVideoContainer">
+                        ${
+                            post.image && post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-6>
+                                        <img src=${post.image} class="w-100" />
+                                    </div>
+                                    <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                    </div>
+                                </div>   
+                            `
+                                : !post.image && post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                    </div>
                                 </div>
-                                <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                            `
+                                : post.image && !post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-12>
+                                        <img src=${post.image} class="w-100" />
+                                    </div>
                                 </div>
-                            </div>   
-                        `
-                            : !post.image && post.video
-                            ? `
-                            <div class="row">
-                                <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        `
-                            : post.image && !post.video
-                            ? `
-                            <div class="row">
-                                <div class="px-0 col-md-12>
-                                    <img src=${post.image} class="w-100" />
-                                </div>
-                            </div>
-                        `
-                            : `
-                            
-                        `
-                    }
+                            `
+                                : `
+                                
+                            `
+                        }
+                    </div>
                     <div class="m-3">
                         <hr class="my-0" />
                         <div class="btn-postStatus form-group row mb-0">
@@ -446,6 +574,7 @@ $(document).ready(() => {
                 if (result.code === 1) {
                     $("#alertContainer").prepend(`
                         <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
+                            <i class="far fa-bell mr-2"></i>
                             ${result.message}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -453,11 +582,60 @@ $(document).ready(() => {
                         </div>
                     `);
                     setTimeout(() => {
-                        $(".alert").alert("close");
+                        $(".myAlert").alert("close");
                     }, 4000);
                 }
             })
             .catch((error) => console.error(error));
+    });
+
+    // Client listen to the rendering message from server to render update post
+    socket.on("Rendering update post", (updatePost) => {
+        if (updatePost.video) {
+            $(`#${updatePost.postUniqueId} small`).html(updatePost.timestamp);
+            $(`#${updatePost.postUniqueId} .post-content`).html(
+                updatePost.content
+            );
+            $("#imageAndVideoContainer").append(`
+                ${
+                    updatePost.image && updatePost.video
+                        ? `
+                        <div class="row">
+                            <div class="px-0 col-md-6>
+                                <img src=${updatePost.image} class="w-100" />
+                            </div>
+                            <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src=${updatePost.video} allowfullscreen></iframe>
+                            </div>
+                        </div>   
+                    `
+                        : !updatePost.image && updatePost.video
+                        ? `
+                        <div class="row">
+                            <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src=${updatePost.video} allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    `
+                        : updatePost.image && !updatePost.video
+                        ? `
+                        <div class="row">
+                            <div class="px-0 col-md-12>
+                                <img src=${updatePost.image} class="w-100" />
+                            </div>
+                        </div>
+                    `
+                        : `
+                        
+                    `
+                }
+            `);
+        } else if (!updatePost.video) {
+            $(`#${updatePost.postUniqueId} small`).html(updatePost.timestamp);
+            $(`#${updatePost.postUniqueId} .post-content`).html(
+                updatePost.content
+            );
+        }
     });
 
     // Client listen to the rendering message from server to render new comment

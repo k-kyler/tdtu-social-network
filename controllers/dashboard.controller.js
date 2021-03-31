@@ -275,19 +275,52 @@ module.exports.addNewPost = async (req, res) => {
 };
 
 module.exports.editPost = async (req, res) => {
-    // let { postUniqueId, profileAvatar, name, timestamp, content } = req.body;
-    // let post = await Post.findOne({ postUniqueId });
-    // let updatePostWithComment = await Post.findOneAndUpdate(
-    //     { postUniqueId },
-    //     {},
-    //     {
-    //         new: true,
-    //     }
-    // );
-    // res.json({
-    //     code: 1,
-    //     message: "You have edited post!",
-    // });
+    let { timestamp, content, video, postUniqueId, image } = req.body;
+
+    if (video.includes("https://www.youtube.com/embed/") && content !== "") {
+        let updatePost = await Post.findOneAndUpdate(
+            { postUniqueId },
+            {
+                timestamp,
+                content,
+                video,
+            },
+            {
+                new: true,
+            }
+        );
+
+        res.json({
+            code: 1,
+            message: "You have edited post!",
+        });
+    } else if (!video && content !== "") {
+        let updatePostWithComment = await Post.findOneAndUpdate(
+            { postUniqueId },
+            {
+                timestamp,
+                content,
+            },
+            {
+                new: true,
+            }
+        );
+
+        res.json({
+            code: 1,
+            message: "You have edited post!",
+        });
+    } else if (!video.includes("https://www.youtube.com/embed/")) {
+        res.json({
+            code: 0,
+            message: "Invalid Youtube URL!",
+        });
+    } else if (content === "") {
+        res.json({
+            code: 0,
+            message: "Content can not be empty!",
+        });
+    }
 };
 
 // Comment
