@@ -197,8 +197,8 @@ $(document).ready(() => {
         }
     });
 
-    // Display post handler modal
-    $("body").on("click", ".postHandler", (event) => {
+    // Display update and delete post handler modal
+    $("body").on("click", ".UDPostHandler", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
 
         event.preventDefault();
@@ -212,15 +212,19 @@ $(document).ready(() => {
                 if (result.code === 1) {
                     $("#editPostContent").val(result.data.content);
                     $("#editImage").val(result.data.image);
-                    $("#editVideo").val(result.data.video);
+                    $("#editVideo").val(
+                        result.data.video.split("embed/")[0] +
+                            "watch?v=" +
+                            result.data.video.split("embed/")[1]
+                    );
                 }
             })
             .catch((error) => console.log(error));
 
-        $("#postHandlerModal").modal("toggle");
+        $("#UDPostHandlerModal").modal("toggle");
     });
 
-    // Edit post handler
+    // Update post handler
     $("body").on("click", "#editPostButton", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
         let timestamp =
@@ -270,7 +274,7 @@ $(document).ready(() => {
                         if (result.code === 1) {
                             $("#alertContainer").prepend(`
                                 <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
-                                    <i class="far fa-bell mr-2"></i>
+                                    <i class="far fa-bell h4 mr-2"></i>
                                     ${result.message}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -331,7 +335,7 @@ $(document).ready(() => {
                         if (result.code === 1) {
                             $("#alertContainer").prepend(`
                                 <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
-                                    <i class="far fa-bell mr-2"></i>
+                                    <i class="far fa-bell h4 mr-2"></i>
                                     ${result.message}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -356,6 +360,15 @@ $(document).ready(() => {
         }
     });
 
+    // Delete post handler
+    $("body").on("click", "#deletePostButton", (event) => {
+        let postUniqueId = event.target.dataset.postuniqueid;
+
+        $("#confirmDeletePostButton").attr("data-postUniqueId", postUniqueId);
+
+        $("#confirmDeletePostModal").modal("toggle");
+    });
+
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
         if (post.ownerId == document.getElementById("userObjectId").value) {
@@ -377,7 +390,7 @@ $(document).ready(() => {
                                         </small>
                                     </p>
                                 </div>
-                                <button class="btn btn-link text-dark posthandler" data-postUniqueId=${postUniqueId}>
+                                <button class="btn btn-link text-dark UDPosthandler" data-postUniqueId=${postUniqueId}>
                                     <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
                                 </button>
                             </div>
@@ -574,7 +587,7 @@ $(document).ready(() => {
                 if (result.code === 1) {
                     $("#alertContainer").prepend(`
                         <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
-                            <i class="far fa-bell mr-2"></i>
+                            <i class="far fa-bell h4 mr-2"></i>
                             ${result.message}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>

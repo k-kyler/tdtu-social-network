@@ -1,8 +1,9 @@
-#postHandlerModal.modal.fade(role='dialog')
+//- Update and delete post modal
+#UDPostHandlerModal.modal.fade(role='dialog')
     .modal-dialog.modal-lg(role='content')
         .modal-content
             .modal-header
-                h4.modal-title Post handler
+                h4.modal-title Post
                 button.close(type='close', data-dismiss='modal') &times;
             .modal-body
                 form 
@@ -22,7 +23,7 @@
                                 textarea(placeholder='What are you thinking?', class="form-control", required, id="editPostContent", rows="5")
                         .form-group.row 
                             .col-md-12
-                                input(type="file", id="editImage", class="form-control")
+                                input(type="file", id="editImage", class="form-control", placeholder="Upload your image")
                         .form-group.row 
                             .col-md-12
                                 input(class="form-control", type="text", id="editVideo", placeholder="Put your Youtube URL here")
@@ -32,5 +33,17 @@
                         .form-group.row
                             .col-md-12.justify-content-end.d-flex
                                 button(class="btn btn-primary", id="editPostButton") Update
-                                button(class="btn btn-danger ml-3", id="deletePostButton") Delete
+                                button(type="button" class="btn btn-danger ml-3", id="deletePostButton") Delete
                                 button(class="btn btn-default ml-3", data-dismiss="modal") Close
+
+//- Confirm delete post modal
+#confirmDeletePostModal.modal.fade(role='dialog')
+    .modal-dialog.modal-lg(role='content')
+        .modal-content
+            .modal-header
+                h4.modal-title Do you really want to delete this post?
+                button.close(type='close', data-dismiss='modal') &times;
+            .modal-body
+                    div.d-flex.justify-content-end
+                        button(type="button" class="btn btn-danger", id="confirmDeletePostButton") Confirm
+                        button(class="btn btn-default ml-3", data-dismiss="modal") Close

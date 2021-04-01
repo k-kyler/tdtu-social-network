@@ -29,7 +29,7 @@ block dashboardContent
                                 input(type="text", name="textThinking", id="textThinking", class="form-control", readonly, autocomplete="off", placeholder="What are you thinking?")
                         hr
                         div(class="m-3")
-                            div(class="btn-postStatus form-group row")
+                            div(class="btn-postStatus form-group row mb-0")
                                 div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center")
                                     i(class="text-danger fas fa-images")
                                     span(class="ml-2") Photos/Videos
@@ -56,7 +56,7 @@ block dashboardContent
                                                         small= post.timestamp
 
                                                 if post.ownerId == user._id
-                                                    button(class="btn btn-link text-dark postHandler" data-postUniqueId=post.postUniqueId)
+                                                    button(class="btn btn-link text-dark UDPostHandler" data-postUniqueId=post.postUniqueId)
                                                         i(class="fas fa-ellipsis-h" data-postUniqueId=post.postUniqueId)
 
                                     p(class="post-content")= post.content

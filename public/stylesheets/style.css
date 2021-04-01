@@ -277,9 +277,6 @@ h4 {
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
 }
-.btn-postStatus i {
-    font-size: x-large;
-}
 @media only screen and (max-width: 1024px) {
     .btn-postStatus > div > span {
         font-size: 80%;
@@ -326,7 +323,11 @@ h4 {
     border-top-width: 0;
     width: 100%;
 }
+.btn-postStatus i {
+    font-size: x-large;
+}
 .btn-postStatus > div:hover {
+    cursor: pointer;
     opacity: 0.6;
     transition: opacity 500ms ease-in;
     background: #8e2de2;
@@ -334,6 +335,9 @@ h4 {
     background: linear-gradient(to right, #4a00e0, #8e2de2);
     color: white !important;
     border-radius: 8px;
+}
+.btn-postStatus label {
+    cursor: pointer;
 }
 hr {
     border: 1px solid #f1f1f1;
