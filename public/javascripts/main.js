@@ -457,6 +457,11 @@ $(document).ready(() => {
                         </div>
 
                         <div class="row">
+                            <div class="col-md-1 px-0 pt-3 align-self-center">
+                                <img src=${
+                                    post.profileAvatar
+                                }, alt="user avatar", width="35", height="35" />
+                            </div>
                             <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
                                 <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <div class="input-group-append">
@@ -552,6 +557,11 @@ $(document).ready(() => {
                         </div>
 
                         <div class="row">
+                            <div class="col-md-1 px-0 pt-3 align-self-center">
+                                <img src=${
+                                    post.profileAvatar
+                                }, alt="user avatar", width="35", height="35" />
+                            </div>
                             <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
                                 <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <div class="input-group-append">

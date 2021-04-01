@@ -107,7 +107,12 @@ block dashboardContent
                                                                         i(class="fas fa-ellipsis-h" data-commentUniqueId=comment.commentUniqueId)
 
                                         div(class="row")
-                                            div(class="px-0 pt-3 col-md-12 input-group commentInputStyles")
+                                            div(class="col-md-1 px-0 pt-3 align-self-center")
+                                                if user.avatar === ""
+                                                    img(src="/images/default_avatar.svg", alt="user avatar", width="35", height="35")
+                                                else 
+                                                    img(src=user.avatar, alt="user avatar", width="35", height="35")
+                                            div(class="px-0 pt-3 col-md-11 input-group commentInputStyles")
                                                 input(type="text" placeholder="Write your comment..." class="form-control commentInput" id="commentInput-" + post.postUniqueId data-inputComment=post.postUniqueId onkeypress="emitComment(event)")
                                                 div(class="input-group-append")
                                                     button(class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=post.postUniqueId)
