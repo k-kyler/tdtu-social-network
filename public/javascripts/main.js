@@ -758,12 +758,12 @@ function onGoogleSignOut() {
 // Edit info form avatar handler
 function displayAvatarHandler(avatar) {
     if (avatar.files && avatar.files[0]) {
-        let fileReader = new FileReader();
+        let imageReader = new FileReader();
 
-        fileReader.onload = (event) => {
+        imageReader.onload = (event) => {
             $("#avatarInfo").attr("src", event.target.result);
         };
-        fileReader.readAsDataURL(avatar.files[0]);
+        imageReader.readAsDataURL(avatar.files[0]);
     }
 }
 
