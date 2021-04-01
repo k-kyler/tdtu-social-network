@@ -198,13 +198,12 @@ $(document).ready(() => {
     });
 
     // Display update and delete post handler modal
-    $("body").on("click", ".UDPostHandler", (event) => {
+    $("body").on("click", ".editPost", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
 
         event.preventDefault();
 
         $("#editPostButton").attr("data-postUniqueId", postUniqueId);
-        $("#deletePostButton").attr("data-postUniqueId", postUniqueId);
 
         fetch(`/dashboard/post/${postUniqueId}`)
             .then((response) => response.json())
@@ -221,7 +220,7 @@ $(document).ready(() => {
             })
             .catch((error) => console.log(error));
 
-        $("#UDPostHandlerModal").modal("toggle");
+        $("#editPostModal").modal("toggle");
     });
 
     // Update post handler
@@ -240,11 +239,11 @@ $(document).ready(() => {
 
         // Check if video is a youtube URL then emitting it
         if (video && !video.includes("https://www.youtube.com")) {
-            $("#errorPostHandler").html("Not youtube URL");
+            $("#errorEditPost").html("Not youtube URL");
         } else if (!video) {
             // Check if content is not empty
             if (content.val() !== "") {
-                $("#errorPostHandler").html("");
+                $("#errorEditPost").html("");
 
                 // Emitting an message to announce server about the post information
                 socket.emit("Update post", {
@@ -285,21 +284,21 @@ $(document).ready(() => {
                                 $(".myAlert").alert("close");
                             }, 4000);
                         } else {
-                            $("#errorPostHandler").html(result.message);
+                            $("#errorEditPost").html(result.message);
                         }
                     })
                     .catch((error) => console.log(error));
 
                 // Clear content textarea and close modal
                 content.val("");
-                $("#postHandlerModal").modal("hide");
+                $("#editPostModal").modal("hide");
             } else {
-                $("#errorPostHandler").html("Missing content");
+                $("#errorEditPost").html("Missing content");
             }
         } else if (video && video.includes("https://www.youtube.com")) {
             // Check if content is not empty
             if (content.val() !== "") {
-                $("#errorPostHandler").html("");
+                $("#errorEditPost").html("");
 
                 // Emitting an message to announce server about the post information
                 socket.emit("Update post", {
@@ -346,16 +345,16 @@ $(document).ready(() => {
                                 $(".myAlert").alert("close");
                             }, 4000);
                         } else {
-                            $("#errorPostHandler").html(result.message);
+                            $("#errorEditPost").html(result.message);
                         }
                     })
                     .catch((error) => console.log(error));
 
                 // Clear content textarea and close modal
                 content.val("");
-                $("#postHandlerModal").modal("hide");
+                $("#editPostModal").modal("hide");
             } else {
-                $("#errorPostHandler").html("Missing content");
+                $("#errorEditPost").html("Missing content");
             }
         }
     });
@@ -364,9 +363,9 @@ $(document).ready(() => {
     $("body").on("click", "#deletePostButton", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
 
-        $("#confirmDeletePostButton").attr("data-postUniqueId", postUniqueId);
+        // $("#confirmDeletePostButton").attr("data-postUniqueId", postUniqueId);
 
-        $("#confirmDeletePostModal").modal("toggle");
+        // $("#confirmDeletePostModal").modal("toggle");
     });
 
     // Client listen to the rendering message from server to render new post
@@ -390,9 +389,16 @@ $(document).ready(() => {
                                         </small>
                                     </p>
                                 </div>
-                                <button class="btn btn-link text-dark UDPosthandler" data-postUniqueId=${postUniqueId}>
-                                    <i class="fas fa-ellipsis-h" data-postUniqueId=${postUniqueId}></i>
-                                </button>
+                                <div class="dropdown show">
+                                    <a class="btn btn-link text-dark dropdown-toggle" role="button" id="postHandlerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </a>
+                                    
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="postHandlerDropdown">
+                                        <button class="dropdown-item btn btn-link editPost" data-postUniqueId=post.postUniqueId>Edit</button>
+                                        <button class="dropdown-item btn btn-link deletePost" data-postUniqueId=post.postUniqueId>Delete</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

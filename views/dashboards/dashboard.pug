@@ -56,8 +56,13 @@ block dashboardContent
                                                         small= post.timestamp
 
                                                 if post.ownerId == user._id
-                                                    button(class="btn btn-link text-dark UDPostHandler" data-postUniqueId=post.postUniqueId)
-                                                        i(class="fas fa-ellipsis-h" data-postUniqueId=post.postUniqueId)
+                                                    div(class="dropdown show")
+                                                        a(class="btn btn-link text-dark dropdown-toggle" role="button" id="postHandlerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                                                            i(class="fas fa-ellipsis-h")
+                                                        
+                                                        div(class="dropdown-menu dropdown-menu-right" aria-labelledby="postHandlerDropdown")
+                                                            button(class="dropdown-item btn btn-link editPost" data-postUniqueId=post.postUniqueId) Edit
+                                                            button(class="dropdown-item btn btn-link deletePost" data-postUniqueId=post.postUniqueId) Delete
 
                                     p(class="post-content")= post.content
                                     div(id="imageAndVideoContainer")

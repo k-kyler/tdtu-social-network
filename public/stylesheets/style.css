@@ -277,6 +277,13 @@ h4 {
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
 }
+.dropdown {
+    cursor: pointer;
+}
+#postHandlerDropdown::after {
+    border: none;
+    margin-left: 0;
+}
 @media only screen and (max-width: 1024px) {
     .btn-postStatus > div > span {
         font-size: 80%;
