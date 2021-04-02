@@ -211,11 +211,16 @@ $(document).ready(() => {
                 if (result.code === 1) {
                     $("#editPostContent").val(result.data.content);
                     $("#editImage").val(result.data.image);
-                    $("#editVideo").val(
-                        result.data.video.split("embed/")[0] +
-                            "watch?v=" +
-                            result.data.video.split("embed/")[1]
-                    );
+
+                    if (result.data.video) {
+                        $("#editVideo").val(
+                            result.data.video.split("embed/")[0] +
+                                "watch?v=" +
+                                result.data.video.split("embed/")[1]
+                        );
+                    } else if (!result.data.video) {
+                        $("#editVideo").val("");
+                    }
                 }
             })
             .catch((error) => console.log(error));
