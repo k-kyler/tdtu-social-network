@@ -276,18 +276,23 @@ $(document).ready(() => {
                     .then((response) => response.json())
                     .then((result) => {
                         if (result.code === 1) {
-                            $("#alertContainer").prepend(`
-                                <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                    <i class="far fa-bell h4 mr-2"></i>
-                                    ${result.message}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            `);
-                            setTimeout(() => {
-                                $(`.${result.alertId}`).alert("close");
-                            }, 4000);
+                            if (
+                                result.ownerId ==
+                                document.getElementById("userObjectId").value
+                            ) {
+                                $("#alertContainer").prepend(`
+                                    <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
+                                        <i class="far fa-bell h4 mr-2"></i>
+                                        ${result.message}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                                setTimeout(() => {
+                                    $(`.${result.alertId}`).alert("close");
+                                }, 4000);
+                            }
                         } else {
                             $("#errorEditPost").html(result.message);
                         }
@@ -337,18 +342,23 @@ $(document).ready(() => {
                     .then((response) => response.json())
                     .then((result) => {
                         if (result.code === 1) {
-                            $("#alertContainer").prepend(`
-                                <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                    <i class="far fa-bell h4 mr-2"></i>
-                                    ${result.message}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            `);
-                            setTimeout(() => {
-                                $(`.${result.alertId}`).alert("close");
-                            }, 4000);
+                            if (
+                                result.ownerId ==
+                                document.getElementById("userObjectId").value
+                            ) {
+                                $("#alertContainer").prepend(`
+                                    <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
+                                        <i class="far fa-bell h4 mr-2"></i>
+                                        ${result.message}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                                setTimeout(() => {
+                                    $(`.${result.alertId}`).alert("close");
+                                }, 4000);
+                            }
                         } else {
                             $("#errorEditPost").html(result.message);
                         }
@@ -390,23 +400,28 @@ $(document).ready(() => {
             .then((response) => response.json())
             .then((result) => {
                 if (result.code === 1) {
-                    $("#alertContainer").prepend(`
-                        <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                            <i class="far fa-bell h4 mr-2"></i>
-                            ${result.message}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                    setTimeout(() => {
-                        $(`.${result.alertId}`).alert("close");
-                    }, 4000);
+                    if (
+                        result.ownerId ==
+                        document.getElementById("userObjectId").value
+                    ) {
+                        $("#alertContainer").prepend(`
+                            <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
+                                <i class="far fa-bell h4 mr-2"></i>
+                                ${result.message}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                        setTimeout(() => {
+                            $(`.${result.alertId}`).alert("close");
+                        }, 4000);
 
-                    $("#deletePostModal").modal("hide");
+                        $("#deletePostModal").modal("hide");
 
-                    // Emitting an message to announce server to delete post
-                    socket.emit("Delete post", postUniqueId);
+                        // Emitting an message to announce server to delete post
+                        socket.emit("Delete post", postUniqueId);
+                    }
                 }
             })
             .catch((error) => console.log(error));
@@ -507,12 +522,7 @@ $(document).ready(() => {
                         </div>
 
                         <div class="row">
-                            <div class="col-md-1 px-0 pt-3 align-self-center">
-                                <img src=${
-                                    post.profileAvatar
-                                } alt="user avatar" width="35" height="35" />
-                            </div>
-                            <div class="px-0 pt-3 col-md-11 input-group commentInputStyles">
+                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
                                 <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
@@ -607,12 +617,7 @@ $(document).ready(() => {
                         </div>
 
                         <div class="row">
-                            <div class="col-md-1 px-0 pt-3 align-self-center">
-                                <img src=${
-                                    post.profileAvatar
-                                } alt="user avatar" width="35" height="35" />
-                            </div>
-                            <div class="px-0 pt-3 col-md-11 input-group commentInputStyles">
+                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
                                 <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
@@ -645,18 +650,23 @@ $(document).ready(() => {
             .then((response) => response.json())
             .then((result) => {
                 if (result.code === 1) {
-                    $("#alertContainer").prepend(`
-                        <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                            <i class="far fa-bell h4 mr-2"></i>
-                            ${result.message}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                    setTimeout(() => {
-                        $(`.${result.alertId}`).alert("close");
-                    }, 4000);
+                    if (
+                        post.ownerId ==
+                        document.getElementById("userObjectId").value
+                    ) {
+                        $("#alertContainer").prepend(`
+                            <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
+                                <i class="far fa-bell h4 mr-2"></i>
+                                ${result.message}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                        setTimeout(() => {
+                            $(`.${result.alertId}`).alert("close");
+                        }, 4000);
+                    }
                 }
             })
             .catch((error) => console.error(error));

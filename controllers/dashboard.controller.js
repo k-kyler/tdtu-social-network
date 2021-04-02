@@ -240,8 +240,8 @@ module.exports.addNewPost = async (req, res) => {
         post.profileAvatar = profileAvatar;
         post.timestamp = timestamp;
         post.content = content;
-        post.number = posts.length + 1;
         post.video = video;
+        post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
         post.save();
 
         res.json({
@@ -258,8 +258,8 @@ module.exports.addNewPost = async (req, res) => {
         post.profileAvatar = profileAvatar;
         post.timestamp = timestamp;
         post.content = content;
-        post.number = posts.length + 1;
         post.video = video;
+        post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
         post.save();
 
         res.json({
@@ -283,6 +283,7 @@ module.exports.addNewPost = async (req, res) => {
 // Edit post
 module.exports.editPost = async (req, res) => {
     let { timestamp, content, video, postUniqueId, image } = req.body;
+    let post = await Post.findOne({ postUniqueId });
 
     if (video.includes("https://www.youtube.com/embed/") && content !== "") {
         let updatePost = await Post.findOneAndUpdate(
@@ -301,6 +302,7 @@ module.exports.editPost = async (req, res) => {
             code: 1,
             message: "You have edited post!",
             alertId: shortid.generate(),
+            ownerId: post.ownerId,
         });
     } else if (!video && content !== "") {
         let updatePostWithComment = await Post.findOneAndUpdate(
@@ -318,6 +320,7 @@ module.exports.editPost = async (req, res) => {
             code: 1,
             message: "You have edited post!",
             alertId: shortid.generate(),
+            ownerId: post.ownerId,
         });
     } else if (!video.includes("https://www.youtube.com/embed/")) {
         res.json({
@@ -335,12 +338,14 @@ module.exports.editPost = async (req, res) => {
 // Delete post
 module.exports.deletePost = async (req, res) => {
     let { postUniqueId } = req.params;
-    let post = await Post.deleteOne({ postUniqueId });
+    let post = await Post.findOne({ postUniqueId });
+    let deletePost = await Post.deleteOne({ postUniqueId });
 
     res.json({
         code: 1,
         message: "Delete post successful!",
         alertId: shortid.generate(),
+        ownerId: post.ownerId,
     });
 };
 
