@@ -131,18 +131,18 @@ $(document).ready(() => {
 
     // Post handler
     $("#modalPostButton").click((event) => {
+        event.preventDefault();
+
         let profileAvatar = $("#profileAvatar").attr("src");
         let name = $("#owner").text();
         let content = $("#content");
-        let image = $("#image").val();
         let video = $("#video").val();
         let ownerId = $("#userObjectId").val();
+        // let image = $("#postImage")[0];
         let timestamp =
             new Date().toLocaleDateString() +
             ", " +
             new Date().toLocaleTimeString();
-
-        event.preventDefault();
 
         // Check if video is a youtube URL then emitting it
         if (video && !video.includes("https://www.youtube.com")) {
@@ -165,6 +165,7 @@ $(document).ready(() => {
 
                 // Clear content textarea and close modal
                 content.val("");
+                $("#postImage").val("");
                 $("#postModal").modal("hide");
             } else {
                 $("#errorPost").html("Missing content");
@@ -190,6 +191,7 @@ $(document).ready(() => {
 
                 // Clear content textarea and close modal
                 content.val("");
+                $("#postImage").val("");
                 $("#postModal").modal("hide");
             } else {
                 $("#errorPost").html("Missing content");
@@ -210,16 +212,16 @@ $(document).ready(() => {
             .then((result) => {
                 if (result.code === 1) {
                     $("#editPostContent").val(result.data.content);
-                    $("#editImage").val(result.data.image);
+                    $("#editPostImage").val(result.data.image);
 
                     if (result.data.video) {
-                        $("#editVideo").val(
+                        $("#editPostVideo").val(
                             result.data.video.split("embed/")[0] +
                                 "watch?v=" +
                                 result.data.video.split("embed/")[1]
                         );
                     } else if (!result.data.video) {
-                        $("#editVideo").val("");
+                        $("#editPostVideo").val("");
                     }
                 }
             })
@@ -232,12 +234,12 @@ $(document).ready(() => {
     $("body").on("click", "#editPostButton", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
         let timestamp =
-            "Đã chỉnh sửa - " +
+            "Modified - " +
             new Date().toLocaleDateString() +
             ", " +
             new Date().toLocaleTimeString();
-        let video = $("#editVideo").val();
-        let image = $("#editImage").val();
+        let video = $("#editPostVideo").val();
+        let image = $("#editPostImage").val();
         let content = $("#editPostContent");
 
         event.preventDefault();
@@ -282,8 +284,8 @@ $(document).ready(() => {
                             ) {
                                 $("#alertContainer").prepend(`
                                     <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                        <i class="far fa-bell h4 mr-2"></i>
-                                        ${result.message}
+                                        <i class="far fa-bell h5 mr-2"></i>
+                                        <span>${result.message}</span>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -348,8 +350,8 @@ $(document).ready(() => {
                             ) {
                                 $("#alertContainer").prepend(`
                                     <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                        <i class="far fa-bell h4 mr-2"></i>
-                                        ${result.message}
+                                        <i class="far fa-bell h5 mr-2"></i>
+                                        <span>${result.message}</span>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -406,8 +408,8 @@ $(document).ready(() => {
                     ) {
                         $("#alertContainer").prepend(`
                             <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                <i class="far fa-bell h4 mr-2"></i>
-                                ${result.message}
+                                <i class="far fa-bell h5 mr-2"></i>
+                                <span>${result.message}</span>                                                                   
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -427,14 +429,14 @@ $(document).ready(() => {
             .catch((error) => console.log(error));
     });
 
-    // Display comment handler modal
-    // $("body").on("click", ".commentHandler", (event) => {
-    //     let postUniqueId = event.target.dataset.postuniqueid;
+    // Display edit comment modal
+    $("body").on("click", ".editComment", (event) => {
+        let postUniqueId = event.target.dataset.postuniqueid;
 
-    //     event.preventDefault();
+        event.preventDefault();
 
-    //     $("#commentHandlerModal").modal("toggle");
-    // });
+        $("#editCommentModal").modal("toggle");
+    });
 
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
@@ -451,7 +453,7 @@ $(document).ready(() => {
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <strong>${post.name}</strong>
-                                    <p class="mb-0 text-secondary">
+                                    <p class="mb-0 text-secondary timestamp-post">
                                         ${post.timestamp}
                                     </p>
                                 </div>
@@ -554,7 +556,7 @@ $(document).ready(() => {
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <strong>${post.name}</strong>
-                                    <p class="mb-0 text-secondary">
+                                    <p class="mb-0 text-secondary timestamp-post">
                                         ${post.timestamp}
                                     </p>
                                 </div>
@@ -637,20 +639,22 @@ $(document).ready(() => {
         }
 
         // Send request to store post to db
+        let formData = new FormData();
+
+        formData.append("ownerId", post.ownerId);
+        formData.append("postUniqueId", postUniqueId);
+        formData.append("profileAvatar", post.profileAvatar);
+        formData.append("name", post.name);
+        formData.append("timestamp", post.timestamp);
+        formData.append("content", post.content);
+        formData.append("video", post.video);
+
         fetch("/dashboard/post", {
-            method: "POST",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
             },
-            body: JSON.stringify({
-                ownerId: post.ownerId,
-                postUniqueId,
-                profileAvatar: post.profileAvatar,
-                name: post.name,
-                timestamp: post.timestamp,
-                content: post.content,
-                video: post.video,
-            }),
+            method: "POST",
+            body: formData,
         })
             .then((response) => response.json())
             .then((result) => {
@@ -661,8 +665,8 @@ $(document).ready(() => {
                     ) {
                         $("#alertContainer").prepend(`
                             <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                <i class="far fa-bell h4 mr-2"></i>
-                                ${result.message}
+                                <i class="far fa-bell h5 mr-2"></i>
+                                <span>${result.message}</span>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -680,7 +684,9 @@ $(document).ready(() => {
     // Client listen to the rendering message from server to render update post
     socket.on("Rendering update post", (updatePost) => {
         if (updatePost.video) {
-            $(`#${updatePost.postUniqueId} small`).html(updatePost.timestamp);
+            $(`#${updatePost.postUniqueId} .timestamp-post`).html(
+                updatePost.timestamp
+            );
             $(`#${updatePost.postUniqueId} .post-content`).html(
                 updatePost.content
             );
@@ -719,7 +725,9 @@ $(document).ready(() => {
                 }
             `);
         } else if (!updatePost.video) {
-            $(`#${updatePost.postUniqueId} small`).html(updatePost.timestamp);
+            $(`#${updatePost.postUniqueId} .timestamp-post`).html(
+                updatePost.timestamp
+            );
             $(`#${updatePost.postUniqueId} .post-content`).html(
                 updatePost.content
             );

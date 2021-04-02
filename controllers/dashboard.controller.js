@@ -230,6 +230,11 @@ module.exports.addNewPost = async (req, res) => {
         video,
     } = req.body;
     let posts = await Post.find();
+    let uploader = upload.single("image");
+
+    uploader(req, res, (error) => {
+        console.log(req.file);
+    });
 
     if (video.includes("https://www.youtube.com/embed/") && content !== "") {
         let post = new Post();
