@@ -1,14 +1,13 @@
-//- Comment handler modal
-#commentHandlerModal.modal.fade(role='dialog')
+//- Edit comment modal
+#editCommentModal.modal.fade(role='dialog')
     .modal-dialog.modal-lg(role='content')
         .modal-content
             .modal-header
-                h4.modal-title Choose your option
+                h4.modal-title Edit comment
                 button.close(type='close', data-dismiss='modal') &times;
             .modal-body
                 form 
                     .form-group.row
                         .col-md-12.justify-content-end.d-flex
                             button(class="btn btn-primary", id="editCommentButton") Update
-                            button(class="btn btn-danger ml-3", id="deleteCommentButton") Delete
                             button(class="btn btn-default ml-3", data-dismiss="modal") Close

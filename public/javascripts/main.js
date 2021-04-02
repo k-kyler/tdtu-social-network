@@ -745,9 +745,15 @@ $(document).ready(() => {
                                 <strong>${comment.guestName}</strong><span class="text-secondary"> - ${comment.commentTimeStamp}</span>
                                 <p class="mb-0 mt-1">${comment.guestComment}</p>
                             </div>
-                            <button class="btn btn-link ml-2 text-dark commentHandler" data-commentUniqueId=${commentUniqueId}>
-                                <i class="fas fa-ellipsis-h" data-commentUniqueId=${commentUniqueId}></i>
-                            </button>
+                            <div class="dropdown show commentHandler">
+                                <a class="btn btn-link text-dark bg-white dropdown-toggle" role="button" id="commentHandlerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-h"></i>                                
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="commentHandlerDropdown">
+                                    <button class="dropdown-item btn btn-link editComment" data-commentUniqueId=${commentUniqueId}>Edit</button>
+                                    <button class="dropdown-item btn btn-link deleteComment" data-commentUniqueId=${commentUniqueId}>Delete</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
