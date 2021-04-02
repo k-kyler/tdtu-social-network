@@ -14,7 +14,9 @@ router.get("/notification", controller.notification);
 
 router.get("/post/:postUniqueId", controller.getPost);
 router.post("/post", controller.addNewPost);
-router.put("/post", controller.addNewComment);
 router.put("/post/edit", controller.editPost);
+router.delete("/post/delete/:postUniqueId", controller.deletePost);
+
+router.put("/post", controller.addNewComment);
 
 module.exports = router;

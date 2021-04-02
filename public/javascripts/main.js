@@ -197,7 +197,7 @@ $(document).ready(() => {
         }
     });
 
-    // Display update and delete post handler modal
+    // Display edit post modal
     $("body").on("click", ".editPost", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
 
@@ -223,7 +223,7 @@ $(document).ready(() => {
         $("#editPostModal").modal("toggle");
     });
 
-    // Update post handler
+    // Edit post handler
     $("body").on("click", "#editPostButton", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
         let timestamp =
@@ -245,7 +245,7 @@ $(document).ready(() => {
             if (content.val() !== "") {
                 $("#errorEditPost").html("");
 
-                // Emitting an message to announce server about the post information
+                // Emitting an message to announce server to update post
                 socket.emit("Update post", {
                     content: content.val(),
                     timestamp,
@@ -272,7 +272,7 @@ $(document).ready(() => {
                     .then((result) => {
                         if (result.code === 1) {
                             $("#alertContainer").prepend(`
-                                <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
+                                <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
                                     <i class="far fa-bell h4 mr-2"></i>
                                     ${result.message}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -281,7 +281,7 @@ $(document).ready(() => {
                                 </div>
                             `);
                             setTimeout(() => {
-                                $(".myAlert").alert("close");
+                                $(`.${result.alertId}`).alert("close");
                             }, 4000);
                         } else {
                             $("#errorEditPost").html(result.message);
@@ -300,7 +300,7 @@ $(document).ready(() => {
             if (content.val() !== "") {
                 $("#errorEditPost").html("");
 
-                // Emitting an message to announce server about the post information
+                // Emitting an message to announce server to update post
                 socket.emit("Update post", {
                     postUniqueId,
                     content: content.val(),
@@ -333,7 +333,7 @@ $(document).ready(() => {
                     .then((result) => {
                         if (result.code === 1) {
                             $("#alertContainer").prepend(`
-                                <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
+                                <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
                                     <i class="far fa-bell h4 mr-2"></i>
                                     ${result.message}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -342,7 +342,7 @@ $(document).ready(() => {
                                 </div>
                             `);
                             setTimeout(() => {
-                                $(".myAlert").alert("close");
+                                $(`.${result.alertId}`).alert("close");
                             }, 4000);
                         } else {
                             $("#errorEditPost").html(result.message);
@@ -359,13 +359,52 @@ $(document).ready(() => {
         }
     });
 
+    // Display delete post modal
+    $("body").on("click", ".deletePost", (event) => {
+        let postUniqueId = event.target.dataset.postuniqueid;
+
+        event.preventDefault();
+
+        $("#deletePostButton").attr("data-postUniqueId", postUniqueId);
+
+        $("#deletePostModal").modal("toggle");
+    });
+
     // Delete post handler
     $("body").on("click", "#deletePostButton", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
 
-        // $("#confirmDeletePostButton").attr("data-postUniqueId", postUniqueId);
+        event.preventDefault();
 
-        // $("#confirmDeletePostModal").modal("toggle");
+        fetch(`/dashboard/post/delete/${postUniqueId}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "DELETE",
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#alertContainer").prepend(`
+                        <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
+                            <i class="far fa-bell h4 mr-2"></i>
+                            ${result.message}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                    setTimeout(() => {
+                        $(`.${result.alertId}`).alert("close");
+                    }, 4000);
+
+                    $("#deletePostModal").modal("hide");
+
+                    // Emitting an message to announce server to delete post
+                    socket.emit("Delete post", postUniqueId);
+                }
+            })
+            .catch((error) => console.log(error));
     });
 
     // Client listen to the rendering message from server to render new post
@@ -395,8 +434,8 @@ $(document).ready(() => {
                                     </a>
                                     
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="postHandlerDropdown">
-                                        <button class="dropdown-item btn btn-link editPost" data-postUniqueId=post.postUniqueId>Edit</button>
-                                        <button class="dropdown-item btn btn-link deletePost" data-postUniqueId=post.postUniqueId>Delete</button>
+                                        <button class="dropdown-item btn btn-link editPost" data-postUniqueId=${postUniqueId}>Edit</button>
+                                        <button class="dropdown-item btn btn-link deletePost" data-postUniqueId=${postUniqueId}>Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -466,9 +505,9 @@ $(document).ready(() => {
                             <div class="col-md-1 px-0 pt-3 align-self-center">
                                 <img src=${
                                     post.profileAvatar
-                                }, alt="user avatar", width="35", height="35" />
+                                } alt="user avatar" width="35" height="35" />
                             </div>
-                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
+                            <div class="px-0 pt-3 col-md-11 input-group commentInputStyles">
                                 <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
@@ -566,9 +605,9 @@ $(document).ready(() => {
                             <div class="col-md-1 px-0 pt-3 align-self-center">
                                 <img src=${
                                     post.profileAvatar
-                                }, alt="user avatar", width="35", height="35" />
+                                } alt="user avatar" width="35" height="35" />
                             </div>
-                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
+                            <div class="px-0 pt-3 col-md-11 input-group commentInputStyles">
                                 <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
@@ -602,7 +641,7 @@ $(document).ready(() => {
             .then((result) => {
                 if (result.code === 1) {
                     $("#alertContainer").prepend(`
-                        <div class="alert alert-primary alert-dismissible fade show myAlert" role="alert">
+                        <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
                             <i class="far fa-bell h4 mr-2"></i>
                             ${result.message}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -611,7 +650,7 @@ $(document).ready(() => {
                         </div>
                     `);
                     setTimeout(() => {
-                        $(".myAlert").alert("close");
+                        $(`.${result.alertId}`).alert("close");
                     }, 4000);
                 }
             })
@@ -665,6 +704,11 @@ $(document).ready(() => {
                 updatePost.content
             );
         }
+    });
+
+    // Client listen to the deleting message from server to delete post
+    socket.on("Deleting post", (postUniqueId) => {
+        $(`#${postUniqueId}`).remove();
     });
 
     // Client listen to the rendering message from server to render new comment

@@ -7,6 +7,7 @@ const md5 = require("md5");
 const shortid = require("shortid");
 const mongoose = require("mongoose");
 
+// Multer upload setup
 const upload = multer({
     dest: "./public/uploads/",
     fileFilter: (req, file, callback) => {
@@ -30,6 +31,7 @@ module.exports.dashboard = async (req, res) => {
     });
 };
 
+// Update user info
 module.exports.updateUserInfo = async (req, res) => {
     //let uploader = upload.single('avatar')
     //let avatar = req.file
@@ -112,6 +114,7 @@ module.exports.users = async (req, res) => {
     });
 };
 
+// Create new staff account
 module.exports.createNewStaff = async (req, res) => {
     let uploader = upload.single("avatar");
 
@@ -197,7 +200,7 @@ module.exports.createNewStaff = async (req, res) => {
     });
 };
 
-// Post
+// Get post
 module.exports.getPost = async (req, res) => {
     let { postUniqueId } = req.params;
     let post = await Post.findOne({ postUniqueId });
@@ -215,6 +218,7 @@ module.exports.getPost = async (req, res) => {
     }
 };
 
+// Add new post
 module.exports.addNewPost = async (req, res) => {
     let {
         postUniqueId,
@@ -243,6 +247,7 @@ module.exports.addNewPost = async (req, res) => {
         res.json({
             code: 1,
             message: "You have added new post!",
+            alertId: shortid.generate(),
         });
     } else if (!video && content !== "") {
         let post = new Post();
@@ -260,6 +265,7 @@ module.exports.addNewPost = async (req, res) => {
         res.json({
             code: 1,
             message: "You have added new post!",
+            alertId: shortid.generate(),
         });
     } else if (!video.includes("https://www.youtube.com/embed/")) {
         res.json({
@@ -274,6 +280,7 @@ module.exports.addNewPost = async (req, res) => {
     }
 };
 
+// Edit post
 module.exports.editPost = async (req, res) => {
     let { timestamp, content, video, postUniqueId, image } = req.body;
 
@@ -293,6 +300,7 @@ module.exports.editPost = async (req, res) => {
         res.json({
             code: 1,
             message: "You have edited post!",
+            alertId: shortid.generate(),
         });
     } else if (!video && content !== "") {
         let updatePostWithComment = await Post.findOneAndUpdate(
@@ -309,6 +317,7 @@ module.exports.editPost = async (req, res) => {
         res.json({
             code: 1,
             message: "You have edited post!",
+            alertId: shortid.generate(),
         });
     } else if (!video.includes("https://www.youtube.com/embed/")) {
         res.json({
@@ -321,6 +330,18 @@ module.exports.editPost = async (req, res) => {
             message: "Content can not be empty!",
         });
     }
+};
+
+// Delete post
+module.exports.deletePost = async (req, res) => {
+    let { postUniqueId } = req.params;
+    let post = await Post.deleteOne({ postUniqueId });
+
+    res.json({
+        code: 1,
+        message: "Delete post successful!",
+        alertId: shortid.generate(),
+    });
 };
 
 // Comment
