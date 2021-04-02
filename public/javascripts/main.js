@@ -427,6 +427,15 @@ $(document).ready(() => {
             .catch((error) => console.log(error));
     });
 
+    // Display comment handler modal
+    // $("body").on("click", ".commentHandler", (event) => {
+    //     let postUniqueId = event.target.dataset.postuniqueid;
+
+    //     event.preventDefault();
+
+    //     $("#commentHandlerModal").modal("toggle");
+    // });
+
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
         if (post.ownerId == document.getElementById("userObjectId").value) {
@@ -443,9 +452,7 @@ $(document).ready(() => {
                                 <div>
                                     <strong>${post.name}</strong>
                                     <p class="mb-0 text-secondary">
-                                        <small>
-                                            ${post.timestamp}
-                                        </small>
+                                        ${post.timestamp}
                                     </p>
                                 </div>
                                 <div class="dropdown show">
@@ -548,9 +555,7 @@ $(document).ready(() => {
                                 <div>
                                     <strong>${post.name}</strong>
                                     <p class="mb-0 text-secondary">
-                                        <small>
-                                            ${post.timestamp}
-                                        </small>
+                                        ${post.timestamp}
                                     </p>
                                 </div>
                             </div>
@@ -738,7 +743,7 @@ $(document).ready(() => {
                         <div class="commentContainerStyles d-flex align-items-center">
                             <div class="py-1 px-2">
                                 <strong>${comment.guestName}</strong><span class="text-secondary"> - ${comment.commentTimeStamp}</span>
-                                <p class="mb-0">${comment.guestComment}</p>
+                                <p class="mb-0 mt-1">${comment.guestComment}</p>
                             </div>
                             <button class="btn btn-link ml-2 text-dark commentHandler" data-commentUniqueId=${commentUniqueId}>
                                 <i class="fas fa-ellipsis-h" data-commentUniqueId=${commentUniqueId}></i>
@@ -757,7 +762,7 @@ $(document).ready(() => {
                         <div class="commentContainerStyles d-flex align-items-center">
                             <div class="py-1 px-2">
                                 <strong>${comment.guestName}</strong><span class="text-secondary"> - ${comment.commentTimeStamp}</span>
-                                <p class="mb-0">${comment.guestComment}</p>
+                                <p class="mb-0 mt-1">${comment.guestComment}</p>
                             </div>
                         </div>
                     </div>

@@ -280,7 +280,8 @@ h4 {
 .dropdown {
     cursor: pointer;
 }
-#postHandlerDropdown::after {
+#postHandlerDropdown::after,
+#commentHandlerDropdown::after {
     border: none;
     margin-left: 0;
 }
