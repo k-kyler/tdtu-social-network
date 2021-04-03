@@ -68,13 +68,13 @@ block dashboardContent
                                         div(class="row")
                                             if post.image && !post.video
                                                 div(class="px-0 col-md-12")
-                                                    img(src=post.image class="w-100")
+                                                    img(src=post.image class="post-image")
                                             else if post.video && !post.image
                                                 div(class="px-0 col-md-12 embed-responsive embed-responsive-16by9")
                                                     iframe(class="embed-responsive-item" src=post.video allowfullscreen)
                                             else if post.video && post.image
                                                 div(class="px-0 col-md-6")
-                                                    img(src=post.image class="w-100")
+                                                    img(src=post.image class="post-image")
                                                 div(class="px-0 col-md-6 embed-responsive embed-responsive-16by9")
                                                     iframe(class="embed-responsive-item" src=post.video allowfullscreen)                                        
                                         

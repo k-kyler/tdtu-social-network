@@ -138,7 +138,6 @@ $(document).ready(() => {
         let content = $("#content");
         let video = $("#video").val();
         let ownerId = $("#userObjectId").val();
-        // let image = $("#postImage")[0];
         let timestamp =
             new Date().toLocaleDateString() +
             ", " +
@@ -159,7 +158,7 @@ $(document).ready(() => {
                     name,
                     content: content.val(),
                     timestamp,
-                    image,
+                    image: $("#hiddenImageURL").val(),
                     video,
                 });
 
@@ -182,7 +181,7 @@ $(document).ready(() => {
                     name,
                     content: content.val(),
                     timestamp,
-                    image,
+                    image: $("#hiddenImageURL").val(),
                     video:
                         video.split("watch?v=")[0] +
                         "embed/" +
@@ -476,8 +475,8 @@ $(document).ready(() => {
                             post.image && post.video
                                 ? `
                                 <div class="row">
-                                    <div class="px-0 col-md-6>
-                                        <img src=${post.image} class="w-100" />
+                                    <div class="px-0 col-md-6">
+                                        <img src="/images/imageLoading.gif" class="post-image" />
                                     </div>
                                     <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
@@ -495,8 +494,8 @@ $(document).ready(() => {
                                 : post.image && !post.video
                                 ? `
                                 <div class="row">
-                                    <div class="px-0 col-md-12>
-                                        <img src=${post.image} class="w-100" />
+                                    <div class="px-0 col-md-12">
+                                        <img src="/images/imageLoading.gif" class="post-image" />
                                     </div>
                                 </div>
                             `
@@ -569,8 +568,8 @@ $(document).ready(() => {
                             post.image && post.video
                                 ? `
                                 <div class="row">
-                                    <div class="px-0 col-md-6>
-                                        <img src=${post.image} class="w-100" />
+                                    <div class="px-0 col-md-6">
+                                        <img src="/images/imageLoading.gif" class="post-image" />
                                     </div>
                                     <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
@@ -588,8 +587,8 @@ $(document).ready(() => {
                                 : post.image && !post.video
                                 ? `
                                 <div class="row">
-                                    <div class="px-0 col-md-12>
-                                        <img src=${post.image} class="w-100" />
+                                    <div class="px-0 col-md-12">
+                                        <img src="/images/imageLoading.gif" class="post-image" />
                                     </div>
                                 </div>
                             `
@@ -639,22 +638,21 @@ $(document).ready(() => {
         }
 
         // Send request to store post to db
-        let formData = new FormData();
-
-        formData.append("ownerId", post.ownerId);
-        formData.append("postUniqueId", postUniqueId);
-        formData.append("profileAvatar", post.profileAvatar);
-        formData.append("name", post.name);
-        formData.append("timestamp", post.timestamp);
-        formData.append("content", post.content);
-        formData.append("video", post.video);
-
         fetch("/dashboard/post", {
             headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
             },
             method: "POST",
-            body: formData,
+            body: JSON.stringify({
+                ownerId: post.ownerId,
+                postUniqueId,
+                profileAvatar: post.profileAvatar,
+                name: post.name,
+                timestamp: post.timestamp,
+                content: post.content,
+                video: post.video,
+                image: post.image,
+            }),
         })
             .then((response) => response.json())
             .then((result) => {
@@ -675,6 +673,11 @@ $(document).ready(() => {
                         setTimeout(() => {
                             $(`.${result.alertId}`).alert("close");
                         }, 4000);
+
+                        $(`#${postUniqueId} .post-image`).attr(
+                            "src",
+                            result.imageURL
+                        );
                     }
                 }
             })
@@ -999,4 +1002,58 @@ const emitCommentOnButton = (event) => {
             `input[data-inputComment="${postUniqueId}"]`
         ).value = "";
     }
+};
+
+// Disable post button
+document.getElementById("modalPostButton").setAttribute("disabled", true);
+
+// Post content on change handler
+document.getElementById("content").addEventListener("keyup", (event) => {
+    if (event.target.value) {
+        document.getElementById("modalPostButton").removeAttribute("disabled");
+    } else {
+        document
+            .getElementById("modalPostButton")
+            .setAttribute("disabled", true);
+    }
+});
+
+// Upload post image to file.io API when choosing image
+const postImageInput = document.getElementById("postImage");
+
+postImageInput.addEventListener("change", (event) => {
+    document.getElementById("modalPostButton").setAttribute("disabled", true);
+    document.getElementById("uploadPost").innerHTML = "Uploading your image...";
+    uploadToFileIOAPI(event.target.files[0]);
+});
+
+const uploadToFileIOAPI = (image) => {
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+
+    formData.append("file", image);
+
+    xhr.open("POST", "https://file.io", true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Create a hidden input to store the image's download link from file.io API
+            let hiddenInput = document.createElement("input");
+
+            hiddenInput.setAttribute("type", "hidden");
+            hiddenInput.setAttribute("id", "hiddenImageURL");
+            hiddenInput.setAttribute(
+                "value",
+                JSON.parse(xhr.responseText).link
+            );
+            document.querySelector("body").append(hiddenInput);
+
+            // Set message and enable post button
+            document.getElementById("uploadPost").innerHTML =
+                "Uploading image successful, you can now post it!";
+            document
+                .getElementById("modalPostButton")
+                .removeAttribute("disabled");
+        }
+    };
+    xhr.send(formData);
 };

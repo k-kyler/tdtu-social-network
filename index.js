@@ -19,8 +19,8 @@ const session = require("express-session");
 // Initial uuid
 const { v4: v4UniqueId } = require("uuid");
 
-// Initial multer
-const multer = require("multer");
+// Initial cors
+const cors = require("cors");
 
 // Require routes
 const authRoute = require("./routes/auth.route");
@@ -38,9 +38,9 @@ const io = require("socket.io")(httpServer); // Initial socket.io
 
 app.set("view engine", "pug");
 app.set("views", "./views");
+app.use(cors());
 app.use(express.json()); // Read json
 app.use(express.urlencoded({ extended: true })); // Read urlencoded
-app.use(multer().array()); // Read form data
 app.use(cookieParser(process.env.SESSION_SECRET)); // Config secret cookie
 app.use(express.static("public"));
 app.use(session({ cookie: { maxAge: 60000 } }));

@@ -6,6 +6,8 @@ const multer = require("multer");
 const md5 = require("md5");
 const shortid = require("shortid");
 const mongoose = require("mongoose");
+const fetch = require("node-fetch");
+const { v4: v4UniqueId } = require("uuid");
 
 // Multer upload setup
 const upload = multer({
@@ -228,16 +230,20 @@ module.exports.addNewPost = async (req, res) => {
         content,
         ownerId,
         video,
+        image,
     } = req.body;
     let posts = await Post.find();
-    let uploader = upload.single("image");
 
-    uploader(req, res, (error) => {
-        console.log(req.file);
-    });
-
-    if (video.includes("https://www.youtube.com/embed/") && content !== "") {
+    if (
+        video &&
+        video.includes("https://www.youtube.com/embed/") &&
+        content !== "" &&
+        image
+    ) {
         let post = new Post();
+        let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
+        let fetchResponse = await fetch(image);
+        let buffer = await fetchResponse.buffer();
 
         post.ownerId = ownerId;
         post.postUniqueId = postUniqueId;
@@ -246,15 +252,46 @@ module.exports.addNewPost = async (req, res) => {
         post.timestamp = timestamp;
         post.content = content;
         post.video = video;
+        post.image = imageURL.split("./public")[1];
         post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
         post.save();
 
-        res.json({
-            code: 1,
-            message: "You have added new post!",
-            alertId: shortid.generate(),
+        // Download file from file.io API then response back to client
+        fs.writeFile(imageURL, buffer, () => {
+            res.json({
+                code: 1,
+                message: "You have added new post!",
+                alertId: shortid.generate(),
+                imageURL: imageURL.split("./public")[1],
+            });
         });
-    } else if (!video && content !== "") {
+    } else if (!video && image && content !== "") {
+        let post = new Post();
+        let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
+        let fetchResponse = await fetch(image);
+        let buffer = await fetchResponse.buffer();
+
+        post.ownerId = ownerId;
+        post.postUniqueId = postUniqueId;
+        post.name = name;
+        post.profileAvatar = profileAvatar;
+        post.timestamp = timestamp;
+        post.content = content;
+        post.video = video;
+        post.image = imageURL.split("./public")[1];
+        post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
+        post.save();
+
+        // Download file from file.io API then response back to client
+        fs.writeFile(imageURL, buffer, () => {
+            res.json({
+                code: 1,
+                message: "You have added new post!",
+                alertId: shortid.generate(),
+                imageURL: imageURL.split("./public")[1],
+            });
+        });
+    } else if (!video && !image && content !== "") {
         let post = new Post();
 
         post.ownerId = ownerId;
@@ -290,7 +327,11 @@ module.exports.editPost = async (req, res) => {
     let { timestamp, content, video, postUniqueId, image } = req.body;
     let post = await Post.findOne({ postUniqueId });
 
-    if (video.includes("https://www.youtube.com/embed/") && content !== "") {
+    if (
+        video &&
+        video.includes("https://www.youtube.com/embed/") &&
+        content !== ""
+    ) {
         let updatePost = await Post.findOneAndUpdate(
             { postUniqueId },
             {

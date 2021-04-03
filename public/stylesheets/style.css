@@ -454,3 +454,7 @@ hr {
     bottom: 0.1rem;
     left: 1rem;
 }
+/* Post image */
+.post-image {
+    width: 100%;
+}
