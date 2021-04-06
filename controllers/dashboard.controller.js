@@ -330,27 +330,64 @@ module.exports.editPost = async (req, res) => {
     if (
         video &&
         video.includes("https://www.youtube.com/embed/") &&
-        content !== ""
+        content !== "" &&
+        image
     ) {
+        let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
+        let fetchResponse = await fetch(image);
+        let buffer = await fetchResponse.buffer();
+
         let updatePost = await Post.findOneAndUpdate(
             { postUniqueId },
             {
                 timestamp,
                 content,
                 video,
+                image: imageURL.split("./public")[1],
             },
             {
                 new: true,
             }
         );
 
-        res.json({
-            code: 1,
-            message: "You have edited post!",
-            alertId: shortid.generate(),
-            ownerId: post.ownerId,
+        // Download file from file.io API then response back to client
+        fs.writeFile(imageURL, buffer, () => {
+            res.json({
+                code: 1,
+                message: "You have edited post!",
+                alertId: shortid.generate(),
+                ownerId: post.ownerId,
+                imageURL: imageURL.split("./public")[1],
+            });
         });
-    } else if (!video && content !== "") {
+    } else if (!video && image && content !== "") {
+        let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
+        let fetchResponse = await fetch(image);
+        let buffer = await fetchResponse.buffer();
+
+        let updatePostWithComment = await Post.findOneAndUpdate(
+            { postUniqueId },
+            {
+                timestamp,
+                content,
+                image: imageURL.split("./public")[1],
+            },
+            {
+                new: true,
+            }
+        );
+
+        // Download file from file.io API then response back to client
+        fs.writeFile(imageURL, buffer, () => {
+            res.json({
+                code: 1,
+                message: "You have edited post!",
+                alertId: shortid.generate(),
+                ownerId: post.ownerId,
+                imageURL: imageURL.split("./public")[1],
+            });
+        });
+    } else if (!video && !image && content !== "") {
         let updatePostWithComment = await Post.findOneAndUpdate(
             { postUniqueId },
             {

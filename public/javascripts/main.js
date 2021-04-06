@@ -162,8 +162,11 @@ $(document).ready(() => {
                     video,
                 });
 
-                // Clear content textarea and close modal
+                // Clear old and close modal
                 content.val("");
+                $("#postImageReview").removeAttr("src");
+                $("#postImageReview").removeAttr("class");
+                $("#postImageName").html("Add to post");
                 $("#postImage").val("");
                 $("#postModal").modal("hide");
             } else {
@@ -188,8 +191,11 @@ $(document).ready(() => {
                         video.split("watch?v=")[1],
                 });
 
-                // Clear content textarea and close modal
+                // Clear old and close modal
                 content.val("");
+                $("#postImageReview").removeAttr("src");
+                $("#postImageReview").removeAttr("class");
+                $("#postImageName").html("Add to post");
                 $("#postImage").val("");
                 $("#postModal").modal("hide");
             } else {
@@ -211,7 +217,11 @@ $(document).ready(() => {
             .then((result) => {
                 if (result.code === 1) {
                     $("#editPostContent").val(result.data.content);
-                    // $("#editPostImage").val(result.data.image);
+                    $("#editPostImageReview").attr("src", result.data.image);
+                    $("#editPostImageReview").attr("class", "mr-3");
+                    $("#editPostImageName").html(
+                        result.data.image.split("/uploads/")[1]
+                    );
 
                     if (result.data.video) {
                         $("#editPostVideo").val(
@@ -238,7 +248,6 @@ $(document).ready(() => {
             ", " +
             new Date().toLocaleTimeString();
         let video = $("#editPostVideo").val();
-        let image = $("#editPostImage").val();
         let content = $("#editPostContent");
 
         event.preventDefault();
@@ -255,7 +264,7 @@ $(document).ready(() => {
                 socket.emit("Update post", {
                     content: content.val(),
                     timestamp,
-                    image,
+                    image: $("#editHiddenImageURL").val(),
                     video,
                     postUniqueId,
                 });
@@ -271,7 +280,7 @@ $(document).ready(() => {
                         content: content.val(),
                         video,
                         timestamp,
-                        image,
+                        image: $("#editHiddenImageURL").val(),
                     }),
                 })
                     .then((response) => response.json())
@@ -293,6 +302,11 @@ $(document).ready(() => {
                                 setTimeout(() => {
                                     $(`.${result.alertId}`).alert("close");
                                 }, 4000);
+
+                                $(`#${postUniqueId} .post-image`).attr(
+                                    "src",
+                                    result.imageURL
+                                );
                             }
                         } else {
                             $("#errorEditPost").html(result.message);
@@ -300,8 +314,12 @@ $(document).ready(() => {
                     })
                     .catch((error) => console.log(error));
 
-                // Clear content textarea and close modal
+                // Clear old and close modal
                 content.val("");
+                $("#editPostImageReview").removeAttr("src");
+                $("#editPostImageReview").removeAttr("class");
+                $("#editPostImageName").html("Add to post");
+                $("#editPostImage").val("");
                 $("#editPostModal").modal("hide");
             } else {
                 $("#errorEditPost").html("Missing content");
@@ -316,7 +334,7 @@ $(document).ready(() => {
                     postUniqueId,
                     content: content.val(),
                     timestamp,
-                    image,
+                    image: $("#editHiddenImageURL").val(),
                     video:
                         video.split("watch?v=")[0] +
                         "embed/" +
@@ -333,7 +351,7 @@ $(document).ready(() => {
                         postUniqueId,
                         content: content.val(),
                         timestamp,
-                        image,
+                        image: $("#editHiddenImageURL").val(),
                         video:
                             video.split("watch?v=")[0] +
                             "embed/" +
@@ -359,6 +377,11 @@ $(document).ready(() => {
                                 setTimeout(() => {
                                     $(`.${result.alertId}`).alert("close");
                                 }, 4000);
+
+                                $(`#${postUniqueId} .post-image`).attr(
+                                    "src",
+                                    result.imageURL
+                                );
                             }
                         } else {
                             $("#errorEditPost").html(result.message);
@@ -366,8 +389,11 @@ $(document).ready(() => {
                     })
                     .catch((error) => console.log(error));
 
-                // Clear content textarea and close modal
+                // Clear old and close modal
                 content.val("");
+                $("#editPostImageReview").removeAttr("class");
+                $("#editPostImageName").html("Add to post");
+                $("#editPostImage").val("");
                 $("#editPostModal").modal("hide");
             } else {
                 $("#errorEditPost").html("Missing content");
@@ -698,8 +724,8 @@ $(document).ready(() => {
                     updatePost.image && updatePost.video
                         ? `
                         <div class="row">
-                            <div class="px-0 col-md-6>
-                                <img src=${updatePost.image} class="w-100" />
+                            <div class="px-0 col-md-6">
+                                <img src="/images/imageLoading.gif" class="post-image" />
                             </div>
                             <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
                                 <iframe class="embed-responsive-item" src=${updatePost.video} allowfullscreen></iframe>
@@ -717,8 +743,8 @@ $(document).ready(() => {
                         : updatePost.image && !updatePost.video
                         ? `
                         <div class="row">
-                            <div class="px-0 col-md-12>
-                                <img src=${updatePost.image} class="w-100" />
+                            <div class="px-0 col-md-12">
+                                <img src="/images/imageLoading.gif" class="post-image" />
                             </div>
                         </div>
                     `
@@ -1056,7 +1082,7 @@ postImageInput.addEventListener("change", (event) => {
                 <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 500);
+    }, 700);
 
     // Set time out for progress bar 3
     setTimeout(() => {
@@ -1066,7 +1092,7 @@ postImageInput.addEventListener("change", (event) => {
                 <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 700);
+    }, 900);
 
     // Set time out for progress bar 4
     setTimeout(() => {
@@ -1076,7 +1102,7 @@ postImageInput.addEventListener("change", (event) => {
                 <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 1000);
+    }, 1100);
 
     // Upload image...
     uploadToFileIOAPI(event.target.files[0]);
@@ -1102,13 +1128,16 @@ const uploadToFileIOAPI = (image) => {
             );
             document.querySelector("body").append(hiddenInput);
 
-            // Set message and enable post button
+            // Set progress bar and enable post button
             document.getElementById("uploadPost").innerHTML = "";
             document.getElementById("uploadPost").innerHTML = `
                 <div class="progress">
                     <div class="progress-bar progressBar-5" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             `;
+            setTimeout(() => {
+                document.getElementById("uploadPost").innerHTML = "";
+            }, 500);
             document
                 .getElementById("modalPostButton")
                 .removeAttribute("disabled");
@@ -1137,7 +1166,7 @@ editPostImageInput.addEventListener("change", (event) => {
                 <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 500);
+    }, 700);
 
     // Set time out for progress bar 3
     setTimeout(() => {
@@ -1147,7 +1176,7 @@ editPostImageInput.addEventListener("change", (event) => {
                 <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 700);
+    }, 900);
 
     // Set time out for progress bar 4
     setTimeout(() => {
@@ -1157,7 +1186,7 @@ editPostImageInput.addEventListener("change", (event) => {
                 <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 1000);
+    }, 1100);
 
     // Upload image...
     editUploadToFileIOAPI(event.target.files[0]);
@@ -1190,6 +1219,9 @@ const editUploadToFileIOAPI = (image) => {
                     <div class="progress-bar progressBar-5" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             `;
+            setTimeout(() => {
+                document.getElementById("editUploadPost").innerHTML = "";
+            }, 500);
             document
                 .getElementById("editPostButton")
                 .removeAttribute("disabled");
