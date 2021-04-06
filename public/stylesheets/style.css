@@ -373,6 +373,7 @@ hr {
     width: 0.5rem;
 }
 .dashboard__contentCommunicationComment::-webkit-scrollbar-thumb {
+    border: 0;
     border-radius: 12px;
     background-color: #007bff;
 }
@@ -428,6 +429,7 @@ hr {
     width: 0.5rem;
 }
 .tableNotifListScroll::-webkit-scrollbar-thumb {
+    border: 0;
     border-radius: 12px;
     background-color: #007bff;
 }
@@ -446,6 +448,32 @@ hr {
 
 .fas {
     cursor: pointer;
+}
+
+/* Management page scrollbar */
+#permission::-webkit-scrollbar {
+    width: 0.5rem;
+}
+#permission::-webkit-scrollbar-thumb {
+    border: 0;
+    height: 2rem;
+    border-radius: 12px;
+    background-color: #007bff;
+}
+
+/* Web scrollbar config */
+::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border: 100px solid #f1f2f5;
+}
+
+/* Text primary */
+.btn-primary {
+    cursor: pointer !important;
 }
 
 /* Alert container */
