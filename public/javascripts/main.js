@@ -463,6 +463,16 @@ $(document).ready(() => {
             .catch((error) => console.log(error));
     });
 
+    // Display view bigger post image modal
+    $("body").on("click", ".post-image", (event) => {
+        let postImageSrc = event.target.getAttribute("src");
+
+        event.preventDefault();
+
+        $("#viewBiggerPostImage").attr("src", postImageSrc);
+        $("#viewBiggerPostImageModal").modal("toggle");
+    });
+
     // Display edit comment modal
     $("body").on("click", ".editComment", (event) => {
         let postUniqueId = event.target.dataset.postuniqueid;
