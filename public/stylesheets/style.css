@@ -454,7 +454,61 @@ hr {
     bottom: 0.1rem;
     left: 1rem;
 }
+
 /* Post image */
 .post-image {
     width: 100%;
+}
+
+/* Progress bar */
+.progressBar-2 {
+    background: #8e2de2;
+    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    width: 25%;
+}
+
+.progressBar-3 {
+    background: #8e2de2;
+    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    width: 50%;
+}
+
+.progressBar-4 {
+    background: #8e2de2;
+    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    width: 75%;
+}
+
+.progressBar-5 {
+    background: #8e2de2;
+    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    width: 100%;
+}
+
+/* Add to post configuring */
+.addToPost {
+    border-radius: 6px;
+    border: 1px solid lightgrey;
+}
+
+.addToPost__container i {
+    font-size: x-large;
+}
+
+.addToPost__container i:hover {
+    opacity: 0.6;
+    transition: all 0.4s ease-in-out;
+}
+
+.fa-youtube {
+    cursor: pointer;
+}
+
+#postImageReview,
+#editPostImageReview {
+    height: 1.2rem;
 }

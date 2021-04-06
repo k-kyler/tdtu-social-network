@@ -211,7 +211,7 @@ $(document).ready(() => {
             .then((result) => {
                 if (result.code === 1) {
                     $("#editPostContent").val(result.data.content);
-                    $("#editPostImage").val(result.data.image);
+                    // $("#editPostImage").val(result.data.image);
 
                     if (result.data.video) {
                         $("#editPostVideo").val(
@@ -1007,6 +1007,9 @@ const emitCommentOnButton = (event) => {
 // Disable post button
 document.getElementById("modalPostButton").setAttribute("disabled", true);
 
+// Disable edit post button
+document.getElementById("editPostButton").setAttribute("disabled", true);
+
 // Post content on change handler
 document.getElementById("content").addEventListener("keyup", (event) => {
     if (event.target.value) {
@@ -1018,12 +1021,64 @@ document.getElementById("content").addEventListener("keyup", (event) => {
     }
 });
 
-// Upload post image to file.io API when choosing image
-const postImageInput = document.getElementById("postImage");
+// Edit post content on change handler
+document
+    .getElementById("editPostContent")
+    .addEventListener("keyup", (event) => {
+        if (event.target.value) {
+            document
+                .getElementById("editPostButton")
+                .removeAttribute("disabled");
+        } else {
+            document
+                .getElementById("editPostButton")
+                .setAttribute("disabled", true);
+        }
+    });
+
+// Upload post image to file.io API when choosing image handler
+let postImageInput = document.getElementById("postImage");
 
 postImageInput.addEventListener("change", (event) => {
     document.getElementById("modalPostButton").setAttribute("disabled", true);
-    document.getElementById("uploadPost").innerHTML = "Uploading your image...";
+    document.getElementById("uploadPost").innerHTML = "";
+    document.getElementById("uploadPost").innerHTML = `
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    `;
+
+    // Set time out for progress bar 2
+    setTimeout(() => {
+        document.getElementById("uploadPost").innerHTML = "";
+        document.getElementById("uploadPost").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 500);
+
+    // Set time out for progress bar 3
+    setTimeout(() => {
+        document.getElementById("uploadPost").innerHTML = "";
+        document.getElementById("uploadPost").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 700);
+
+    // Set time out for progress bar 4
+    setTimeout(() => {
+        document.getElementById("uploadPost").innerHTML = "";
+        document.getElementById("uploadPost").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 1000);
+
+    // Upload image...
     uploadToFileIOAPI(event.target.files[0]);
 });
 
@@ -1048,8 +1103,12 @@ const uploadToFileIOAPI = (image) => {
             document.querySelector("body").append(hiddenInput);
 
             // Set message and enable post button
-            document.getElementById("uploadPost").innerHTML =
-                "Uploading image successful, you can now post it!";
+            document.getElementById("uploadPost").innerHTML = "";
+            document.getElementById("uploadPost").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-5" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
             document
                 .getElementById("modalPostButton")
                 .removeAttribute("disabled");
@@ -1057,3 +1116,158 @@ const uploadToFileIOAPI = (image) => {
     };
     xhr.send(formData);
 };
+
+// Upload edit post image to file.io API when choosing image handler
+let editPostImageInput = document.getElementById("editPostImage");
+
+editPostImageInput.addEventListener("change", (event) => {
+    document.getElementById("editPostButton").setAttribute("disabled", true);
+    document.getElementById("editUploadPost").innerHTML = "";
+    document.getElementById("editUploadPost").innerHTML = `
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    `;
+
+    // Set time out for progress bar 2
+    setTimeout(() => {
+        document.getElementById("editUploadPost").innerHTML = "";
+        document.getElementById("editUploadPost").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 500);
+
+    // Set time out for progress bar 3
+    setTimeout(() => {
+        document.getElementById("editUploadPost").innerHTML = "";
+        document.getElementById("editUploadPost").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 700);
+
+    // Set time out for progress bar 4
+    setTimeout(() => {
+        document.getElementById("editUploadPost").innerHTML = "";
+        document.getElementById("editUploadPost").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 1000);
+
+    // Upload image...
+    editUploadToFileIOAPI(event.target.files[0]);
+});
+
+const editUploadToFileIOAPI = (image) => {
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+
+    formData.append("file", image);
+
+    xhr.open("POST", "https://file.io", true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Create a hidden input to store the image's download link from file.io API
+            let hiddenInput = document.createElement("input");
+
+            hiddenInput.setAttribute("type", "hidden");
+            hiddenInput.setAttribute("id", "editHiddenImageURL");
+            hiddenInput.setAttribute(
+                "value",
+                JSON.parse(xhr.responseText).link
+            );
+            document.querySelector("body").append(hiddenInput);
+
+            // Set message and enable post button
+            document.getElementById("editUploadPost").innerHTML = "";
+            document.getElementById("editUploadPost").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-5" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+            document
+                .getElementById("editPostButton")
+                .removeAttribute("disabled");
+        }
+    };
+    xhr.send(formData);
+};
+
+// Default display none for Youtube URL input
+document.getElementById("youtubeURLInput").style.visibility = "hidden";
+
+// Default display none for edit Youtube URL input
+document.getElementById("editYoutubeURLInput").style.visibility = "hidden";
+
+// Display type of Youtube URL input field when clicked on Youtube icon of post
+document
+    .getElementById("youtubeURLInputButton")
+    .addEventListener("click", (event) => {
+        if (event.target.classList.contains("removeYoutubeURLInput")) {
+            document.getElementById("youtubeURLInput").style.visibility =
+                "hidden";
+            document
+                .getElementById("youtubeURLInputButton")
+                .classList.remove("removeYoutubeURLInput");
+        } else {
+            document.getElementById("youtubeURLInput").style.visibility =
+                "visible";
+            document
+                .getElementById("youtubeURLInputButton")
+                .classList.add("removeYoutubeURLInput");
+            document.getElementById("video").focus();
+        }
+    });
+
+// Display type of Youtube URL input field when clicked on Youtube icon of edit post
+document
+    .getElementById("editYoutubeURLInputButton")
+    .addEventListener("click", (event) => {
+        if (event.target.classList.contains("editRemoveYoutubeURLInput")) {
+            document.getElementById("editYoutubeURLInput").style.visibility =
+                "hidden";
+            document
+                .getElementById("editYoutubeURLInputButton")
+                .classList.remove("editRemoveYoutubeURLInput");
+        } else {
+            document.getElementById("editYoutubeURLInput").style.visibility =
+                "visible";
+            document
+                .getElementById("editYoutubeURLInputButton")
+                .classList.add("editRemoveYoutubeURLInput");
+            document.getElementById("editPostVideo").focus();
+        }
+    });
+
+// Post image review handler
+function postImageReviewHandler(image) {
+    if (image.files && image.files[0]) {
+        let imageReader = new FileReader();
+
+        imageReader.onload = (event) => {
+            $("#postImageReview").attr("src", event.target.result);
+            $("#postImageReview").attr("class", "mr-3");
+            $("#postImageName").html(image.files[0].name);
+        };
+        imageReader.readAsDataURL(image.files[0]);
+    }
+}
+
+// Edit post image review handler
+function editPostImageReviewHandler(image) {
+    if (image.files && image.files[0]) {
+        let imageReader = new FileReader();
+
+        imageReader.onload = (event) => {
+            $("#editPostImageReview").attr("src", event.target.result);
+            $("#editPostImageReview").attr("class", "mr-3");
+            $("#editPostImageName").html(image.files[0].name);
+        };
+        imageReader.readAsDataURL(image.files[0]);
+    }
+}
