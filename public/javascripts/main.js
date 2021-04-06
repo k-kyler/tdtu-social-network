@@ -799,7 +799,7 @@ $(document).ready(() => {
                     <div class="col-md-11 col-sm-9 col-8">
                         <div class="commentContainerStyles d-flex align-items-center">
                             <div class="py-1 px-2">
-                                <strong>${comment.guestName}</strong><span class="text-secondary"> - ${comment.commentTimeStamp}</span>
+                                <strong>${comment.guestName}</strong>
                                 <p class="mb-0 mt-1">${comment.guestComment}</p>
                             </div>
                             <div class="dropdown show commentHandler">
@@ -812,6 +812,7 @@ $(document).ready(() => {
                                 </div>
                             </div>
                         </div>
+                        <small class="ml-2 text-secondary">${comment.commentTimeStamp}</small>
                     </div>
                 </div>
             `);
@@ -824,10 +825,11 @@ $(document).ready(() => {
                     <div class="col-md-11 col-sm-9 col-8">
                         <div class="commentContainerStyles d-flex align-items-center">
                             <div class="py-1 px-2">
-                                <strong>${comment.guestName}</strong><span class="text-secondary"> - ${comment.commentTimeStamp}</span>
+                                <strong>${comment.guestName}</strong>
                                 <p class="mb-0 mt-1">${comment.guestComment}</p>
                             </div>
                         </div>
+                        <small class="ml-2 text-secondary">${comment.commentTimeStamp}</small>
                     </div>
                 </div>
             `);
