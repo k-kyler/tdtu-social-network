@@ -800,7 +800,7 @@ $(document).ready(() => {
                         <div class="commentContainerStyles d-flex align-items-center">
                             <div class="py-1 px-2">
                                 <strong>${comment.guestName}</strong>
-                                <p class="mb-0 mt-1">${comment.guestComment}</p>
+                                <p class="mb-0">${comment.guestComment}</p>
                             </div>
                             <div class="dropdown show commentHandler">
                                 <a class="btn btn-link text-dark bg-white dropdown-toggle" role="button" id="commentHandlerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -826,7 +826,7 @@ $(document).ready(() => {
                         <div class="commentContainerStyles d-flex align-items-center">
                             <div class="py-1 px-2">
                                 <strong>${comment.guestName}</strong>
-                                <p class="mb-0 mt-1">${comment.guestComment}</p>
+                                <p class="mb-0">${comment.guestComment}</p>
                             </div>
                         </div>
                         <small class="ml-2 text-secondary">${comment.commentTimeStamp}</small>

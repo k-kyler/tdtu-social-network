@@ -104,7 +104,7 @@ block dashboardContent
                                                             div(class="commentContainerStyles d-flex align-items-center")
                                                                 div(class="py-1 px-2")
                                                                     strong #{comment.guestName}
-                                                                    p(class="mb-0 mt-1") #{comment.guestComment}
+                                                                    p(class="mb-0") #{comment.guestComment}
                                                                 if comment.guestId == user._id
                                                                     div(class="dropdown show commentHandler")
                                                                         a(class="btn btn-link text-dark bg-white dropdown-toggle" role="button" id="commentHandlerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")

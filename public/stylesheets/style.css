@@ -375,7 +375,9 @@ hr {
 .dashboard__contentCommunicationComment::-webkit-scrollbar-thumb {
     border: 0;
     border-radius: 12px;
-    background-color: #007bff;
+    background: #8e2de2;
+    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
 }
 .dashboard__contentCommunication > p {
     word-wrap: break-word;
@@ -431,7 +433,9 @@ hr {
 .tableNotifListScroll::-webkit-scrollbar-thumb {
     border: 0;
     border-radius: 12px;
-    background-color: #007bff;
+    background: #8e2de2;
+    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
 }
 .tableNotifList > tbody > tr:hover {
     background-color: #f1f1f1;
@@ -458,7 +462,9 @@ hr {
     border: 0;
     height: 2rem;
     border-radius: 12px;
-    background-color: #007bff;
+    background: #8e2de2;
+    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
+    background: linear-gradient(to right, #4a00e0, #8e2de2);
 }
 
 /* Web scrollbar config */
