@@ -217,11 +217,17 @@ $(document).ready(() => {
             .then((result) => {
                 if (result.code === 1) {
                     $("#editPostContent").val(result.data.content);
-                    $("#editPostImageReview").attr("src", result.data.image);
-                    $("#editPostImageReview").attr("class", "mr-3");
-                    $("#editPostImageName").html(
-                        result.data.image.split("/uploads/")[1]
-                    );
+
+                    if (result.data.image) {
+                        $("#editPostImageReview").attr(
+                            "src",
+                            result.data.image
+                        );
+                        $("#editPostImageReview").attr("class", "mr-3");
+                        $("#editPostImageName").html(
+                            result.data.image.split("/uploads/")[1]
+                        );
+                    }
 
                     if (result.data.video) {
                         $("#editPostVideo").val(
@@ -264,7 +270,9 @@ $(document).ready(() => {
                 socket.emit("Update post", {
                     content: content.val(),
                     timestamp,
-                    image: $("#editHiddenImageURL").val(),
+                    image: $("#editHiddenImageURL").val()
+                        ? $("#editHiddenImageURL").val()
+                        : $("#editPostImageReview").attr("src"),
                     video,
                     postUniqueId,
                 });
@@ -278,7 +286,6 @@ $(document).ready(() => {
                     body: JSON.stringify({
                         postUniqueId,
                         content: content.val(),
-                        video,
                         timestamp,
                         image: $("#editHiddenImageURL").val(),
                     }),
@@ -334,7 +341,9 @@ $(document).ready(() => {
                     postUniqueId,
                     content: content.val(),
                     timestamp,
-                    image: $("#editHiddenImageURL").val(),
+                    image: $("#editHiddenImageURL").val()
+                        ? $("#editHiddenImageURL").val()
+                        : $("#editPostImageReview").attr("src"),
                     video:
                         video.split("watch?v=")[0] +
                         "embed/" +
@@ -712,14 +721,15 @@ $(document).ready(() => {
 
     // Client listen to the rendering message from server to render update post
     socket.on("Rendering update post", (updatePost) => {
-        if (updatePost.video) {
+        if (updatePost.video || updatePost.image) {
             $(`#${updatePost.postUniqueId} .timestamp-post`).html(
                 updatePost.timestamp
             );
             $(`#${updatePost.postUniqueId} .post-content`).html(
                 updatePost.content
             );
-            $("#imageAndVideoContainer").append(`
+            $(`#${updatePost.postUniqueId} #imageAndVideoContainer`).html("");
+            $(`#${updatePost.postUniqueId} #imageAndVideoContainer`).append(`
                 ${
                     updatePost.image && updatePost.video
                         ? `
@@ -753,7 +763,7 @@ $(document).ready(() => {
                     `
                 }
             `);
-        } else if (!updatePost.video) {
+        } else if (!updatePost.video && !updatePost.image) {
             $(`#${updatePost.postUniqueId} .timestamp-post`).html(
                 updatePost.timestamp
             );
@@ -1047,7 +1057,7 @@ document.getElementById("content").addEventListener("keyup", (event) => {
     }
 });
 
-// Edit post content on change handler
+// Edit post content and video on change handler
 document
     .getElementById("editPostContent")
     .addEventListener("keyup", (event) => {
@@ -1061,6 +1071,16 @@ document
                 .setAttribute("disabled", true);
         }
     });
+
+document.getElementById("editPostVideo").addEventListener("keyup", (event) => {
+    if (event.target.value) {
+        document.getElementById("editPostButton").removeAttribute("disabled");
+    } else {
+        document
+            .getElementById("editPostButton")
+            .setAttribute("disabled", true);
+    }
+});
 
 // Upload post image to file.io API when choosing image handler
 let postImageInput = document.getElementById("postImage");

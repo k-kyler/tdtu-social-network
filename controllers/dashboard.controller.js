@@ -300,6 +300,23 @@ module.exports.addNewPost = async (req, res) => {
         post.profileAvatar = profileAvatar;
         post.timestamp = timestamp;
         post.content = content;
+        post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
+        post.save();
+
+        res.json({
+            code: 1,
+            message: "You have added new post!",
+            alertId: shortid.generate(),
+        });
+    } else if (video && !image && content !== "") {
+        let post = new Post();
+
+        post.ownerId = ownerId;
+        post.postUniqueId = postUniqueId;
+        post.name = name;
+        post.profileAvatar = profileAvatar;
+        post.timestamp = timestamp;
+        post.content = content;
         post.video = video;
         post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
         post.save();
@@ -393,6 +410,25 @@ module.exports.editPost = async (req, res) => {
             {
                 timestamp,
                 content,
+            },
+            {
+                new: true,
+            }
+        );
+
+        res.json({
+            code: 1,
+            message: "You have edited post!",
+            alertId: shortid.generate(),
+            ownerId: post.ownerId,
+        });
+    } else if (video && !image && content !== "") {
+        let updatePostWithComment = await Post.findOneAndUpdate(
+            { postUniqueId },
+            {
+                timestamp,
+                content,
+                video,
             },
             {
                 new: true,
