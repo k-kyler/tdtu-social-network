@@ -75,6 +75,11 @@ io.on("connection", (socket) => {
 
         io.sockets.emit("Rendering new comment", comment, commentUniqueId);
     });
+
+    // Server wait for emitting message from client to allow client to update comment
+    socket.on("Update comment", (updateComment) => {
+        io.sockets.emit("Rendering update comment", updateComment);
+    });
 });
 
 // Default app endpoint

@@ -552,7 +552,33 @@ module.exports.deletePost = async (req, res) => {
     });
 };
 
-// Comment
+// Get comment
+module.exports.getComment = async (req, res) => {
+    let { commentUniqueId, postUniqueId } = req.params;
+    let post = await Post.findOne({ postUniqueId });
+    let comments = post.comment;
+    let commentQuery = "";
+
+    for (let comment of comments) {
+        if (comment.commentUniqueId === commentUniqueId) {
+            commentQuery = comment;
+        }
+    }
+
+    if (commentQuery !== "") {
+        res.json({
+            code: 1,
+            data: commentQuery,
+        });
+    } else {
+        res.json({
+            code: 0,
+            message: "Comment is not existed!",
+        });
+    }
+};
+
+// Add new comment
 module.exports.addNewComment = async (req, res) => {
     let post = await Post.findOne({ postUniqueId: req.body.postUniqueId });
 
@@ -578,3 +604,9 @@ module.exports.addNewComment = async (req, res) => {
         });
     }
 };
+
+// Edit comment
+module.exports.editComment = async (req, res) => {};
+
+// Delete comment
+module.exports.deleteComment = async (req, res) => {};

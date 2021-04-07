@@ -110,8 +110,8 @@ block dashboardContent
                                                                         a(class="btn btn-link text-dark bg-white dropdown-toggle" role="button" id="commentHandlerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
                                                                             i(class="fas fa-ellipsis-h")
                                                                         div(class="dropdown-menu dropdown-menu-right" aria-labelledby="commentHandlerDropdown")
-                                                                            button(class="dropdown-item btn btn-link editComment" data-commentUniqueId=comment.commentUniqueId) Edit
-                                                                            button(class="dropdown-item btn btn-link deleteComment" data-commentUniqueId=comment.commentUniqueId) Delete
+                                                                            button(class="dropdown-item btn btn-link editComment" data-postUniqueId=post.postUniqueId data-commentUniqueId=comment.commentUniqueId) Edit
+                                                                            button(class="dropdown-item btn btn-link deleteComment" data-postUniqueId=post.postUniqueId data-commentUniqueId=comment.commentUniqueId) Delete
                                                                 
                                                             small(class="ml-2 text-secondary") #{comment.commentTimeStamp}
 

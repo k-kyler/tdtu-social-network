@@ -512,11 +512,30 @@ $(document).ready(() => {
 
     // Display edit comment modal
     $("body").on("click", ".editComment", (event) => {
+        let commentUniqueId = event.target.dataset.commentuniqueid;
         let postUniqueId = event.target.dataset.postuniqueid;
 
         event.preventDefault();
 
+        $("#editCommentButton").attr("disabled", true);
+        $("#editCommentButton").attr("data-commentUniqueId", commentUniqueId);
+        $("#editCommentButton").attr("data-postUniqueId", postUniqueId);
+
+        fetch(`/dashboard/post/comment/${postUniqueId}/${commentUniqueId}`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#editGuestComment").val(result.data.guestComment);
+                }
+            })
+            .catch((error) => console.log(error));
+
         $("#editCommentModal").modal("toggle");
+    });
+
+    // Edit comment handler
+    $("body").on("click", "#editCommentButton", (event) => {
+        event.preventDefault();
     });
 
     // Client listen to the rendering message from server to render new post
@@ -864,8 +883,8 @@ $(document).ready(() => {
                                     <i class="fas fa-ellipsis-h"></i>                                
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="commentHandlerDropdown">
-                                    <button class="dropdown-item btn btn-link editComment" data-commentUniqueId=${commentUniqueId}>Edit</button>
-                                    <button class="dropdown-item btn btn-link deleteComment" data-commentUniqueId=${commentUniqueId}>Delete</button>
+                                    <button class="dropdown-item btn btn-link editComment" data-postUniqueId=${comment.postUniqueId} data-commentUniqueId=${commentUniqueId}>Edit</button>
+                                    <button class="dropdown-item btn btn-link deleteComment" data-postUniqueId=${comment.postUniqueId} data-commentUniqueId=${commentUniqueId}>Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -916,6 +935,8 @@ $(document).ready(() => {
             }),
         }).catch((error) => console.error(error));
     });
+
+    // Client listen to the rendering message from server to render update comment
 });
 
 // JavaScript code
