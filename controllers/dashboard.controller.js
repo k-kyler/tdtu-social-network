@@ -326,7 +326,7 @@ module.exports.addNewPost = async (req, res) => {
             message: "You have added new post!",
             alertId: shortid.generate(),
         });
-    } else if (!video.includes("https://www.youtube.com/embed/")) {
+    } else if (video && !video.includes("https://www.youtube.com/embed/")) {
         res.json({
             code: 0,
             message: "Invalid Youtube URL!",
@@ -348,7 +348,9 @@ module.exports.editPost = async (req, res) => {
         video &&
         video.includes("https://www.youtube.com/embed/") &&
         content !== "" &&
-        image
+        image &&
+        image !== "No image" &&
+        !image.includes("/uploads/")
     ) {
         let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
         let fetchResponse = await fetch(image);
@@ -377,12 +379,18 @@ module.exports.editPost = async (req, res) => {
                 imageURL: imageURL.split("./public")[1],
             });
         });
-    } else if (!video && image && content !== "") {
+    } else if (
+        video === "No video" &&
+        image &&
+        image !== "No image" &&
+        !image.includes("/uploads/") &&
+        content !== ""
+    ) {
         let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
         let fetchResponse = await fetch(image);
         let buffer = await fetchResponse.buffer();
 
-        let updatePostWithComment = await Post.findOneAndUpdate(
+        let updatePost = await Post.findOneAndUpdate(
             { postUniqueId },
             {
                 timestamp,
@@ -404,8 +412,8 @@ module.exports.editPost = async (req, res) => {
                 imageURL: imageURL.split("./public")[1],
             });
         });
-    } else if (!video && !image && content !== "") {
-        let updatePostWithComment = await Post.findOneAndUpdate(
+    } else if (video === "No video" && !image && content !== "") {
+        let updatePost = await Post.findOneAndUpdate(
             { postUniqueId },
             {
                 timestamp,
@@ -422,8 +430,13 @@ module.exports.editPost = async (req, res) => {
             alertId: shortid.generate(),
             ownerId: post.ownerId,
         });
-    } else if (video && !image && content !== "") {
-        let updatePostWithComment = await Post.findOneAndUpdate(
+    } else if (
+        video &&
+        video.includes("https://www.youtube.com/embed/") &&
+        (!image || image.includes("/uploads/")) &&
+        content !== ""
+    ) {
+        let updatePost = await Post.findOneAndUpdate(
             { postUniqueId },
             {
                 timestamp,
@@ -440,8 +453,79 @@ module.exports.editPost = async (req, res) => {
             message: "You have edited post!",
             alertId: shortid.generate(),
             ownerId: post.ownerId,
+            imageURL: image,
         });
-    } else if (!video.includes("https://www.youtube.com/embed/")) {
+    } else if (
+        video &&
+        video.includes("https://www.youtube.com/embed/") &&
+        image === "No image" &&
+        content !== ""
+    ) {
+        let updatePost = await Post.findOneAndUpdate(
+            { postUniqueId },
+            {
+                timestamp,
+                content,
+                video,
+                image: "",
+            },
+            {
+                new: true,
+            }
+        );
+
+        res.json({
+            code: 1,
+            message: "You have edited post!",
+            alertId: shortid.generate(),
+            ownerId: post.ownerId,
+        });
+    } else if (video === "No video" && image === "No image" && content !== "") {
+        let updatePost = await Post.findOneAndUpdate(
+            { postUniqueId },
+            {
+                timestamp,
+                content,
+                video: "",
+                image: "",
+            },
+            {
+                new: true,
+            }
+        );
+
+        res.json({
+            code: 1,
+            message: "You have edited post!",
+            alertId: shortid.generate(),
+            ownerId: post.ownerId,
+        });
+    } else if (
+        video === "No video" &&
+        image &&
+        image.includes("/uploads/") &&
+        content !== ""
+    ) {
+        let updatePost = await Post.findOneAndUpdate(
+            { postUniqueId },
+            {
+                timestamp,
+                content,
+                video: "",
+            },
+            {
+                new: true,
+            }
+        );
+
+        res.json({
+            code: 1,
+            message: "You have edited post!",
+            alertId: shortid.generate(),
+            ownerId: post.ownerId,
+            imageURL: image,
+        });
+    } else if (video && !video.includes("https://www.youtube.com/embed/")) {
         res.json({
             code: 0,
             message: "Invalid Youtube URL!",

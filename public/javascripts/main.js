@@ -217,6 +217,13 @@ $(document).ready(() => {
             .then((result) => {
                 if (result.code === 1) {
                     $("#editPostContent").val(result.data.content);
+                    $("#editPostButton").attr("disabled", true);
+                    $("#editPostImageReview").removeAttr("src");
+                    $("#editPostImageReview").removeAttr("class");
+                    $("#editPostImageName").html("Add to post");
+                    $("#editPostClearImage").css("visibility", "hidden");
+                    $("#editPostVideo").val("");
+                    $("#errorEditPost").html("");
 
                     if (result.data.image) {
                         $("#editPostImageReview").attr(
@@ -227,6 +234,7 @@ $(document).ready(() => {
                         $("#editPostImageName").html(
                             result.data.image.split("/uploads/")[1]
                         );
+                        $("#editPostClearImage").css("visibility", "visible");
                     }
 
                     if (result.data.video) {
@@ -235,8 +243,6 @@ $(document).ready(() => {
                                 "watch?v=" +
                                 result.data.video.split("embed/")[1]
                         );
-                    } else if (!result.data.video) {
-                        $("#editPostVideo").val("");
                     }
                 }
             })
@@ -272,8 +278,9 @@ $(document).ready(() => {
                     timestamp,
                     image: $("#editHiddenImageURL").val()
                         ? $("#editHiddenImageURL").val()
-                        : $("#editPostImageReview").attr("src"),
-                    video,
+                        : $("#editPostImageReview").attr("src")
+                        ? $("#editPostImageReview").attr("src")
+                        : "No image",
                     postUniqueId,
                 });
 
@@ -287,7 +294,12 @@ $(document).ready(() => {
                         postUniqueId,
                         content: content.val(),
                         timestamp,
-                        image: $("#editHiddenImageURL").val(),
+                        video: "No video",
+                        image: $("#editHiddenImageURL").val()
+                            ? $("#editHiddenImageURL").val()
+                            : $("#editPostImageReview").attr("src")
+                            ? $("#editPostImageReview").attr("src")
+                            : "No image",
                     }),
                 })
                     .then((response) => response.json())
@@ -297,6 +309,7 @@ $(document).ready(() => {
                                 result.ownerId ==
                                 document.getElementById("userObjectId").value
                             ) {
+                                // Display alert
                                 $("#alertContainer").prepend(`
                                     <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
                                         <i class="far fa-bell h5 mr-2"></i>
@@ -310,10 +323,14 @@ $(document).ready(() => {
                                     $(`.${result.alertId}`).alert("close");
                                 }, 4000);
 
+                                // Render back the edit image
                                 $(`#${postUniqueId} .post-image`).attr(
                                     "src",
                                     result.imageURL
                                 );
+
+                                // Remove old edit hidden image URL input
+                                $("#editHiddenImageURL").remove();
                             }
                         } else {
                             $("#errorEditPost").html(result.message);
@@ -326,6 +343,7 @@ $(document).ready(() => {
                 $("#editPostImageReview").removeAttr("src");
                 $("#editPostImageReview").removeAttr("class");
                 $("#editPostImageName").html("Add to post");
+                $("#editPostClearImage").css("visibility", "hidden");
                 $("#editPostImage").val("");
                 $("#editPostModal").modal("hide");
             } else {
@@ -343,7 +361,9 @@ $(document).ready(() => {
                     timestamp,
                     image: $("#editHiddenImageURL").val()
                         ? $("#editHiddenImageURL").val()
-                        : $("#editPostImageReview").attr("src"),
+                        : $("#editPostImageReview").attr("src")
+                        ? $("#editPostImageReview").attr("src")
+                        : "No image",
                     video:
                         video.split("watch?v=")[0] +
                         "embed/" +
@@ -360,7 +380,11 @@ $(document).ready(() => {
                         postUniqueId,
                         content: content.val(),
                         timestamp,
-                        image: $("#editHiddenImageURL").val(),
+                        image: $("#editHiddenImageURL").val()
+                            ? $("#editHiddenImageURL").val()
+                            : $("#editPostImageReview").attr("src")
+                            ? $("#editPostImageReview").attr("src")
+                            : "No image",
                         video:
                             video.split("watch?v=")[0] +
                             "embed/" +
@@ -374,6 +398,7 @@ $(document).ready(() => {
                                 result.ownerId ==
                                 document.getElementById("userObjectId").value
                             ) {
+                                // Display alert
                                 $("#alertContainer").prepend(`
                                     <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
                                         <i class="far fa-bell h5 mr-2"></i>
@@ -387,10 +412,14 @@ $(document).ready(() => {
                                     $(`.${result.alertId}`).alert("close");
                                 }, 4000);
 
+                                // Render back the edit image
                                 $(`#${postUniqueId} .post-image`).attr(
                                     "src",
                                     result.imageURL
                                 );
+
+                                // Remove old edit hidden image URL input
+                                $("#editHiddenImageURL").remove();
                             }
                         } else {
                             $("#errorEditPost").html(result.message);
@@ -400,8 +429,10 @@ $(document).ready(() => {
 
                 // Clear old and close modal
                 content.val("");
+                $("#editPostImageReview").removeAttr("src");
                 $("#editPostImageReview").removeAttr("class");
                 $("#editPostImageName").html("Add to post");
+                $("#editPostClearImage").css("visibility", "hidden");
                 $("#editPostImage").val("");
                 $("#editPostModal").modal("hide");
             } else {
@@ -741,7 +772,9 @@ $(document).ready(() => {
             $(`#${updatePost.postUniqueId} #imageAndVideoContainer`).html("");
             $(`#${updatePost.postUniqueId} #imageAndVideoContainer`).append(`
                 ${
-                    updatePost.image && updatePost.video
+                    updatePost.image &&
+                    updatePost.image !== "No image" &&
+                    updatePost.video
                         ? `
                         <div class="row">
                             <div class="px-0 col-md-6">
@@ -752,7 +785,9 @@ $(document).ready(() => {
                             </div>
                         </div>   
                     `
-                        : !updatePost.image && updatePost.video
+                        : (!updatePost.image ||
+                              updatePost.image === "No image") &&
+                          updatePost.video
                         ? `
                         <div class="row">
                             <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
@@ -760,7 +795,9 @@ $(document).ready(() => {
                             </div>
                         </div>
                     `
-                        : updatePost.image && !updatePost.video
+                        : updatePost.image &&
+                          updatePost.image !== "No image" &&
+                          !updatePost.video
                         ? `
                         <div class="row">
                             <div class="px-0 col-md-12">
@@ -773,7 +810,16 @@ $(document).ready(() => {
                     `
                 }
             `);
+        } else if (updatePost.image === "No image" && !updatePost.video) {
+            $(`#${updatePost.postUniqueId} #imageAndVideoContainer`).html("");
+            $(`#${updatePost.postUniqueId} .timestamp-post`).html(
+                updatePost.timestamp
+            );
+            $(`#${updatePost.postUniqueId} .post-content`).html(
+                updatePost.content
+            );
         } else if (!updatePost.video && !updatePost.image) {
+            $(`#${updatePost.postUniqueId} #imageAndVideoContainer`).html("");
             $(`#${updatePost.postUniqueId} .timestamp-post`).html(
                 updatePost.timestamp
             );
@@ -1069,6 +1115,10 @@ document.getElementById("content").addEventListener("keyup", (event) => {
     }
 });
 
+document.getElementById("video").addEventListener("keyup", (event) => {
+    document.getElementById("modalPostButton").removeAttribute("disabled");
+});
+
 // Edit post content and video on change handler
 document
     .getElementById("editPostContent")
@@ -1085,13 +1135,7 @@ document
     });
 
 document.getElementById("editPostVideo").addEventListener("keyup", (event) => {
-    if (event.target.value) {
-        document.getElementById("editPostButton").removeAttribute("disabled");
-    } else {
-        document
-            .getElementById("editPostButton")
-            .setAttribute("disabled", true);
-    }
+    document.getElementById("editPostButton").removeAttribute("disabled");
 });
 
 // Upload post image to file.io API when choosing image handler
@@ -1335,3 +1379,15 @@ function editPostImageReviewHandler(image) {
         imageReader.readAsDataURL(image.files[0]);
     }
 }
+
+// Clear image of edit post modal handler
+document.getElementById("editPostClearImage").style.visibility = "hidden";
+
+document.getElementById("editPostClearImage").addEventListener("click", () => {
+    document.getElementById("editPostImageName").innerHTML = "";
+    document.getElementById("editPostImageName").innerHTML = "Add to post";
+    document.getElementById("editPostImageReview").removeAttribute("src");
+    document.getElementById("editPostImageReview").removeAttribute("class");
+    document.getElementById("editPostClearImage").style.visibility = "hidden";
+    document.getElementById("editPostButton").removeAttribute("disabled");
+});

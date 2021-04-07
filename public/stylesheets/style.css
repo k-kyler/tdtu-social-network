@@ -477,11 +477,6 @@ hr {
     border: 100px solid #f1f2f5;
 }
 
-/* Text primary */
-.btn-primary {
-    cursor: pointer !important;
-}
-
 /* Alert container */
 #alertContainer {
     position: absolute;
@@ -534,7 +529,12 @@ hr {
     font-size: x-large;
 }
 
-.addToPost__container i:hover {
+#editPostClearImage {
+    font-size: large;
+}
+
+.addToPost__container i:hover,
+#editPostClearImage:hover {
     opacity: 0.6;
     transition: all 0.4s ease-in-out;
 }
