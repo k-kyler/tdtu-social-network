@@ -105,15 +105,6 @@ $(document).ready(() => {
         $("#btnUpdateManagement").attr("disabled", false);
     });
 
-    // Display post modal handler
-    $("#textThinking").click(() => {
-        $("#postModal").modal("toggle");
-    });
-
-    $("#postModal").on("shown.bs.modal", () => {
-        $("#content").trigger("focus");
-    });
-
     // Display notification details modal
     $(".NotifDetails").click(() => {
         $("#NotifDetailsModal").modal("toggle");
@@ -127,6 +118,21 @@ $(document).ready(() => {
     // Display editManagement user modal
     $(".EditManagement").click(() => {
         $("#EditManagementModal").modal("toggle");
+    });
+
+    // Display post modal and focus on content field
+    $("#textThinking").click(() => {
+        $("#postClearImage").css("visibility", "hidden");
+        $("#postModal").modal("toggle");
+    });
+
+    $("#postModal").on("shown.bs.modal", () => {
+        $("#content").trigger("focus");
+    });
+
+    // Post image review and name of on change event handler
+    $("body").on("change", "#postImage", (event) => {
+        $("#postClearImage").css("visibility", "visible");
     });
 
     // Post handler
@@ -737,6 +743,7 @@ $(document).ready(() => {
                         post.ownerId ==
                         document.getElementById("userObjectId").value
                     ) {
+                        // Display alert
                         $("#alertContainer").prepend(`
                             <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
                                 <i class="far fa-bell h5 mr-2"></i>
@@ -750,10 +757,14 @@ $(document).ready(() => {
                             $(`.${result.alertId}`).alert("close");
                         }, 4000);
 
+                        // Render back the post image
                         $(`#${postUniqueId} .post-image`).attr(
                             "src",
                             result.imageURL
                         );
+
+                        // Remove old post hidden image URL input
+                        $("#hiddenImageURL").remove();
                     }
                 }
             })
@@ -1379,6 +1390,16 @@ function editPostImageReviewHandler(image) {
         imageReader.readAsDataURL(image.files[0]);
     }
 }
+
+// Clear image of post modal handler
+document.getElementById("postClearImage").addEventListener("click", () => {
+    document.getElementById("postImageName").innerHTML = "";
+    document.getElementById("postImageName").innerHTML = "Add to post";
+    document.getElementById("postImageReview").removeAttribute("src");
+    document.getElementById("postImageReview").removeAttribute("class");
+    document.getElementById("postClearImage").style.visibility = "hidden";
+    document.getElementById("hiddenImageURL").remove();
+});
 
 // Clear image of edit post modal handler
 document.getElementById("editPostClearImage").style.visibility = "hidden";

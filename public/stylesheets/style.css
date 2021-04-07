@@ -491,6 +491,10 @@ hr {
 }
 
 /* Progress bar */
+.progress {
+    height: 0.5rem;
+}
+
 .progressBar-2 {
     background: #8e2de2;
     background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
@@ -529,12 +533,14 @@ hr {
     font-size: x-large;
 }
 
-#editPostClearImage {
+#editPostClearImage,
+#postClearImage {
     font-size: large;
 }
 
 .addToPost__container i:hover,
-#editPostClearImage:hover {
+#editPostClearImage:hover,
+#postClearImage:hover {
     opacity: 0.6;
     transition: all 0.4s ease-in-out;
 }
