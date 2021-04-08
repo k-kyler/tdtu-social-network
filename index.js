@@ -80,6 +80,11 @@ io.on("connection", (socket) => {
     socket.on("Update comment", (updateComment) => {
         io.sockets.emit("Rendering update comment", updateComment);
     });
+
+    // Server wait for emitting message from client to allow client to delete comment
+    socket.on("Delete comment", (commentUniqueId) => {
+        io.sockets.emit("Deleting comment", commentUniqueId);
+    });
 });
 
 // Default app endpoint

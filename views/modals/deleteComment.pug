@@ -1,0 +1,11 @@
+//- Delete comment modal
+#deleteCommentModal.modal.fade(role='dialog')
+    .modal-dialog.modal-lg(role='content')
+        .modal-content
+            .modal-header
+                h4.modal-title Do you really want to delete this comment?
+                button.close(type='close', data-dismiss='modal') &times;
+            .modal-body
+                    div.d-flex.justify-content-end
+                        button(type="button" class="btn btn-danger", id="deleteCommentButton") Confirm
+                        button(class="btn btn-default ml-3", data-dismiss="modal") Close

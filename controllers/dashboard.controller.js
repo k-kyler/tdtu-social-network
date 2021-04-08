@@ -260,7 +260,7 @@ module.exports.addNewPost = async (req, res) => {
         fs.writeFile(imageURL, buffer, () => {
             res.json({
                 code: 1,
-                message: "You have added new post!",
+                message: "You have added new post",
                 alertId: shortid.generate(),
                 imageURL: imageURL.split("./public")[1],
             });
@@ -286,7 +286,7 @@ module.exports.addNewPost = async (req, res) => {
         fs.writeFile(imageURL, buffer, () => {
             res.json({
                 code: 1,
-                message: "You have added new post!",
+                message: "You have added new post",
                 alertId: shortid.generate(),
                 imageURL: imageURL.split("./public")[1],
             });
@@ -305,7 +305,7 @@ module.exports.addNewPost = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have added new post!",
+            message: "You have added new post",
             alertId: shortid.generate(),
         });
     } else if (video && !image && content !== "") {
@@ -323,7 +323,7 @@ module.exports.addNewPost = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have added new post!",
+            message: "You have added new post",
             alertId: shortid.generate(),
         });
     } else if (video && !video.includes("https://www.youtube.com/embed/")) {
@@ -373,7 +373,7 @@ module.exports.editPost = async (req, res) => {
         fs.writeFile(imageURL, buffer, () => {
             res.json({
                 code: 1,
-                message: "You have edited post!",
+                message: "You have edited post",
                 alertId: shortid.generate(),
                 ownerId: post.ownerId,
                 imageURL: imageURL.split("./public")[1],
@@ -406,7 +406,7 @@ module.exports.editPost = async (req, res) => {
         fs.writeFile(imageURL, buffer, () => {
             res.json({
                 code: 1,
-                message: "You have edited post!",
+                message: "You have edited post",
                 alertId: shortid.generate(),
                 ownerId: post.ownerId,
                 imageURL: imageURL.split("./public")[1],
@@ -426,7 +426,7 @@ module.exports.editPost = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have edited post!",
+            message: "You have edited post",
             alertId: shortid.generate(),
             ownerId: post.ownerId,
         });
@@ -450,7 +450,7 @@ module.exports.editPost = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have edited post!",
+            message: "You have edited post",
             alertId: shortid.generate(),
             ownerId: post.ownerId,
             imageURL: image,
@@ -476,7 +476,7 @@ module.exports.editPost = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have edited post!",
+            message: "You have edited post",
             alertId: shortid.generate(),
             ownerId: post.ownerId,
         });
@@ -496,7 +496,7 @@ module.exports.editPost = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have edited post!",
+            message: "You have edited post",
             alertId: shortid.generate(),
             ownerId: post.ownerId,
         });
@@ -520,7 +520,7 @@ module.exports.editPost = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have edited post!",
+            message: "You have edited post",
             alertId: shortid.generate(),
             ownerId: post.ownerId,
             imageURL: image,
@@ -546,7 +546,7 @@ module.exports.deletePost = async (req, res) => {
 
     res.json({
         code: 1,
-        message: "Delete post successful!",
+        message: "Delete post successful",
         alertId: shortid.generate(),
         ownerId: post.ownerId,
     });
@@ -595,7 +595,7 @@ module.exports.addNewComment = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have added new comment!",
+            message: "You have added new comment",
         });
     } else {
         res.json({
@@ -606,7 +606,78 @@ module.exports.addNewComment = async (req, res) => {
 };
 
 // Edit comment
-module.exports.editComment = async (req, res) => {};
+module.exports.editComment = async (req, res) => {
+    let {
+        postUniqueId,
+        commentUniqueId,
+        commentTimeStamp,
+        guestComment,
+    } = req.body;
+    let post = await Post.findOne({ postUniqueId });
+
+    if (guestComment) {
+        let comments = post.comment;
+        let commentIndex = comments.findIndex(
+            (comment) => comment.commentUniqueId === commentUniqueId
+        );
+
+        let updateComment = await Post.findOneAndUpdate(
+            {
+                postUniqueId: req.body.postUniqueId,
+                comment: { $elemMatch: { commentUniqueId } },
+            },
+            {
+                $set: {
+                    "comment.$.guestComment": guestComment,
+                    "comment.$.commentTimeStamp": commentTimeStamp,
+                },
+            },
+            {
+                new: true,
+            }
+        );
+
+        res.json({
+            code: 1,
+            guestId: comments[commentIndex].guestId,
+            message: "You have edited comment",
+            alertId: shortid.generate(),
+        });
+    } else {
+        res.json({
+            code: 0,
+            message: "Comment can not be empty!",
+        });
+    }
+};
 
 // Delete comment
-module.exports.deleteComment = async (req, res) => {};
+module.exports.deleteComment = async (req, res) => {
+    let { postUniqueId, commentUniqueId } = req.params;
+    let post = await Post.findOne({ postUniqueId });
+    let comments = post.comment;
+    let commentIndex = comments.findIndex(
+        (comment) => comment.commentUniqueId === commentUniqueId
+    );
+    let guestId = comments[commentIndex].guestId;
+
+    let deleteComment = Post.updateOne(
+        {
+            postUniqueId,
+        },
+        {
+            $pullAll: {
+                comment: [comments[commentIndex]],
+            },
+        }
+    );
+
+    deleteComment.exec();
+
+    res.json({
+        code: 1,
+        message: "Delete comment successful",
+        alertId: shortid.generate(),
+        guestId,
+    });
+};

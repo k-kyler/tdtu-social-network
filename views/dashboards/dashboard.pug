@@ -52,7 +52,8 @@ block dashboardContent
                                             div(class="d-flex align-items-center justify-content-between")
                                                 div
                                                     strong= post.name
-                                                    p(class="mb-0 text-secondary timestamp-post")= post.timestamp
+                                                    p(class="mb-0")
+                                                        small(class="text-secondary timestamp-post")= post.timestamp
 
                                                 if post.ownerId == user._id
                                                     div(class="dropdown show")

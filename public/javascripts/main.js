@@ -317,8 +317,8 @@ $(document).ready(() => {
                             ) {
                                 // Display alert
                                 $("#alertContainer").prepend(`
-                                    <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                        <i class="far fa-bell h5 mr-2"></i>
+                                    <div class="alert alert-success alert-dismissible fade show ${result.alertId}" role="alert">
+                                        <i class="fas fa-bell h5 mr-2 text-warning"></i>
                                         <span>${result.message}</span>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -406,8 +406,8 @@ $(document).ready(() => {
                             ) {
                                 // Display alert
                                 $("#alertContainer").prepend(`
-                                    <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                        <i class="far fa-bell h5 mr-2"></i>
+                                    <div class="alert alert-success alert-dismissible fade show ${result.alertId}" role="alert">
+                                        <i class="fas fa-bell h5 mr-2 text-warning"></i>
                                         <span>${result.message}</span>
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -477,9 +477,10 @@ $(document).ready(() => {
                         result.ownerId ==
                         document.getElementById("userObjectId").value
                     ) {
+                        // Display alert
                         $("#alertContainer").prepend(`
-                            <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                <i class="far fa-bell h5 mr-2"></i>
+                            <div class="alert alert-success alert-dismissible fade show ${result.alertId}" role="alert">
+                                <i class="fas fa-bell h5 mr-2 text-warning"></i>
                                 <span>${result.message}</span>                                                                   
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -517,6 +518,7 @@ $(document).ready(() => {
 
         event.preventDefault();
 
+        $("#editCommentContent").val("");
         $("#editCommentButton").attr("disabled", true);
         $("#editCommentButton").attr("data-commentUniqueId", commentUniqueId);
         $("#editCommentButton").attr("data-postUniqueId", postUniqueId);
@@ -525,7 +527,7 @@ $(document).ready(() => {
             .then((response) => response.json())
             .then((result) => {
                 if (result.code === 1) {
-                    $("#editGuestComment").val(result.data.guestComment);
+                    $("#editCommentContent").val(result.data.guestComment);
                 }
             })
             .catch((error) => console.log(error));
@@ -533,9 +535,140 @@ $(document).ready(() => {
         $("#editCommentModal").modal("toggle");
     });
 
+    // Edit comment content input on key up event handler
+    $("body").on("keyup", "#editCommentContent", (event) => {
+        if (event.target.value) {
+            $("#editCommentButton").attr("disabled", false);
+        } else {
+            $("#editCommentButton").attr("disabled", true);
+        }
+    });
+
     // Edit comment handler
     $("body").on("click", "#editCommentButton", (event) => {
+        let commentUniqueId = event.target.dataset.commentuniqueid;
+        let postUniqueId = event.target.dataset.postuniqueid;
+        let editCommentContent = $("#editCommentContent");
+        let timestamp =
+            "Modified - " +
+            new Date().toLocaleDateString() +
+            ", " +
+            new Date().toLocaleTimeString();
+
         event.preventDefault();
+
+        if (editCommentContent.val()) {
+            $("#errorEditComment").html("");
+
+            // Emitting an message to announce server to edit comment
+            socket.emit("Update comment", {
+                commentUniqueId,
+                guestComment: editCommentContent.val(),
+                commentTimeStamp: timestamp,
+            });
+
+            // Send request to store edit comment content in db
+            fetch(`/dashboard/post/comment/edit`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: "PUT",
+                body: JSON.stringify({
+                    postUniqueId,
+                    commentUniqueId,
+                    guestComment: editCommentContent.val(),
+                    commentTimeStamp: timestamp,
+                }),
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    if (result.code === 1) {
+                        if (
+                            result.guestId ==
+                            document.getElementById("userObjectId").value
+                        ) {
+                            // Display alert
+                            $("#alertContainer").prepend(`
+                                <div class="alert alert-success alert-dismissible fade show ${result.alertId}" role="alert">
+                                    <i class="fas fa-bell h5 mr-2 text-warning"></i>
+                                    <span>${result.message}</span>                                                                   
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                            `);
+                            setTimeout(() => {
+                                $(`.${result.alertId}`).alert("close");
+                            }, 4000);
+
+                            $("#editCommentModal").modal("hide");
+                        }
+                    }
+                })
+                .catch((error) => console.log(error));
+        } else {
+            $("#errorEditComment").html("Comment can not be empty!");
+        }
+    });
+
+    // Display delete comment modal
+    $("body").on("click", ".deleteComment", (event) => {
+        let postUniqueId = event.target.dataset.postuniqueid;
+        let commentUniqueId = event.target.dataset.commentuniqueid;
+
+        event.preventDefault();
+
+        $("#deleteCommentButton").attr("data-postUniqueId", postUniqueId);
+        $("#deleteCommentButton").attr("data-commentUniqueId", commentUniqueId);
+
+        $("#deleteCommentModal").modal("toggle");
+    });
+
+    // Delete comment handler
+    $("body").on("click", "#deleteCommentButton", (event) => {
+        let postUniqueId = event.target.dataset.postuniqueid;
+        let commentUniqueId = event.target.dataset.commentuniqueid;
+
+        event.preventDefault();
+
+        fetch(
+            `/dashboard/post/comment/delete/${postUniqueId}/${commentUniqueId}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: "DELETE",
+            }
+        )
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    if (
+                        result.guestId ==
+                        document.getElementById("userObjectId").value
+                    ) {
+                        // Display alert
+                        $("#alertContainer").prepend(`
+                            <div class="alert alert-success alert-dismissible fade show ${result.alertId}" role="alert">
+                                <i class="fas fa-bell h5 mr-2 text-warning"></i>
+                                <span>${result.message}</span>                                                                   
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                        setTimeout(() => {
+                            $(`.${result.alertId}`).alert("close");
+                        }, 4000);
+
+                        $("#deleteCommentModal").modal("hide");
+
+                        // Emitting an message to announce server to delete comment
+                        socket.emit("Delete comment", commentUniqueId);
+                    }
+                }
+            })
+            .catch((error) => console.log(error));
     });
 
     // Client listen to the rendering message from server to render new post
@@ -553,8 +686,10 @@ $(document).ready(() => {
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
                                     <strong>${post.name}</strong>
-                                    <p class="mb-0 text-secondary timestamp-post">
-                                        ${post.timestamp}
+                                    <p class="mb-0">
+                                        <small class="text-secondary timestamp-post">${
+                                            post.timestamp
+                                        }</small>
                                     </p>
                                 </div>
                                 <div class="dropdown show">
@@ -764,8 +899,8 @@ $(document).ready(() => {
                     ) {
                         // Display alert
                         $("#alertContainer").prepend(`
-                            <div class="alert alert-primary alert-dismissible fade show ${result.alertId}" role="alert">
-                                <i class="far fa-bell h5 mr-2"></i>
+                            <div class="alert alert-success alert-dismissible fade show ${result.alertId}" role="alert">
+                                <i class="fas fa-bell h5 mr-2 text-warning"></i>
                                 <span>${result.message}</span>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -937,6 +1072,19 @@ $(document).ready(() => {
     });
 
     // Client listen to the rendering message from server to render update comment
+    socket.on("Rendering update comment", (updateComment) => {
+        $(`#${updateComment.commentUniqueId} p`).html(
+            updateComment.guestComment
+        );
+        $(`#${updateComment.commentUniqueId} small`).html(
+            updateComment.commentTimeStamp
+        );
+    });
+
+    // Client listen to the deleting message from server to delete comment
+    socket.on("Deleting comment", (commentUniqueId) => {
+        $(`#${commentUniqueId}`).remove();
+    });
 });
 
 // JavaScript code

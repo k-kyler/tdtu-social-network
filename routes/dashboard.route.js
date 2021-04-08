@@ -24,7 +24,7 @@ router.get(
 router.put("/post", controller.addNewComment);
 router.put("/post/comment/edit", controller.editComment);
 router.delete(
-    "/post/comment/delete/:commentUniqueId",
+    "/post/comment/delete/:postUniqueId/:commentUniqueId",
     controller.deleteComment
 );
 

@@ -9,7 +9,10 @@
                 form
                     .form-group.row
                         .col-md-12
-                            input(type="text", class="form-control", autocomplete="off", id="editGuestComment")
+                            input(type="text", class="form-control", autocomplete="off", id="editCommentContent")
+                    .form-group.row.mb-0
+                            .col-md-12
+                                p(id="errorEditComment" class="text-center text-danger")
                     .form-group.row
                         .col-md-12.justify-content-end.d-flex
                             button(class="btn btn-primary", id="editCommentButton") Update
