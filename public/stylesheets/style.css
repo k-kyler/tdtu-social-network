@@ -1,13 +1,21 @@
+/* All colors and background colors */
+:root {
+    --main-background-color: #f1f2f5;
+    --index-background-color: #402aa3;
+    --linear-background-color1: #4a00e0;
+    --linear-background-color2: #8e2de2;
+}
+
 /* Body */
 body {
-    background-color: #f1f2f5;
+    background-color: var(--main-background-color);
 }
 
 /*----------*/
 /* Home page*/
 /*----------*/
 .bg-homebar {
-    background-color: #402aa3;
+    background-color: var(--index-background-color);
 }
 .bg-homebar img {
     width: 50px;
@@ -53,7 +61,7 @@ body {
 #textfocus {
     padding: 8px;
     margin-top: 30px;
-    background-color: #402aa3;
+    background-color: var(--index-background-color);
     color: white;
     text-align: center;
     border-radius: 10px;
@@ -74,7 +82,7 @@ body {
     text-align: center;
     letter-spacing: 2px;
     padding: 30px;
-    background-color: #402aa3;
+    background-color: var(--index-background-color);
     color: white;
     margin-top: 50px;
 }
@@ -184,7 +192,7 @@ h4 {
 }
 
 .login > form > p > span {
-    background: #f1f2f5;
+    background: var(--main-background-color);
 }
 
 /*-----------------*/
@@ -195,7 +203,7 @@ h4 {
 }
 .dashboard__content {
     height: 100vh;
-    background-color: #f1f2f5;
+    background-color: var(--main-background-color);
 }
 .dashboard__sideMenu,
 .dashboard__contentUsersForm,
@@ -223,13 +231,21 @@ h4 {
     border-radius: 6px;
 }
 .dashboard__sideMenuFunction:hover {
-    background-color: #f1f2f5;
+    background-color: var(--main-background-color);
     transition: all 0.3s ease-in-out;
 }
 .dashboard__sideMenuFunction--active {
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
     color: white !important;
 }
 .dashboard__content {
@@ -250,14 +266,14 @@ h4 {
 }
 #textThinking {
     cursor: pointer;
-    background-color: #f1f2f5;
+    background-color: var(--main-background-color);
 }
 .dashboard__contentUsersList img {
     border-radius: 50px;
 }
 .commentInput,
 .commentContainerStyles > div {
-    background-color: #f1f2f5;
+    background-color: var(--main-background-color);
 }
 .commentContainerStyles > div {
     border-radius: 12px;
@@ -338,9 +354,17 @@ h4 {
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 500ms ease-in;
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
     color: white !important;
     border-radius: 8px;
 }
@@ -375,9 +399,17 @@ hr {
 .dashboard__contentCommunicationComment::-webkit-scrollbar-thumb {
     border: 0;
     border-radius: 12px;
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
 }
 .dashboard__contentCommunication > p {
     word-wrap: break-word;
@@ -433,9 +465,17 @@ hr {
 .tableNotifListScroll::-webkit-scrollbar-thumb {
     border: 0;
     border-radius: 12px;
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
 }
 .tableNotifList > tbody > tr:hover {
     background-color: #f1f1f1;
@@ -462,14 +502,17 @@ hr {
     border: 0;
     height: 2rem;
     border-radius: 12px;
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
-}
-
-/* Web scrollbar config */
-::-webkit-scrollbar {
-    width: 0.5rem;
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
 }
 
 /* Alert container */
@@ -491,30 +534,62 @@ hr {
 }
 
 .progressBar-2 {
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
     width: 25%;
 }
 
 .progressBar-3 {
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
     width: 50%;
 }
 
 .progressBar-4 {
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
     width: 75%;
 }
 
 .progressBar-5 {
-    background: #8e2de2;
-    background: -webkit-linear-gradient(to right, #4a00e0, #8e2de2);
-    background: linear-gradient(to right, #4a00e0, #8e2de2);
+    background: var(--linear-background-color2);
+    background: -webkit-linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
+    background: linear-gradient(
+        to right,
+        var(--linear-background-color1),
+        var(--linear-background-color2)
+    );
     width: 100%;
 }
 

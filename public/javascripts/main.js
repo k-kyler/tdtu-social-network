@@ -1201,117 +1201,121 @@ function displayAvatarHandler(avatar) {
 }
 
 // Edit info form handler
-document.getElementById("btnUpdate").addEventListener("click", (event) => {
-    event.preventDefault();
+if (document.getElementById("btnUpdate")) {
+    document.getElementById("btnUpdate").addEventListener("click", (event) => {
+        event.preventDefault();
 
-    let userName = document.getElementById("userName");
-    let userPhone = document.getElementById("userPhone");
-    let newPassword = document.getElementById("newPassword");
-    let studentClass = document.getElementById("class");
-    let studentFaculty = document.getElementById("faculty");
-    let hiddenNewAvatarURL = document.getElementById("hiddenNewAvatarURL");
-    let btnUpdate = document.getElementById("btnUpdate");
-    let btnDefault = document.getElementById("btnDefault");
-    let messageError = document.getElementById("updateInfoError");
-    let messageSuccess = document.getElementById("updateInfoSuccess");
+        let userName = document.getElementById("userName");
+        let userPhone = document.getElementById("userPhone");
+        let newPassword = document.getElementById("newPassword");
+        let studentClass = document.getElementById("class");
+        let studentFaculty = document.getElementById("faculty");
+        let hiddenNewAvatarURL = document.getElementById("hiddenNewAvatarURL");
+        let btnUpdate = document.getElementById("btnUpdate");
+        let btnDefault = document.getElementById("btnDefault");
+        let messageError = document.getElementById("updateInfoError");
+        let messageSuccess = document.getElementById("updateInfoSuccess");
 
-    fetch("/dashboard/info", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            hiddenNewAvatarURL: hiddenNewAvatarURL
-                ? hiddenNewAvatarURL.value
-                : "",
-            userName: userName ? userName.value : "",
-            userPhone: userPhone ? userPhone.value : "",
-            newPassword: newPassword ? newPassword.value : "",
-            studentClass: studentClass ? studentClass.value : "",
-            studentFaculty: studentFaculty ? studentFaculty.value : "",
-        }),
-    })
-        .then((res) => res.json())
-        .then((result) => {
-            if (result.code === 1) {
-                messageError.innerHTML = "";
-                messageSuccess.innerHTML = result.message;
-                userName.setAttribute("disabled", "disabled");
-                userPhone.setAttribute("disabled", "disabled");
-                btnUpdate.setAttribute("disabled", "disabled");
-                btnDefault.setAttribute("disabled", "disabled");
-
-                if (newPassword) {
-                    newPassword.setAttribute("disabled", "disabled");
-                }
-
-                if (studentClass) {
-                    studentClass.setAttribute("disabled", "disabled");
-                }
-
-                if (studentFaculty) {
-                    studentFaculty.setAttribute("disabled", "disabled");
-                }
-
-                setTimeout(() => {
-                    window.location.href = "/dashboard";
-                }, 1500);
-            } else if (result.code === 0) {
-                messageSuccess.innerHTML = "";
-                messageError.innerHTML = result.message;
-            } else {
-                messageError.innerHTML = "";
-            }
+        fetch("/dashboard/info", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                hiddenNewAvatarURL: hiddenNewAvatarURL
+                    ? hiddenNewAvatarURL.value
+                    : "",
+                userName: userName ? userName.value : "",
+                userPhone: userPhone ? userPhone.value : "",
+                newPassword: newPassword ? newPassword.value : "",
+                studentClass: studentClass ? studentClass.value : "",
+                studentFaculty: studentFaculty ? studentFaculty.value : "",
+            }),
         })
-        .catch((error) => console.error(error));
-});
+            .then((res) => res.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    messageError.innerHTML = "";
+                    messageSuccess.innerHTML = result.message;
+                    userName.setAttribute("disabled", "disabled");
+                    userPhone.setAttribute("disabled", "disabled");
+                    btnUpdate.setAttribute("disabled", "disabled");
+                    btnDefault.setAttribute("disabled", "disabled");
+
+                    if (newPassword) {
+                        newPassword.setAttribute("disabled", "disabled");
+                    }
+
+                    if (studentClass) {
+                        studentClass.setAttribute("disabled", "disabled");
+                    }
+
+                    if (studentFaculty) {
+                        studentFaculty.setAttribute("disabled", "disabled");
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = "/dashboard";
+                    }, 1500);
+                } else if (result.code === 0) {
+                    messageSuccess.innerHTML = "";
+                    messageError.innerHTML = result.message;
+                } else {
+                    messageError.innerHTML = "";
+                }
+            })
+            .catch((error) => console.error(error));
+    });
+}
 
 // Upload edit info form avatar to file.io API when choosing image handler
 let newAvatarInput = document.getElementById("newAvatar");
 
-newAvatarInput.addEventListener("change", (event) => {
-    document.getElementById("btnUpdate").setAttribute("disabled", true);
-    document.getElementById("btnDefault").setAttribute("disabled", true);
-    document.getElementById("uploadNewAvatar").innerHTML = "";
-    document.getElementById("uploadNewAvatar").innerHTML = `
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-    `;
-
-    // Set time out for progress bar 2
-    setTimeout(() => {
+if (newAvatarInput) {
+    newAvatarInput.addEventListener("change", (event) => {
+        document.getElementById("btnUpdate").setAttribute("disabled", true);
+        document.getElementById("btnDefault").setAttribute("disabled", true);
         document.getElementById("uploadNewAvatar").innerHTML = "";
         document.getElementById("uploadNewAvatar").innerHTML = `
             <div class="progress">
-                <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 700);
 
-    // Set time out for progress bar 3
-    setTimeout(() => {
-        document.getElementById("uploadNewAvatar").innerHTML = "";
-        document.getElementById("uploadNewAvatar").innerHTML = `
-            <div class="progress">
-                <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        `;
-    }, 900);
+        // Set time out for progress bar 2
+        setTimeout(() => {
+            document.getElementById("uploadNewAvatar").innerHTML = "";
+            document.getElementById("uploadNewAvatar").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 700);
 
-    // Set time out for progress bar 4
-    setTimeout(() => {
-        document.getElementById("uploadNewAvatar").innerHTML = "";
-        document.getElementById("uploadNewAvatar").innerHTML = `
-            <div class="progress">
-                <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        `;
-    }, 1100);
+        // Set time out for progress bar 3
+        setTimeout(() => {
+            document.getElementById("uploadNewAvatar").innerHTML = "";
+            document.getElementById("uploadNewAvatar").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 900);
 
-    // Upload new avatar...
-    uploadNewAvatarToFileIOAPI(event.target.files[0]);
-});
+        // Set time out for progress bar 4
+        setTimeout(() => {
+            document.getElementById("uploadNewAvatar").innerHTML = "";
+            document.getElementById("uploadNewAvatar").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 1100);
+
+        // Upload new avatar...
+        uploadNewAvatarToFileIOAPI(event.target.files[0]);
+    });
+}
 
 const uploadNewAvatarToFileIOAPI = (avatar) => {
     let xhr = new XMLHttpRequest();
@@ -1415,90 +1419,112 @@ const emitCommentOnButton = (event) => {
 };
 
 // Disable post button
-document.getElementById("modalPostButton").setAttribute("disabled", true);
+if (document.getElementById("modalPostButton")) {
+    document.getElementById("modalPostButton").setAttribute("disabled", true);
+}
 
 // Disable edit post button
-document.getElementById("editPostButton").setAttribute("disabled", true);
+if (document.getElementById("editPostButton")) {
+    document.getElementById("editPostButton").setAttribute("disabled", true);
+}
 
-// Post content on change handler
-document.getElementById("content").addEventListener("keyup", (event) => {
-    if (event.target.value) {
-        document.getElementById("modalPostButton").removeAttribute("disabled");
-    } else {
-        document
-            .getElementById("modalPostButton")
-            .setAttribute("disabled", true);
-    }
-});
-
-document.getElementById("video").addEventListener("keyup", (event) => {
-    document.getElementById("modalPostButton").removeAttribute("disabled");
-});
-
-// Edit post content and video on change handler
-document
-    .getElementById("editPostContent")
-    .addEventListener("keyup", (event) => {
+// Post content and video on change handler
+if (document.getElementById("content")) {
+    document.getElementById("content").addEventListener("keyup", (event) => {
         if (event.target.value) {
             document
-                .getElementById("editPostButton")
+                .getElementById("modalPostButton")
                 .removeAttribute("disabled");
         } else {
             document
-                .getElementById("editPostButton")
+                .getElementById("modalPostButton")
                 .setAttribute("disabled", true);
         }
     });
+}
 
-document.getElementById("editPostVideo").addEventListener("keyup", (event) => {
-    document.getElementById("editPostButton").removeAttribute("disabled");
-});
+if (document.getElementById("video")) {
+    document.getElementById("video").addEventListener("keyup", (event) => {
+        document.getElementById("modalPostButton").removeAttribute("disabled");
+    });
+}
+
+// Edit post content and video on change handler
+if (document.getElementById("editPostContent")) {
+    document
+        .getElementById("editPostContent")
+        .addEventListener("keyup", (event) => {
+            if (event.target.value) {
+                document
+                    .getElementById("editPostButton")
+                    .removeAttribute("disabled");
+            } else {
+                document
+                    .getElementById("editPostButton")
+                    .setAttribute("disabled", true);
+            }
+        });
+}
+
+if (document.getElementById("editPostVideo")) {
+    document
+        .getElementById("editPostVideo")
+        .addEventListener("keyup", (event) => {
+            document
+                .getElementById("editPostButton")
+                .removeAttribute("disabled");
+        });
+}
 
 // Upload post image to file.io API when choosing image handler
 let postImageInput = document.getElementById("postImage");
 
-postImageInput.addEventListener("change", (event) => {
-    document.getElementById("modalPostButton").setAttribute("disabled", true);
-    document.getElementById("uploadPost").innerHTML = "";
-    document.getElementById("uploadPost").innerHTML = `
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-    `;
-
-    // Set time out for progress bar 2
-    setTimeout(() => {
+if (postImageInput) {
+    postImageInput.addEventListener("change", (event) => {
+        document
+            .getElementById("modalPostButton")
+            .setAttribute("disabled", true);
         document.getElementById("uploadPost").innerHTML = "";
         document.getElementById("uploadPost").innerHTML = `
             <div class="progress">
-                <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 700);
 
-    // Set time out for progress bar 3
-    setTimeout(() => {
-        document.getElementById("uploadPost").innerHTML = "";
-        document.getElementById("uploadPost").innerHTML = `
-            <div class="progress">
-                <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        `;
-    }, 900);
+        // Set time out for progress bar 2
+        setTimeout(() => {
+            document.getElementById("uploadPost").innerHTML = "";
+            document.getElementById("uploadPost").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 700);
 
-    // Set time out for progress bar 4
-    setTimeout(() => {
-        document.getElementById("uploadPost").innerHTML = "";
-        document.getElementById("uploadPost").innerHTML = `
-            <div class="progress">
-                <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        `;
-    }, 1100);
+        // Set time out for progress bar 3
+        setTimeout(() => {
+            document.getElementById("uploadPost").innerHTML = "";
+            document.getElementById("uploadPost").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 900);
 
-    // Upload image...
-    uploadToFileIOAPI(event.target.files[0]);
-});
+        // Set time out for progress bar 4
+        setTimeout(() => {
+            document.getElementById("uploadPost").innerHTML = "";
+            document.getElementById("uploadPost").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 1100);
+
+        // Upload image...
+        uploadToFileIOAPI(event.target.files[0]);
+    });
+}
 
 const uploadToFileIOAPI = (image) => {
     let xhr = new XMLHttpRequest();
@@ -1541,48 +1567,52 @@ const uploadToFileIOAPI = (image) => {
 // Upload edit post image to file.io API when choosing image handler
 let editPostImageInput = document.getElementById("editPostImage");
 
-editPostImageInput.addEventListener("change", (event) => {
-    document.getElementById("editPostButton").setAttribute("disabled", true);
-    document.getElementById("editUploadPost").innerHTML = "";
-    document.getElementById("editUploadPost").innerHTML = `
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-    `;
-
-    // Set time out for progress bar 2
-    setTimeout(() => {
+if (editPostImageInput) {
+    editPostImageInput.addEventListener("change", (event) => {
+        document
+            .getElementById("editPostButton")
+            .setAttribute("disabled", true);
         document.getElementById("editUploadPost").innerHTML = "";
         document.getElementById("editUploadPost").innerHTML = `
             <div class="progress">
-                <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         `;
-    }, 700);
 
-    // Set time out for progress bar 3
-    setTimeout(() => {
-        document.getElementById("editUploadPost").innerHTML = "";
-        document.getElementById("editUploadPost").innerHTML = `
-            <div class="progress">
-                <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        `;
-    }, 900);
+        // Set time out for progress bar 2
+        setTimeout(() => {
+            document.getElementById("editUploadPost").innerHTML = "";
+            document.getElementById("editUploadPost").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 700);
 
-    // Set time out for progress bar 4
-    setTimeout(() => {
-        document.getElementById("editUploadPost").innerHTML = "";
-        document.getElementById("editUploadPost").innerHTML = `
-            <div class="progress">
-                <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        `;
-    }, 1100);
+        // Set time out for progress bar 3
+        setTimeout(() => {
+            document.getElementById("editUploadPost").innerHTML = "";
+            document.getElementById("editUploadPost").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 900);
 
-    // Upload image...
-    editUploadToFileIOAPI(event.target.files[0]);
-});
+        // Set time out for progress bar 4
+        setTimeout(() => {
+            document.getElementById("editUploadPost").innerHTML = "";
+            document.getElementById("editUploadPost").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 1100);
+
+        // Upload image...
+        editUploadToFileIOAPI(event.target.files[0]);
+    });
+}
 
 const editUploadToFileIOAPI = (image) => {
     let xhr = new XMLHttpRequest();
@@ -1623,50 +1653,60 @@ const editUploadToFileIOAPI = (image) => {
 };
 
 // Default display none for Youtube URL input
-document.getElementById("youtubeURLInput").style.visibility = "hidden";
+if (document.getElementById("youtubeURLInput")) {
+    document.getElementById("youtubeURLInput").style.visibility = "hidden";
+}
 
 // Default display none for edit Youtube URL input
-document.getElementById("editYoutubeURLInput").style.visibility = "hidden";
+if (document.getElementById("editYoutubeURLInput")) {
+    document.getElementById("editYoutubeURLInput").style.visibility = "hidden";
+}
 
 // Display type of Youtube URL input field when clicked on Youtube icon of post
-document
-    .getElementById("youtubeURLInputButton")
-    .addEventListener("click", (event) => {
-        if (event.target.classList.contains("removeYoutubeURLInput")) {
-            document.getElementById("youtubeURLInput").style.visibility =
-                "hidden";
-            document
-                .getElementById("youtubeURLInputButton")
-                .classList.remove("removeYoutubeURLInput");
-        } else {
-            document.getElementById("youtubeURLInput").style.visibility =
-                "visible";
-            document
-                .getElementById("youtubeURLInputButton")
-                .classList.add("removeYoutubeURLInput");
-            document.getElementById("video").focus();
-        }
-    });
+if (document.getElementById("youtubeURLInputButton")) {
+    document
+        .getElementById("youtubeURLInputButton")
+        .addEventListener("click", (event) => {
+            if (event.target.classList.contains("removeYoutubeURLInput")) {
+                document.getElementById("youtubeURLInput").style.visibility =
+                    "hidden";
+                document
+                    .getElementById("youtubeURLInputButton")
+                    .classList.remove("removeYoutubeURLInput");
+            } else {
+                document.getElementById("youtubeURLInput").style.visibility =
+                    "visible";
+                document
+                    .getElementById("youtubeURLInputButton")
+                    .classList.add("removeYoutubeURLInput");
+                document.getElementById("video").focus();
+            }
+        });
+}
 
 // Display type of Youtube URL input field when clicked on Youtube icon of edit post
-document
-    .getElementById("editYoutubeURLInputButton")
-    .addEventListener("click", (event) => {
-        if (event.target.classList.contains("editRemoveYoutubeURLInput")) {
-            document.getElementById("editYoutubeURLInput").style.visibility =
-                "hidden";
-            document
-                .getElementById("editYoutubeURLInputButton")
-                .classList.remove("editRemoveYoutubeURLInput");
-        } else {
-            document.getElementById("editYoutubeURLInput").style.visibility =
-                "visible";
-            document
-                .getElementById("editYoutubeURLInputButton")
-                .classList.add("editRemoveYoutubeURLInput");
-            document.getElementById("editPostVideo").focus();
-        }
-    });
+if (document.getElementById("editYoutubeURLInputButton")) {
+    document
+        .getElementById("editYoutubeURLInputButton")
+        .addEventListener("click", (event) => {
+            if (event.target.classList.contains("editRemoveYoutubeURLInput")) {
+                document.getElementById(
+                    "editYoutubeURLInput"
+                ).style.visibility = "hidden";
+                document
+                    .getElementById("editYoutubeURLInputButton")
+                    .classList.remove("editRemoveYoutubeURLInput");
+            } else {
+                document.getElementById(
+                    "editYoutubeURLInput"
+                ).style.visibility = "visible";
+                document
+                    .getElementById("editYoutubeURLInputButton")
+                    .classList.add("editRemoveYoutubeURLInput");
+                document.getElementById("editPostVideo").focus();
+            }
+        });
+}
 
 // Post image review handler
 function postImageReviewHandler(image) {
@@ -1697,26 +1737,40 @@ function editPostImageReviewHandler(image) {
 }
 
 // Clear image of post modal handler
-document.getElementById("postClearImage").addEventListener("click", () => {
-    document.getElementById("postImageName").innerHTML = "";
-    document.getElementById("postImageName").innerHTML = "Add to post";
-    document.getElementById("postImageReview").removeAttribute("src");
-    document.getElementById("postImageReview").removeAttribute("class");
-    document.getElementById("postClearImage").style.visibility = "hidden";
-    document.getElementById("hiddenImageURL").remove();
-});
+if (document.getElementById("postClearImage")) {
+    document.getElementById("postClearImage").addEventListener("click", () => {
+        document.getElementById("postImageName").innerHTML = "";
+        document.getElementById("postImageName").innerHTML = "Add to post";
+        document.getElementById("postImageReview").removeAttribute("src");
+        document.getElementById("postImageReview").removeAttribute("class");
+        document.getElementById("postClearImage").style.visibility = "hidden";
+        document.getElementById("hiddenImageURL").remove();
+    });
+}
 
 // Clear image of edit post modal handler
-document.getElementById("editPostClearImage").style.visibility = "hidden";
-
-document.getElementById("editPostClearImage").addEventListener("click", () => {
-    document.getElementById("editPostImageName").innerHTML = "";
-    document.getElementById("editPostImageName").innerHTML = "Add to post";
-    document.getElementById("editPostImageReview").removeAttribute("src");
-    document.getElementById("editPostImageReview").removeAttribute("class");
+if (document.getElementById("editPostClearImage")) {
     document.getElementById("editPostClearImage").style.visibility = "hidden";
-    document.getElementById("editPostButton").removeAttribute("disabled");
-});
+
+    document
+        .getElementById("editPostClearImage")
+        .addEventListener("click", () => {
+            document.getElementById("editPostImageName").innerHTML = "";
+            document.getElementById("editPostImageName").innerHTML =
+                "Add to post";
+            document
+                .getElementById("editPostImageReview")
+                .removeAttribute("src");
+            document
+                .getElementById("editPostImageReview")
+                .removeAttribute("class");
+            document.getElementById("editPostClearImage").style.visibility =
+                "hidden";
+            document
+                .getElementById("editPostButton")
+                .removeAttribute("disabled");
+        });
+}
 
 // Edit notification form handler
 // HERE
