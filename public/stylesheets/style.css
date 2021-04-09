@@ -472,11 +472,6 @@ hr {
     width: 0.5rem;
 }
 
-::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-    border: 100px solid #f1f2f5;
-}
-
 /* Alert container */
 #alertContainer {
     position: absolute;

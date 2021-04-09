@@ -50,25 +50,97 @@ $(document).ready(() => {
     // Edit info form field handler
     $("label[for='userName']").click(() => {
         $("#userName").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnDefault").attr("disabled", false);
+    });
+
+    $("body").on("keyup", "#userName", (event) => {
+        if (event.target.value) {
+            $("#btnUpdate").attr("disabled", false);
+            $("#btnDefault").attr("disabled", false);
+        } else {
+            $("#btnUpdate").attr("disabled", true);
+        }
     });
 
     $("label[for='userPhone']").click(() => {
         $("#userPhone").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnDefault").attr("disabled", false);
+    });
+
+    $("body").on("keyup", "#userPhone", (event) => {
+        if (event.target.value) {
+            $("#btnUpdate").attr("disabled", false);
+            $("#btnDefault").attr("disabled", false);
+        } else {
+            $("#btnUpdate").attr("disabled", true);
+        }
     });
 
     $("label[for='newPassword']").click(() => {
         $("#newPassword").attr("disabled", false);
-        $("#btnUpdate").attr("disabled", false);
+        $("#btnDefault").attr("disabled", false);
+    });
+
+    $("body").on("keyup", "#newPassword", (event) => {
+        if (event.target.value) {
+            $("#btnUpdate").attr("disabled", false);
+            $("#btnDefault").attr("disabled", false);
+        } else {
+            $("#btnUpdate").attr("disabled", true);
+        }
     });
 
     $("label[for='class']").click(() => {
         $("#class").attr("disabled", false);
+        $("#btnDefault").attr("disabled", false);
+    });
+
+    $("body").on("keyup", "#class", (event) => {
+        if (event.target.value) {
+            $("#btnUpdate").attr("disabled", false);
+            $("#btnDefault").attr("disabled", false);
+        } else {
+            $("#btnUpdate").attr("disabled", true);
+        }
     });
 
     $("label[for='faculty']").click(() => {
         $("#faculty").attr("disabled", false);
+        $("#btnDefault").attr("disabled", false);
+    });
+
+    $("body").on("keyup", "#faculty", (event) => {
+        if (event.target.value) {
+            $("#btnUpdate").attr("disabled", false);
+            $("#btnDefault").attr("disabled", false);
+        } else {
+            $("#btnUpdate").attr("disabled", true);
+        }
+    });
+
+    $("#btnDefault").click(() => {
+        $("#btnUpdate").attr("disabled", true);
+        $("#btnDefault").attr("disabled", true);
+        $("#userName").attr("disabled", true);
+        $("#userPhone").attr("disabled", true);
+        $("#class").attr("disabled", true);
+        $("#faculty").attr("disabled", true);
+        $("#newPassword").attr("disabled", true);
+        $("#newPassword").val("");
+        $("#hiddenNewAvatarURL").remove();
+
+        // Send request to restore back user self information
+        fetch("/dashboard/user")
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#userName").val(result.data.name);
+                    $("#userPhone").val(result.data.phone);
+                    $("#newAvatar").val("");
+                    $("#avatarInfo").attr("src", result.data.avatar);
+                }
+            })
+            .catch((error) => console.log(error));
     });
 
     // Edit notification form field handler
@@ -1128,40 +1200,20 @@ function displayAvatarHandler(avatar) {
     }
 }
 
-// Update info form handler
-document.getElementById("infoForm").addEventListener("submit", (event) => {
+// Edit info form handler
+document.getElementById("btnUpdate").addEventListener("click", (event) => {
     event.preventDefault();
 
-    let userEmail = document.getElementById("userEmail").value;
-    let userName = document.getElementById("userName").value;
+    let userName = document.getElementById("userName");
     let userPhone = document.getElementById("userPhone");
     let newPassword = document.getElementById("newPassword");
     let studentClass = document.getElementById("class");
     let studentFaculty = document.getElementById("faculty");
-
-    if (!studentClass) {
-        studentClass = "";
-    } else {
-        studentClass = studentClass.value;
-    }
-
-    if (!studentFaculty) {
-        studentFaculty = "";
-    } else {
-        studentFaculty = studentFaculty.value;
-    }
-
-    if (!newPassword) {
-        newPassword = "";
-    } else {
-        newPassword = newPassword.value;
-    }
-
-    if (!userPhone) {
-        userPhone = "";
-    } else {
-        userPhone = userPhone.value;
-    }
+    let hiddenNewAvatarURL = document.getElementById("hiddenNewAvatarURL");
+    let btnUpdate = document.getElementById("btnUpdate");
+    let btnDefault = document.getElementById("btnDefault");
+    let messageError = document.getElementById("updateInfoError");
+    let messageSuccess = document.getElementById("updateInfoSuccess");
 
     fetch("/dashboard/info", {
         method: "POST",
@@ -1169,38 +1221,44 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            userEmail: userEmail,
-            userName: userName,
-            userPhone: userPhone,
-            newPassword: newPassword,
-            studentClass: studentClass,
-            studentFaculty: studentFaculty,
+            hiddenNewAvatarURL: hiddenNewAvatarURL
+                ? hiddenNewAvatarURL.value
+                : "",
+            userName: userName ? userName.value : "",
+            userPhone: userPhone ? userPhone.value : "",
+            newPassword: newPassword ? newPassword.value : "",
+            studentClass: studentClass ? studentClass.value : "",
+            studentFaculty: studentFaculty ? studentFaculty.value : "",
         }),
     })
         .then((res) => res.json())
         .then((result) => {
-            let userName = document.getElementById("userName");
-            let userPhone = document.getElementById("userPhone");
-            let newPassword = document.getElementById("newPassword");
-            let btnUpdate = document.getElementById("btnUpdate");
-
-            let messageError = document.getElementById("updateInfoError");
-            let messageSuccess = document.getElementById("updateInfoSuccess");
-
-            if (result.success) {
+            if (result.code === 1) {
                 messageError.innerHTML = "";
-                messageSuccess.innerHTML = result.success;
+                messageSuccess.innerHTML = result.message;
                 userName.setAttribute("disabled", "disabled");
                 userPhone.setAttribute("disabled", "disabled");
-                newPassword.setAttribute("disabled", "disabled");
                 btnUpdate.setAttribute("disabled", "disabled");
+                btnDefault.setAttribute("disabled", "disabled");
+
+                if (newPassword) {
+                    newPassword.setAttribute("disabled", "disabled");
+                }
+
+                if (studentClass) {
+                    studentClass.setAttribute("disabled", "disabled");
+                }
+
+                if (studentFaculty) {
+                    studentFaculty.setAttribute("disabled", "disabled");
+                }
 
                 setTimeout(() => {
                     window.location.href = "/dashboard";
-                }, 2000);
-            } else if (result.error) {
+                }, 1500);
+            } else if (result.code === 0) {
                 messageSuccess.innerHTML = "";
-                messageError.innerHTML = result.error;
+                messageError.innerHTML = result.message;
             } else {
                 messageError.innerHTML = "";
             }
@@ -1208,11 +1266,89 @@ document.getElementById("infoForm").addEventListener("submit", (event) => {
         .catch((error) => console.error(error));
 });
 
-// Update notification form handler
-// HERE
+// Upload edit info form avatar to file.io API when choosing image handler
+let newAvatarInput = document.getElementById("newAvatar");
 
-// Update staff management form handler
-// HERE
+newAvatarInput.addEventListener("change", (event) => {
+    document.getElementById("btnUpdate").setAttribute("disabled", true);
+    document.getElementById("btnDefault").setAttribute("disabled", true);
+    document.getElementById("uploadNewAvatar").innerHTML = "";
+    document.getElementById("uploadNewAvatar").innerHTML = `
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    `;
+
+    // Set time out for progress bar 2
+    setTimeout(() => {
+        document.getElementById("uploadNewAvatar").innerHTML = "";
+        document.getElementById("uploadNewAvatar").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 700);
+
+    // Set time out for progress bar 3
+    setTimeout(() => {
+        document.getElementById("uploadNewAvatar").innerHTML = "";
+        document.getElementById("uploadNewAvatar").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 900);
+
+    // Set time out for progress bar 4
+    setTimeout(() => {
+        document.getElementById("uploadNewAvatar").innerHTML = "";
+        document.getElementById("uploadNewAvatar").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+    }, 1100);
+
+    // Upload new avatar...
+    uploadNewAvatarToFileIOAPI(event.target.files[0]);
+});
+
+const uploadNewAvatarToFileIOAPI = (avatar) => {
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+
+    formData.append("file", avatar);
+
+    xhr.open("POST", "https://file.io", true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Create a hidden input to store the new avatar's download link from file.io API
+            let hiddenInput = document.createElement("input");
+
+            hiddenInput.setAttribute("type", "hidden");
+            hiddenInput.setAttribute("id", "hiddenNewAvatarURL");
+            hiddenInput.setAttribute(
+                "value",
+                JSON.parse(xhr.responseText).link
+            );
+            document.querySelector("body").append(hiddenInput);
+
+            // Set progress bar and enable post button
+            document.getElementById("uploadNewAvatar").innerHTML = "";
+            document.getElementById("uploadNewAvatar").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-5" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+            setTimeout(() => {
+                document.getElementById("uploadNewAvatar").innerHTML = "";
+            }, 500);
+            document.getElementById("btnUpdate").removeAttribute("disabled");
+            document.getElementById("btnDefault").removeAttribute("disabled");
+        }
+    };
+    xhr.send(formData);
+};
 
 // Comment handler
 const emitComment = (event) => {
@@ -1581,3 +1717,9 @@ document.getElementById("editPostClearImage").addEventListener("click", () => {
     document.getElementById("editPostClearImage").style.visibility = "hidden";
     document.getElementById("editPostButton").removeAttribute("disabled");
 });
+
+// Edit notification form handler
+// HERE
+
+// Edit staff management form handler
+// HERE

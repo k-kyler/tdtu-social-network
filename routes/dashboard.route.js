@@ -7,6 +7,7 @@ router.get("/", controller.dashboard);
 
 router.post("/info", controller.updateUserInfo);
 
+router.get("/user", controller.getUserInfo);
 router.get("/users", controller.users);
 router.post("/users", controller.createNewStaff);
 

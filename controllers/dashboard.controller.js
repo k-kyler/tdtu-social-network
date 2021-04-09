@@ -5,7 +5,7 @@ const fs = require("fs");
 const multer = require("multer");
 const md5 = require("md5");
 const shortid = require("shortid");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const fetch = require("node-fetch");
 const { v4: v4UniqueId } = require("uuid");
 
@@ -33,64 +33,259 @@ module.exports.dashboard = async (req, res) => {
     });
 };
 
-// Update user info
-module.exports.updateUserInfo = async (req, res) => {
-    //let uploader = upload.single('avatar')
-    //let avatar = req.file
-    /* let avatarPath = `public/uploads/${avatar.originalname}`;
-
-    // Rename avatar in public folder
-    fs.renameSync(avatar.path, avatarPath);
-
-    // Re-path to store in db
-    avatarPath = `/uploads/${avatar.originalname}`; */
-
-    var id = req.signedCookies.userId;
+// Get user info
+module.exports.getUserInfo = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
-    if (user.type == "Student") {
-        var item = {
-            name: req.body.userName,
-            phone: req.body.userPhone,
-            class: req.body.class,
-            faculty: req.body.faculty,
-        };
-    } else {
-        if (req.body.newPassword == "") {
-            var item = {
-                name: req.body.userName,
-                phone: req.body.userPhone,
-            };
-        } else {
-            var item = {
-                name: req.body.userName,
-                phone: req.body.userPhone,
-                password: md5(req.body.newPassword),
-            };
-        }
-    }
-    if (md5(req.body.newPassword) == user.password) {
+    if (!user.avatar) {
         res.json({
-            error: "New password and current password cannot be the same",
+            code: 1,
+            data: {
+                name: user.name,
+                phone: user.phone,
+                class: user.class,
+                faculty: user.faculty,
+                avatar: "/images/default_avatar.svg",
+            },
         });
     } else {
-        User.updateOne(
-            { _id: mongoose.Types.ObjectId(id) },
-            { $set: item },
-            function (err, result) {
-                if (result) {
+        res.json({
+            code: 1,
+            data: {
+                name: user.name,
+                phone: user.phone,
+                class: user.class,
+                faculty: user.faculty,
+                avatar: user.avatar,
+            },
+        });
+    }
+};
+
+// Update user info
+module.exports.updateUserInfo = async (req, res) => {
+    let {
+        hiddenNewAvatarURL,
+        userName,
+        userPhone,
+        newPassword,
+        studentClass,
+        studentFaculty,
+    } = req.body;
+    let user = await User.findById(req.signedCookies.userId);
+    let posts = await Post.find();
+
+    if (!userName) {
+        res.json({
+            code: 0,
+            message: "Name can not be empty!",
+        });
+    } else if (!userPhone) {
+        res.json({
+            code: 0,
+            message: "Phone can not be empty!",
+        });
+    } else if (newPassword && md5(newPassword) === user.password) {
+        res.json({
+            code: 0,
+            message: "You have just entered an old password!",
+        });
+    } else {
+        if (!newPassword) {
+            if (hiddenNewAvatarURL) {
+                let newAvatarURL = `./public/uploads/${v4UniqueId()}.jpg`;
+                let fetchResponse = await fetch(hiddenNewAvatarURL);
+                let buffer = await fetchResponse.buffer();
+
+                // Update user info
+                let updateInfo = await User.findOneAndUpdate(
+                    { _id: req.signedCookies.userId },
+                    {
+                        name: userName,
+                        phone: userPhone,
+                        class: studentClass ? studentClass : "",
+                        faculty: studentFaculty ? studentFaculty : "",
+                        avatar: newAvatarURL.split("./public")[1],
+                    },
+                    { new: true }
+                );
+
+                // Update user name and avatar in all posts
+                let updateAllPosts = await Post.updateMany(
+                    { ownerId: req.signedCookies.userId },
+                    {
+                        name: userName,
+                        profileAvatar: newAvatarURL.split("./public")[1],
+                    }
+                );
+
+                // Update user name and avatar in all comments
+                let updateAllComments = await Post.updateMany(
+                    {},
+                    {
+                        $set: {
+                            "comment.$[id].guestName": userName,
+                            "comment.$[id].guestAvatar": newAvatarURL.split(
+                                "./public"
+                            )[1],
+                        },
+                    },
+                    {
+                        arrayFilters: [
+                            {
+                                "id.guestId": req.signedCookies.userId,
+                            },
+                        ],
+                    }
+                );
+
+                // Download file from file.io API then response back to client
+                fs.writeFile(newAvatarURL, buffer, () => {
                     res.json({
-                        success: "Update user information success",
+                        code: 1,
+                        message: "Update information success",
                     });
-                }
-                if (err) {
-                    res.json({
-                        error:
-                            "New password and current password cannot be the same",
-                    });
-                }
+                });
+            } else {
+                // Update user info
+                let updateInfo = await User.findOneAndUpdate(
+                    { _id: req.signedCookies.userId },
+                    {
+                        name: userName,
+                        phone: userPhone,
+                        class: studentClass ? studentClass : "",
+                        faculty: studentFaculty ? studentFaculty : "",
+                    },
+                    { new: true }
+                );
+
+                // Update user name in all posts
+                let updateAllPosts = await Post.updateMany(
+                    { ownerId: req.signedCookies.userId },
+                    { name: userName }
+                );
+
+                // Update user name in all comments
+                let updateAllComments = await Post.updateMany(
+                    {},
+                    {
+                        $set: {
+                            "comment.$[id].guestName": userName,
+                        },
+                    },
+                    {
+                        arrayFilters: [
+                            {
+                                "id.guestId": req.signedCookies.userId,
+                            },
+                        ],
+                    }
+                );
+
+                res.json({
+                    code: 1,
+                    message: "Update user information success",
+                });
             }
-        );
+        } else if (newPassword && md5(newPassword) !== user.password) {
+            if (hiddenNewAvatarURL) {
+                let newAvatarURL = `./public/uploads/${v4UniqueId()}.jpg`;
+                let fetchResponse = await fetch(hiddenNewAvatarURL);
+                let buffer = await fetchResponse.buffer();
+
+                // Update user info
+                let updateInfo = await User.findOneAndUpdate(
+                    { _id: req.signedCookies.userId },
+                    {
+                        name: userName,
+                        phone: userPhone,
+                        class: studentClass ? studentClass : "",
+                        faculty: studentFaculty ? studentFaculty : "",
+                        password: md5(newPassword),
+                        avatar: newAvatarURL.split("./public")[1],
+                    },
+                    { new: true }
+                );
+
+                // Update user name and avatar in all posts
+                let updateAllPosts = await Post.updateMany(
+                    { ownerId: req.signedCookies.userId },
+                    {
+                        name: userName,
+                        profileAvatar: newAvatarURL.split("./public")[1],
+                    }
+                );
+
+                // Update user name and avatar in all comments
+                let updateAllComments = await Post.updateMany(
+                    {},
+                    {
+                        $set: {
+                            "comment.$[id].guestName": userName,
+                            "comment.$[id].guestAvatar": newAvatarURL.split(
+                                "./public"
+                            )[1],
+                        },
+                    },
+                    {
+                        arrayFilters: [
+                            {
+                                "id.guestId": req.signedCookies.userId,
+                            },
+                        ],
+                    }
+                );
+
+                // Download file from file.io API then response back to client
+                fs.writeFile(newAvatarURL, buffer, () => {
+                    res.json({
+                        code: 1,
+                        message: "Update information success",
+                    });
+                });
+            } else {
+                // Update user info
+                let updateInfo = await User.findOneAndUpdate(
+                    { _id: req.signedCookies.userId },
+                    {
+                        name: userName,
+                        phone: userPhone,
+                        class: studentClass ? studentClass : "",
+                        faculty: studentFaculty ? studentFaculty : "",
+                        password: md5(newPassword),
+                    },
+                    { new: true }
+                );
+
+                // Update user name in all posts
+                let updateAllPosts = await Post.updateMany(
+                    { ownerId: req.signedCookies.userId },
+                    { name: userName }
+                );
+
+                // Update user name in all comments
+                let updateAllComments = await Post.updateMany(
+                    {},
+                    {
+                        $set: {
+                            "comment.$[id].guestName": userName,
+                        },
+                    },
+                    {
+                        arrayFilters: [
+                            {
+                                "id.guestId": req.signedCookies.userId,
+                            },
+                        ],
+                    }
+                );
+
+                res.json({
+                    code: 1,
+                    message: "Update information success",
+                });
+            }
+        }
     }
 };
 
