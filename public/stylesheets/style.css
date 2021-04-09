@@ -4,6 +4,7 @@
     --index-background-color: #402aa3;
     --linear-background-color1: #4a00e0;
     --linear-background-color2: #8e2de2;
+    --line-style: rgb(160, 160, 160);
 }
 
 /* Body */
@@ -186,9 +187,9 @@ h4 {
 
 .line-style {
     width: 100%;
-    border-bottom: 1px solid rgb(160, 160, 160);
+    border-bottom: 1px solid var(--line-style);
     line-height: 0.1em;
-    color: rgb(160, 160, 160);
+    color: var(--line-style);
 }
 
 .login > form > p > span {
@@ -479,7 +480,7 @@ hr {
 }
 .tableNotifList > tbody > tr:hover {
     background-color: #f1f1f1;
-    color: #8e2de2;
+    color: var(--linear-background-color2);
 }
 .NotifDetails {
     cursor: pointer;
