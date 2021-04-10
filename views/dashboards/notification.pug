@@ -15,53 +15,46 @@ block dashboardContent
     div(class="dashboard__contentUsers row")
         if user.type === "Admin" || user.type === "Staff"
             div(class="container dashboard__contentNotificationForm bg-white col-md-12")
-                form(action="/dashboard/notification", method="POST", class="p-3", enctype="multipart/form-data")
+                form(class="p-3")
                     h3(class="mb-4 text-primary text-center") Create Notification
 
                     div(class="form-group row")
-                        label(for="tittle", class="col-form-label col-md-1") Tittle
+                        label(for="notificationTitle", class="col-form-label col-md-1") Title
                         div(class="col-md-5")
-                            input(type="text", name="tittleNotification", id="tittleNotification", class="form-control", required) 
-                        label(for="image", class="col-form-label col-md-1") Attachment
+                            input(type="text", name="notificationTitle", id="notificationTitle", class="form-control", required) 
+                        label(for="notificationAttachment", class="col-form-label col-md-1") Attachment
                         div(class="col-md-5")
-                            input(accept="image/*", type="file", name="imageNotification", id="imageNotification", class="form-control")
+                            input(accept="image/*,.pdf,.docx,.doc,.xls,.xlsx,.rar,.zip", type="file", name="notificationAttachment", id="notificationAttachment", class="form-control")
                     div(class="form-group row")
-                        label(for="content", class="col-form-label col-md-1") Content
+                        label(for="notificationContent", class="col-form-label col-md-1") Content
                         div(class="col-md-11")
-                            textarea(class="form-control", id="contentNotification", rows="4" , required)
+                            textarea(class="form-control", name="notificationContent", id="notificationContent", rows="4" , required)
 
                     div(class="form-group row")
-                        label(for="type", class="col-form-label col-md-1") Type
+                        label(for="notificationType", class="col-form-label col-md-1") Type
                         div(class="col-md-5")
-                            input(type="hidden", id="typeNotifHidden", value=typeNotif)
-                            select(name="typeNotif", id="typeNotif", class="form-control", required) 
-                                option(value="") (Choose Type Notification)
-                                option(value="all") Tất cả
-                                option(value="tuition") Học phí
-                                option(value="schedule") Thời khóa biểu
-                                option(value="exam") Lịch thi
-                                option(value="academic") Học vụ
-                                option(value="mos") Tin học MOS
-                                option(value="apprenticeship") Tập sự nghề nghiệp
-                                option(value="career") Học phần nghề nghiệp
-                                option(value="graduate") Tốt nghiệp
-                                option(value="homeroomActivity") Sinh hoạt chủ nhiệm
-                                option(value="guide") Hướng dẫn
-                                option(value="statuteRegulations") Qui chế qui định
-                                option(value="others") Khác
+                            select(name="notificationType", id="notificationType", class="form-control", required) 
+                                option(value="") (Choose notification type)
+
+                                if user.permission 
+                                    each item, index in user.permission 
+                                        option(value=item.postName)= item.postName
+
+                    div(class="form-group row")
+                        div(class="col-md-12", id="uploadAttachment")
 
                     div(class="form-group row")
                         div(class="col-md-12 d-flex align-items-center justify-content-end")
                             p(class="text-danger mb-0 mr-3") #{errorMessage}
-                            button(type="submit", class="btn btn-success") Submit
+                            button(type="button", class="btn btn-success", id="addNewNotification") Submit
 
             div(class="container dashboard__contentNotificationList bg-white col-md-12 mt-4 px-0 table-responsive")
                 table.table.table-hover
                     thead.thead
                         tr
                             th(scope='col') #
-                            th(scope='col') Tittles
-                            th(scope='col') Contents
+                            th(scope='col') Title
+                            th(scope='col') Content
                             th(scope='col') Type
                             th(scope='col') Attachment
                             th(scope='col' style="width:100px;") Handler

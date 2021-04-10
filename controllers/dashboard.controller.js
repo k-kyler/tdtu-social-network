@@ -1,11 +1,11 @@
 const User = require("../models/user.model");
 const ListOfficeFaculty = require("../models/ListOfficeFaculty.model");
 const Post = require("../models/post.model");
+const Notification = require("../models/notification.model");
 const fs = require("fs");
 const multer = require("multer");
 const md5 = require("md5");
 const shortid = require("shortid");
-// const mongoose = require("mongoose");
 const fetch = require("node-fetch");
 const { v4: v4UniqueId } = require("uuid");
 
@@ -25,7 +25,7 @@ const upload = multer({
 // Dashboard
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
-    let posts = await Post.find().sort({ number: -1 }); // Get desc posts list
+    let posts = await Post.find().sort({ number: -1 }); // Get desc posts list by number
 
     res.render("dashboards/dashboard", {
         user,
@@ -296,6 +296,111 @@ module.exports.notification = async (req, res) => {
     res.render("dashboards/notification", {
         user: user,
     });
+};
+
+// Add new notification
+module.exports.addNewNotification = async (req, res) => {
+    let {
+        notificationTitle,
+        notificationContent,
+        notificationType,
+        notificationAttachment,
+        notificationDate,
+        attachmentExt,
+    } = req.body;
+    let user = await User.findById(req.signedCookies.userId);
+
+    if (
+        notificationTitle &&
+        notificationContent &&
+        notificationType &&
+        !notificationAttachment &&
+        !attachmentExt
+    ) {
+        // Case for no attachment...........
+        let notification = new Notification();
+
+        // Add new notification details to db
+        notification.owner = user.name;
+        notification.title = notificationTitle;
+        notification.type = notificationType;
+        notification.attachment = notificationAttachment;
+        notification.content = notificationContent;
+        notification.date = notificationDate;
+        notification.save();
+
+        res.json({
+            code: 1,
+            message: "You have received new notification",
+            alertId: shortid.generate(),
+        });
+    } else if (
+        notificationTitle &&
+        notificationContent &&
+        notificationType &&
+        notificationAttachment &&
+        attachmentExt
+    ) {
+        if (
+            attachmentExt !== "xlsx" ||
+            attachmentExt !== "xls" ||
+            attachmentExt !== "jpg" ||
+            attachmentExt !== "png" ||
+            attachmentExt !== "doc" ||
+            attachmentExt !== "docx" ||
+            attachmentExt !== "rar" ||
+            attachmentExt !== "zip"
+        ) {
+            res.json({
+                code: 0,
+                message: "Your type of attachment is not supported",
+            });
+        } else {
+            let notification = new Notification();
+            let attachmentDest = `./public/uploads/${v4UniqueId()}.${attachmentExt}`;
+            let fetchResponse = await fetch(notificationAttachment);
+            let buffer = await fetchResponse.buffer();
+
+            // Add new notification details to db
+            notification.owner = user.name;
+            notification.title = notificationTitle;
+            notification.type = notificationType;
+            notification.attachment = notificationAttachment;
+            notification.content = notificationContent;
+            notification.date = notificationDate;
+            notification.save();
+
+            // Download file from file.io API then response back to client
+            fs.writeFile(attachmentDest, buffer, () => {
+                res.json({
+                    code: 1,
+                    message: "You have received new notification",
+                    alertId: shortid.generate(),
+                    attachmentDest: attachmentDest.split("./public")[1],
+                });
+            });
+        }
+    } else if (!notificationTitle) {
+        res.json({
+            code: 0,
+            message: "Title is required!",
+        });
+    } else if (!notificationContent) {
+        res.json({
+            code: 0,
+            message: "Content is required!",
+        });
+    } else if (!notificationType) {
+        res.json({
+            code: 0,
+            message: "Notification type is required!",
+        });
+    } else if (!notificationDate) {
+        res.json({
+            code: 0,
+            message: "Notification date is required!",
+        });
+    }
 };
 
 // Users

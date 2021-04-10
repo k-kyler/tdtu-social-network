@@ -743,6 +743,22 @@ $(document).ready(() => {
             .catch((error) => console.log(error));
     });
 
+    // Add new notification handler
+    $("body").on("click", "#addNewNotification", (event) => {
+        event.preventDefault();
+
+        fetch("dashboard/notification", {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify({}),
+        })
+            .then((response) => response.json())
+            .then((result) => {})
+            .catch((error) => console.log(error));
+    });
+
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
         if (post.ownerId == document.getElementById("userObjectId").value) {
@@ -1771,6 +1787,94 @@ if (document.getElementById("editPostClearImage")) {
                 .removeAttribute("disabled");
         });
 }
+
+// Upload attachment to file.io API when choosing attachment handler
+let attachmentInput = document.getElementById("notificationAttachment");
+
+if (attachmentInput) {
+    attachmentInput.addEventListener("change", (event) => {
+        document
+            .getElementById("addNewNotification")
+            .setAttribute("disabled", true);
+        document.getElementById("uploadAttachment").innerHTML = "";
+        document.getElementById("uploadAttachment").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+
+        // Set time out for progress bar 2
+        setTimeout(() => {
+            document.getElementById("uploadAttachment").innerHTML = "";
+            document.getElementById("uploadAttachment").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 700);
+
+        // Set time out for progress bar 3
+        setTimeout(() => {
+            document.getElementById("uploadAttachment").innerHTML = "";
+            document.getElementById("uploadAttachment").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 900);
+
+        // Set time out for progress bar 4
+        setTimeout(() => {
+            document.getElementById("uploadAttachment").innerHTML = "";
+            document.getElementById("uploadAttachment").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 1100);
+
+        // Upload image...
+        uploadAttachmentToFileIOAPI(event.target.files[0]);
+    });
+}
+
+const uploadAttachmentToFileIOAPI = (attachment) => {
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+
+    formData.append("file", attachment);
+
+    xhr.open("POST", "https://file.io", true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Create a hidden input to store the image's download link from file.io API
+            let hiddenInput = document.createElement("input");
+
+            hiddenInput.setAttribute("type", "hidden");
+            hiddenInput.setAttribute("id", "hiddenAttachmentURL");
+            hiddenInput.setAttribute(
+                "value",
+                JSON.parse(xhr.responseText).link
+            );
+            document.querySelector("body").append(hiddenInput);
+
+            // Set message and enable post button
+            document.getElementById("uploadAttachment").innerHTML = "";
+            document.getElementById("uploadAttachment").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-5" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+            setTimeout(() => {
+                document.getElementById("uploadAttachment").innerHTML = "";
+            }, 500);
+            document
+                .getElementById("addNewNotification")
+                .removeAttribute("disabled");
+        }
+    };
+    xhr.send(formData);
+};
 
 // Edit notification form handler
 // HERE
