@@ -8,6 +8,7 @@ const md5 = require("md5");
 const shortid = require("shortid");
 const fetch = require("node-fetch");
 const { v4: v4UniqueId } = require("uuid");
+const fileType = require("file-type");
 
 // Multer upload setup
 const upload = multer({
@@ -26,10 +27,14 @@ const upload = multer({
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
     let posts = await Post.find().sort({ number: -1 }); // Get desc posts list by number
+    let listOfficeFaculty = await ListOfficeFaculty.find();
+    let notifications = await Notification.find();
 
     res.render("dashboards/dashboard", {
         user,
         posts,
+        listOfficeFaculty,
+        notifications,
     });
 };
 
@@ -37,7 +42,7 @@ module.exports.dashboard = async (req, res) => {
 module.exports.getUserInfo = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
-    if (!user.avatar) {
+    if (user && !user.avatar) {
         res.json({
             code: 1,
             data: {
@@ -48,7 +53,7 @@ module.exports.getUserInfo = async (req, res) => {
                 avatar: "/images/default_avatar.svg",
             },
         });
-    } else {
+    } else if (user && user.avatar) {
         res.json({
             code: 1,
             data: {
@@ -58,6 +63,11 @@ module.exports.getUserInfo = async (req, res) => {
                 faculty: user.faculty,
                 avatar: user.avatar,
             },
+        });
+    } else {
+        res.json({
+            code: 0,
+            message: "No user!",
         });
     }
 };
@@ -84,6 +94,14 @@ module.exports.updateUserInfo = async (req, res) => {
         res.json({
             code: 0,
             message: "Phone can not be empty!",
+        });
+    } else if (
+        userPhone &&
+        /(0[3|5|7|8|9])+([0-9]{8})\b/g.test(userPhone) === false
+    ) {
+        res.json({
+            code: 0,
+            message: "Invalid phone number!",
         });
     } else if (newPassword && md5(newPassword) === user.password) {
         res.json({
@@ -298,6 +316,24 @@ module.exports.notification = async (req, res) => {
     });
 };
 
+// Get notification by id
+module.exports.getNotification = async (req, res) => {
+    let { id } = req.params;
+    let notification = await Notification.findById(id);
+
+    if (notification) {
+        res.json({
+            code: 1,
+            data: notification,
+        });
+    } else {
+        res.json({
+            code: 0,
+            message: "No notification!",
+        });
+    }
+};
+
 // Add new notification
 module.exports.addNewNotification = async (req, res) => {
     let {
@@ -306,7 +342,6 @@ module.exports.addNewNotification = async (req, res) => {
         notificationType,
         notificationAttachment,
         notificationDate,
-        attachmentExt,
     } = req.body;
     let user = await User.findById(req.signedCookies.userId);
 
@@ -314,13 +349,14 @@ module.exports.addNewNotification = async (req, res) => {
         notificationTitle &&
         notificationContent &&
         notificationType &&
-        !notificationAttachment &&
-        !attachmentExt
+        notificationDate &&
+        !notificationAttachment
     ) {
         // Case for no attachment...........
         let notification = new Notification();
 
         // Add new notification details to db
+        notification.ownerId = req.signedCookies.userId;
         notification.owner = user.name;
         notification.title = notificationTitle;
         notification.type = notificationType;
@@ -338,34 +374,42 @@ module.exports.addNewNotification = async (req, res) => {
         notificationTitle &&
         notificationContent &&
         notificationType &&
-        notificationAttachment &&
-        attachmentExt
+        notificationDate &&
+        notificationAttachment
     ) {
+        let notification = new Notification();
+        let fetchResponse = await fetch(notificationAttachment);
+        let buffer = await fetchResponse.buffer();
+        let attachmentExt = await fileType.fromBuffer(buffer);
+        let attachmentSize = Buffer.byteLength(buffer);
+        let attachmentDest = `./public/uploads/${v4UniqueId()}.${
+            attachmentExt.ext
+        }`;
+
+        // Check file extension
         if (
-            attachmentExt !== "xlsx" ||
-            attachmentExt !== "xls" ||
-            attachmentExt !== "jpg" ||
-            attachmentExt !== "png" ||
-            attachmentExt !== "doc" ||
-            attachmentExt !== "docx" ||
-            attachmentExt !== "rar" ||
-            attachmentExt !== "zip"
+            new RegExp(
+                ["zip", "rar", "xlsx", "png", "jpg", "pdf", "docx"].join("|")
+            ).test(attachmentExt.ext) === false
         ) {
             res.json({
                 code: 0,
                 message: "Your type of attachment is not supported",
             });
+        }
+        // Limit file size is 30 MB
+        else if (attachmentSize > 30000000) {
+            res.json({
+                code: 0,
+                message: "Your attachment is over 30 MB",
+            });
         } else {
-            let notification = new Notification();
-            let attachmentDest = `./public/uploads/${v4UniqueId()}.${attachmentExt}`;
-            let fetchResponse = await fetch(notificationAttachment);
-            let buffer = await fetchResponse.buffer();
-
             // Add new notification details to db
+            notification.ownerId = req.signedCookies.userId;
             notification.owner = user.name;
             notification.title = notificationTitle;
             notification.type = notificationType;
-            notification.attachment = notificationAttachment;
+            notification.attachment = attachmentDest.split("./public")[1];
             notification.content = notificationContent;
             notification.date = notificationDate;
             notification.save();
@@ -376,7 +420,6 @@ module.exports.addNewNotification = async (req, res) => {
                     code: 1,
                     message: "You have received new notification",
                     alertId: shortid.generate(),
-                    attachmentDest: attachmentDest.split("./public")[1],
                 });
             });
         }

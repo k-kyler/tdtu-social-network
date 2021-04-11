@@ -128,62 +128,20 @@ block dashboardContent
                 div(class="row")
                     div(class="dashboard__contentNotificationList notifList-height bg-white pt-3 pb-1 mb-4 col-md-12")
                         p(class="text-center font-weight-bold") Notification List
-                        input(type="hidden", id="notifHidden", value=notifHidden)
                         select(name="notifs", id="notifs", class="rounded align-center form-control") 
-                            option(value="all") Tất cả
-                            option(value="tuition") Học phí
-                            option(value="schedule") Thời khóa biểu
-                            option(value="exam") Lịch thi
-                            option(value="academic") Học vụ
-                            option(value="mos") Tin học MOS
-                            option(value="apprenticeship") Tập sự nghề nghiệp
-                            option(value="career") Học phần nghề nghiệp
-                            option(value="graduate") Tốt nghiệp
-                            option(value="homeroomActivity") Sinh hoạt chủ nhiệm
-                            option(value="guide") Hướng dẫn
-                            option(value="statuteRegulations") Qui chế qui định
-                            option(value="others") Khác
+                            option(value="") Tất cả
+
+                            if listOfficeFaculty 
+                                each item, index in listOfficeFaculty 
+                                    option(value=item.name)= item.name
+                            
                         hr
                         .tableNotifListScroll
                             table.table.table-bordered.tableNotifList
                                 tbody
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020   
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020 
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020 
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020 
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020    
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020   
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020 
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020 
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020 
-                                    tr(class="NotifDetails")
-                                        td
-                                            p(class="font-italic") [Phòng Đại học] - 06/03/2021
-                                            span HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020   
+                                    if notifications
+                                        each notification in notifications
+                                            tr(class="NotifDetails", data-notifId=notification._id)
+                                                td(data-notifId=notification._id)
+                                                    p(class="font-italic text-secondary", data-notifId=notification._id) [#{notification.type}] - #{notification.date}
+                                                    span.text-primary(data-notifId=notification._id)= notification.title

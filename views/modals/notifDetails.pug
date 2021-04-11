@@ -2,22 +2,23 @@
     .modal-dialog.modal-lg(role='content')
         .modal-content
             .modal-header
-                h4.modal-title Notification Details
+                h4.modal-title Notification Detail
                 button.close(type='close', data-dismiss='modal') &times;
             .modal-body
                 form 
                     if user 
                         .col-md-12 
-                            p(class="font-weight-bold text-justify") HỌC TẬP TRUNG TẠI TRƯỜNG TỪ NGÀY 08/03/2020
+                            p(class="font-weight-bold text-justify", id="notifDetailTitle")
                         .col-md-12
-                            p(class="text-justify") HSSV sẽ trở lại học tập trung tại Trường từ ngày 8/3/2021 theo thời khóa biểu của Nhà trường. Trước khi trở lại Trường học tập trung, HSSV thực hiện khai báo lịch trình di chuyển trên hệ thống thông tin sinh viên từ ngày 26/02/2021. HSSV chủ động thực hiện các biện pháp phòng, chống dịch bệnh COVID-19 theo khuyến cáo của Bộ Y tế và các cơ quan chức năng; Thực hiện nghiêm túc “Thông điệp 5K”: Khẩu trang – Khử khuẩn – Khoảng cách – Không tập trung – Khai báo y tế.
+                            p(class="text-justify", id="notifDetailContent")
                         .col-md-12
-                            p(class="pr-2" style="display: inline") Tải tập tin đính kèm:
-                            a(class="font-bold text-danger", href="/uploads/Ducati.jpg", download) Tại đây
+                            div(class="d-flex align-items-center")
+                                p(class="mb-0 pr-2" id="notifDetailAttachment") Tải tập tin đính kèm:
+                                a(class="font-bold text-danger", href="#", download, id="notifDetailDownload") tại đây
                             p
                         .col-md-12
-                            p(class="font-italic text-secondary") Phòng Đại học - Ngày đăng: 06/03/2021
-                            p(class="font-italic text-secondary") Nguyễn Văn Anh
+                            p(class="font-italic text-secondary", id="notifDetailTypeDate")
+                            p(class="font-italic text-secondary", id="notifDetailOwner")
                         .form-group.row
                             .col-md-12.justify-content-end.d-flex
                                 button(class="btn btn-default ml-3", data-dismiss="modal") Close

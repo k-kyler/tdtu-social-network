@@ -6,6 +6,7 @@ let notificationSchema = new mongoose.Schema({
     content: String,
     attachment: String,
     owner: String,
+    ownerId: String,
     type: String,
 });
 

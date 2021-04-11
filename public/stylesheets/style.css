@@ -480,7 +480,10 @@ hr {
 }
 .tableNotifList > tbody > tr:hover {
     background-color: #f1f1f1;
-    color: var(--linear-background-color2);
+    color: var(--linear-background-color2) !important;
+}
+.tableNotifList > tbody > tr:hover span {
+    color: var(--linear-background-color2) !important;
 }
 .NotifDetails {
     cursor: pointer;
@@ -623,4 +626,14 @@ hr {
 #postImageReview,
 #editPostImageReview {
     height: 1.2rem;
+}
+
+/* Dashboard notification list */
+#notifs option {
+    white-space: normal;
+}
+
+/* Management page */
+#permission {
+    height: 10rem;
 }

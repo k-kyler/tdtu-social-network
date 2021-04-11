@@ -127,6 +127,7 @@ $(document).ready(() => {
         $("#faculty").attr("disabled", true);
         $("#newPassword").attr("disabled", true);
         $("#newPassword").val("");
+        $("#updateInfoError").html("");
         $("#hiddenNewAvatarURL").remove();
 
         // Send request to restore back user self information
@@ -178,7 +179,36 @@ $(document).ready(() => {
     });
 
     // Display notification details modal
-    $(".NotifDetails").click(() => {
+    $("body").on("click", ".NotifDetails", (event) => {
+        let notifId = event.target.dataset.notifid;
+
+        $("#notifDetailAttachment").addClass("d-none");
+        $("#notifDetailDownload").addClass("d-none");
+
+        fetch(`/dashboard/notification/${notifId}`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#notifDetailTitle").html(result.data.title);
+                    $("#notifDetailContent").html(result.data.content);
+
+                    if (result.data.attachment) {
+                        $("#notifDetailAttachment").removeClass("d-none");
+                        $("#notifDetailDownload").removeClass("d-none");
+                        $("#notifDetailDownload").attr(
+                            "href",
+                            result.data.attachment
+                        );
+                    }
+
+                    $("#notifDetailTypeDate").html(
+                        `${result.data.type} - ${result.data.date}`
+                    );
+                    $("#notifDetailOwner").html(result.data.owner);
+                }
+            })
+            .catch((error) => console.log(error));
+
         $("#NotifDetailsModal").modal("toggle");
     });
 
@@ -747,15 +777,44 @@ $(document).ready(() => {
     $("body").on("click", "#addNewNotification", (event) => {
         event.preventDefault();
 
-        fetch("dashboard/notification", {
+        $("#notificationMessage").attr("class", "mb-0 mr-3");
+        $("#notificationMessage").html("Processing...");
+
+        fetch("/dashboard/notification", {
             headers: {
                 "Content-Type": "application/json",
             },
             method: "POST",
-            body: JSON.stringify({}),
+            body: JSON.stringify({
+                notificationTitle: $("#notificationTitle").val(),
+                notificationContent: $("#notificationContent").val(),
+                notificationAttachment: $("#hiddenAttachmentURL").val(),
+                notificationDate: new Date().toDateString(),
+                notificationType: $("#notificationType").val(),
+            }),
         })
             .then((response) => response.json())
-            .then((result) => {})
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#notificationMessage").attr(
+                        "class",
+                        "text-success mb-0 mr-3"
+                    );
+                    $("#notificationMessage").html(
+                        "Create notification successful"
+                    );
+
+                    setTimeout(() => {
+                        window.location.href = "/dashboard/notification";
+                    }, 1500);
+                } else if (result.code === 0) {
+                    $("#notificationMessage").attr(
+                        "class",
+                        "text-danger mb-0 mr-3"
+                    );
+                    $("#notificationMessage").html(result.message);
+                }
+            })
             .catch((error) => console.log(error));
     });
 
@@ -1289,6 +1348,10 @@ let newAvatarInput = document.getElementById("newAvatar");
 
 if (newAvatarInput) {
     newAvatarInput.addEventListener("change", (event) => {
+        if (document.getElementById("hiddenNewAvatarURL")) {
+            document.getElementById("hiddenNewAvatarURL").remove();
+        }
+
         document.getElementById("btnUpdate").setAttribute("disabled", true);
         document.getElementById("btnDefault").setAttribute("disabled", true);
         document.getElementById("uploadNewAvatar").innerHTML = "";
@@ -1793,6 +1856,10 @@ let attachmentInput = document.getElementById("notificationAttachment");
 
 if (attachmentInput) {
     attachmentInput.addEventListener("change", (event) => {
+        if (document.getElementById("hiddenAttachmentURL")) {
+            document.getElementById("hiddenAttachmentURL").remove();
+        }
+
         document
             .getElementById("addNewNotification")
             .setAttribute("disabled", true);
