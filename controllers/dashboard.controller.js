@@ -83,7 +83,6 @@ module.exports.updateUserInfo = async (req, res) => {
         studentFaculty,
     } = req.body;
     let user = await User.findById(req.signedCookies.userId);
-    let posts = await Post.find();
 
     if (!userName) {
         res.json({
@@ -111,59 +110,89 @@ module.exports.updateUserInfo = async (req, res) => {
     } else {
         if (!newPassword) {
             if (hiddenNewAvatarURL) {
-                let newAvatarURL = `./public/uploads/${v4UniqueId()}.jpg`;
                 let fetchResponse = await fetch(hiddenNewAvatarURL);
                 let buffer = await fetchResponse.buffer();
+                let imageExt = await fileType.fromBuffer(buffer);
+                let imageSize = Buffer.byteLength(buffer);
+                let newAvatarURL = `./public/uploads/${v4UniqueId()}.${
+                    imageExt.ext
+                }`;
 
-                // Update user info
-                let updateInfo = await User.findOneAndUpdate(
-                    { _id: req.signedCookies.userId },
-                    {
-                        name: userName,
-                        phone: userPhone,
-                        class: studentClass ? studentClass : "",
-                        faculty: studentFaculty ? studentFaculty : "",
-                        avatar: newAvatarURL.split("./public")[1],
-                    },
-                    { new: true }
-                );
-
-                // Update user name and avatar in all posts
-                let updateAllPosts = await Post.updateMany(
-                    { ownerId: req.signedCookies.userId },
-                    {
-                        name: userName,
-                        profileAvatar: newAvatarURL.split("./public")[1],
-                    }
-                );
-
-                // Update user name and avatar in all comments
-                let updateAllComments = await Post.updateMany(
-                    {},
-                    {
-                        $set: {
-                            "comment.$[id].guestName": userName,
-                            "comment.$[id].guestAvatar": newAvatarURL.split(
-                                "./public"
-                            )[1],
-                        },
-                    },
-                    {
-                        arrayFilters: [
-                            {
-                                "id.guestId": req.signedCookies.userId,
-                            },
-                        ],
-                    }
-                );
-
-                // Download file from file.io API then response back to client
-                fs.writeFile(newAvatarURL, buffer, () => {
+                // Check if image size is over 5 MB
+                if (imageSize > 5000000) {
                     res.json({
-                        code: 1,
-                        message: "Update information success",
+                        code: 0,
+                        message: "Image size is over 5 MB",
                     });
-                });
+                }
+                // Check image extension
+                else if (
+                    new RegExp(["png", "jpg"].join("|")).test(imageExt.ext) ===
+                    false
+                ) {
+                    res.json({
+                        code: 0,
+                        message: "Not supported file",
+                    });
+                } else {
+                    // Update user info
+                    let updateInfo = await User.findOneAndUpdate(
+                        { _id: req.signedCookies.userId },
+                        {
+                            name: userName,
+                            phone: userPhone,
+                            class: studentClass ? studentClass : "",
+                            faculty: studentFaculty ? studentFaculty : "",
+                            avatar: newAvatarURL.split("./public")[1],
+                        },
+                        { new: true }
+                    );
+
+                    // Update user name and avatar in all posts
+                    let updateAllPosts = await Post.updateMany(
+                        { ownerId: req.signedCookies.userId },
+                        {
+                            name: userName,
+                            profileAvatar: newAvatarURL.split("./public")[1],
+                        }
+                    );
+
+                    // Update user name in all notifications
+                    let updateAllNotifications = await Notification.updateMany(
+                        { ownerId: req.signedCookies.userId },
+                        {
+                            owner: userName,
+                        }
+                    );
+
+                    // Update user name and avatar in all comments
+                    let updateAllComments = await Post.updateMany(
+                        {},
+                        {
+                            $set: {
+                                "comment.$[id].guestName": userName,
+                                "comment.$[id].guestAvatar": newAvatarURL.split(
+                                    "./public"
+                                )[1],
+                            },
+                        },
+                        {
+                            arrayFilters: [
+                                {
+                                    "id.guestId": req.signedCookies.userId,
+                                },
+                            ],
+                        }
+                    );
+
+                    // Download file from file.io API then response back to client
+                    fs.writeFile(newAvatarURL, buffer, () => {
+                        res.json({
+                            code: 1,
+                            message: "Update information successful",
+                        });
+                    });
+                }
             } else {
                 // Update user info
                 let updateInfo = await User.findOneAndUpdate(
@@ -181,6 +210,14 @@ module.exports.updateUserInfo = async (req, res) => {
                 let updateAllPosts = await Post.updateMany(
                     { ownerId: req.signedCookies.userId },
                     { name: userName }
+                );
+
+                // Update user name in all notifications
+                let updateAllNotifications = await Notification.updateMany(
+                    { ownerId: req.signedCookies.userId },
+                    {
+                        owner: userName,
+                    }
                 );
 
                 // Update user name in all comments
@@ -202,65 +239,95 @@ module.exports.updateUserInfo = async (req, res) => {
 
                 res.json({
                     code: 1,
-                    message: "Update user information success",
+                    message: "Update information successful",
                 });
             }
         } else if (newPassword && md5(newPassword) !== user.password) {
             if (hiddenNewAvatarURL) {
-                let newAvatarURL = `./public/uploads/${v4UniqueId()}.jpg`;
                 let fetchResponse = await fetch(hiddenNewAvatarURL);
                 let buffer = await fetchResponse.buffer();
+                let imageExt = await fileType.fromBuffer(buffer);
+                let imageSize = Buffer.byteLength(buffer);
+                let newAvatarURL = `./public/uploads/${v4UniqueId()}.${
+                    imageExt.ext
+                }`;
 
-                // Update user info
-                let updateInfo = await User.findOneAndUpdate(
-                    { _id: req.signedCookies.userId },
-                    {
-                        name: userName,
-                        phone: userPhone,
-                        class: studentClass ? studentClass : "",
-                        faculty: studentFaculty ? studentFaculty : "",
-                        password: md5(newPassword),
-                        avatar: newAvatarURL.split("./public")[1],
-                    },
-                    { new: true }
-                );
-
-                // Update user name and avatar in all posts
-                let updateAllPosts = await Post.updateMany(
-                    { ownerId: req.signedCookies.userId },
-                    {
-                        name: userName,
-                        profileAvatar: newAvatarURL.split("./public")[1],
-                    }
-                );
-
-                // Update user name and avatar in all comments
-                let updateAllComments = await Post.updateMany(
-                    {},
-                    {
-                        $set: {
-                            "comment.$[id].guestName": userName,
-                            "comment.$[id].guestAvatar": newAvatarURL.split(
-                                "./public"
-                            )[1],
-                        },
-                    },
-                    {
-                        arrayFilters: [
-                            {
-                                "id.guestId": req.signedCookies.userId,
-                            },
-                        ],
-                    }
-                );
-
-                // Download file from file.io API then response back to client
-                fs.writeFile(newAvatarURL, buffer, () => {
+                // Check if image size is over 5 MB
+                if (imageSize > 5000000) {
                     res.json({
-                        code: 1,
-                        message: "Update information success",
+                        code: 0,
+                        message: "Image size is over 5 MB",
                     });
-                });
+                }
+                // Check image extension
+                else if (
+                    new RegExp(["png", "jpg"].join("|")).test(imageExt.ext) ===
+                    false
+                ) {
+                    res.json({
+                        code: 0,
+                        message: "Not supported file",
+                    });
+                } else {
+                    // Update user info
+                    let updateInfo = await User.findOneAndUpdate(
+                        { _id: req.signedCookies.userId },
+                        {
+                            name: userName,
+                            phone: userPhone,
+                            class: studentClass ? studentClass : "",
+                            faculty: studentFaculty ? studentFaculty : "",
+                            password: md5(newPassword),
+                            avatar: newAvatarURL.split("./public")[1],
+                        },
+                        { new: true }
+                    );
+
+                    // Update user name and avatar in all posts
+                    let updateAllPosts = await Post.updateMany(
+                        { ownerId: req.signedCookies.userId },
+                        {
+                            name: userName,
+                            profileAvatar: newAvatarURL.split("./public")[1],
+                        }
+                    );
+
+                    // Update user name in all notifications
+                    let updateAllNotifications = await Notification.updateMany(
+                        { ownerId: req.signedCookies.userId },
+                        {
+                            owner: userName,
+                        }
+                    );
+
+                    // Update user name and avatar in all comments
+                    let updateAllComments = await Post.updateMany(
+                        {},
+                        {
+                            $set: {
+                                "comment.$[id].guestName": userName,
+                                "comment.$[id].guestAvatar": newAvatarURL.split(
+                                    "./public"
+                                )[1],
+                            },
+                        },
+                        {
+                            arrayFilters: [
+                                {
+                                    "id.guestId": req.signedCookies.userId,
+                                },
+                            ],
+                        }
+                    );
+
+                    // Download file from file.io API then response back to client
+                    fs.writeFile(newAvatarURL, buffer, () => {
+                        res.json({
+                            code: 1,
+                            message: "Update information successful",
+                        });
+                    });
+                }
             } else {
                 // Update user info
                 let updateInfo = await User.findOneAndUpdate(
@@ -279,6 +346,14 @@ module.exports.updateUserInfo = async (req, res) => {
                 let updateAllPosts = await Post.updateMany(
                     { ownerId: req.signedCookies.userId },
                     { name: userName }
+                );
+
+                // Update user name in all notifications
+                let updateAllNotifications = await Notification.updateMany(
+                    { ownerId: req.signedCookies.userId },
+                    {
+                        owner: userName,
+                    }
                 );
 
                 // Update user name in all comments
@@ -300,7 +375,7 @@ module.exports.updateUserInfo = async (req, res) => {
 
                 res.json({
                     code: 1,
-                    message: "Update information success",
+                    message: "Update information successful",
                 });
             }
         }
