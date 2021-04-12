@@ -13,6 +13,7 @@ router.post("/users", controller.createNewStaff);
 
 router.get("/notification", controller.notification);
 router.get("/notification/:id", controller.getNotification);
+router.get("/notification/list/:name", controller.getNotificationList);
 router.post("/notification", controller.addNewNotification);
 
 router.get("/post/:postUniqueId", controller.getPost);

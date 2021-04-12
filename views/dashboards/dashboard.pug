@@ -129,7 +129,7 @@ block dashboardContent
                     div(class="dashboard__contentNotificationList notifList-height bg-white pt-3 pb-1 mb-4 col-md-12")
                         p(class="text-center font-weight-bold") Notification List
                         select(name="notifs", id="notifs", class="rounded align-center form-control") 
-                            option(value="") Tất cả
+                            option(value="all") Tất cả
 
                             if listOfficeFaculty 
                                 each item, index in listOfficeFaculty 
@@ -138,7 +138,7 @@ block dashboardContent
                         hr
                         .tableNotifListScroll
                             table.table.table-bordered.tableNotifList
-                                tbody
+                                tbody#notificationList
                                     if notifications
                                         each notification in notifications
                                             tr(class="NotifDetails", data-notifId=notification._id)

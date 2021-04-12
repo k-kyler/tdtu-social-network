@@ -864,6 +864,31 @@ $(document).ready(() => {
             .catch((error) => console.log(error));
     });
 
+    // Notification list filter handler
+    $("body").on("change", "#notifs", (event) => {
+        fetch(`/dashboard/notification/list/${event.target.value}`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#notificationList").html("");
+
+                    for (let notification of result.data) {
+                        $("#notificationList").append(`
+                            <tr class="NotifDetails" data-notifId=${notification._id}>
+                                <td data-notifId=${notification._id}>
+                                    <p class="font-italic text-secondary" data-notifId=${notification._id}>
+                                        [${notification.type}] - ${notification.date}
+                                    </p>
+                                    <span class="text-primary" data-notifId=${notification._id}>${notification.title}</span>
+                                </td>
+                            </tr>
+                        `);
+                    }
+                }
+            })
+            .catch((error) => console.log(error));
+    });
+
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
         // Render the post
@@ -2016,8 +2041,6 @@ const uploadAttachmentToFileIOAPI = (attachment) => {
     };
     xhr.send(formData);
 };
-
-// Notification filter handler
 
 // Edit notification form handler
 // HERE

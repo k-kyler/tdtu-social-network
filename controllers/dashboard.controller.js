@@ -411,6 +411,41 @@ module.exports.getNotification = async (req, res) => {
     }
 };
 
+// Get notification list by name
+module.exports.getNotificationList = async (req, res) => {
+    let { name } = req.params;
+
+    if (name === "all") {
+        let notifications = await Notification.find();
+
+        if (notifications) {
+            res.json({
+                code: 1,
+                data: notifications,
+            });
+        } else {
+            res.json({
+                code: 0,
+                message: "No notifications found!",
+            });
+        }
+    } else if (name !== "all") {
+        let notificationsByType = await Notification.find({ type: name });
+
+        if (notificationsByType) {
+            res.json({
+                code: 1,
+                data: notificationsByType,
+            });
+        } else {
+            res.json({
+                code: 0,
+                message: "No notifications found!",
+            });
+        }
+    }
+};
+
 // Add new notification
 module.exports.addNewNotification = async (req, res) => {
     let {
