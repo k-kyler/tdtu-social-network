@@ -143,5 +143,5 @@ block dashboardContent
                                         each notification in notifications
                                             tr(class="NotifDetails", data-notifId=notification._id)
                                                 td(data-notifId=notification._id)
-                                                    p(class="font-italic text-secondary", data-notifId=notification._id) [#{notification.type}] - #{notification.date}
-                                                    span.text-primary(data-notifId=notification._id)= notification.title
+                                                    p(class="font-italic text-secondary", data-notifId=notification._id, title="[" + notification.type + "]" + " - " + notification.date) [#{notification.type}] - #{notification.date}
+                                                    p.mb-0.text-primary(data-notifId=notification._id, title=notification.title)= notification.title

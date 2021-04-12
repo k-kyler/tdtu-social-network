@@ -850,6 +850,12 @@ $(document).ready(() => {
                         "Create notification successful"
                     );
 
+                    socket.emit("Notification alert", {
+                        message: result.message,
+                        alertId: result.alertId,
+                        ownerId: result.ownerId,
+                    });
+
                     setTimeout(() => {
                         window.location.href = "/dashboard/notification";
                     }, 1500);
@@ -1326,6 +1332,28 @@ $(document).ready(() => {
     // Client listen to the deleting message from server to delete comment
     socket.on("Deleting comment", (commentUniqueId) => {
         $(`#${commentUniqueId}`).remove();
+    });
+
+    // Client listen to the deleting message from server to delete comment
+    socket.on("Displaying notification alert", (notification) => {
+        if (
+            notification.ownerId !=
+            document.getElementById("userObjectId").value
+        ) {
+            // Display alert
+            $("#alertContainer").prepend(`
+                <div class="alert alert-warning alert-dismissible fade show ${notification.alertId}" role="alert">
+                    <i class="fas fa-bell h5 mr-2 text-warning"></i>
+                    <span>${notification.message}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+            setTimeout(() => {
+                $(`.${notification.alertId}`).alert("close");
+            }, 4000);
+        }
     });
 });
 

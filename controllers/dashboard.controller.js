@@ -479,7 +479,9 @@ module.exports.addNewNotification = async (req, res) => {
 
         res.json({
             code: 1,
-            message: "You have received new notification",
+            ownerId: req.signedCookies.userId,
+            message:
+                "You have received new notification. <a href='/dashboard'>Refresh</a>",
             alertId: shortid.generate(),
         });
     } else if (
@@ -530,7 +532,9 @@ module.exports.addNewNotification = async (req, res) => {
             fs.writeFile(attachmentDest, buffer, () => {
                 res.json({
                     code: 1,
-                    message: "You have received new notification",
+                    ownerId: req.signedCookies.userId,
+                    message:
+                        "You have received new notification. <a href='/dashboard'>Refresh</a>",
                     alertId: shortid.generate(),
                 });
             });

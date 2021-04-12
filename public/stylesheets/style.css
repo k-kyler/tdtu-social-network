@@ -488,7 +488,12 @@ hr {
 .NotifDetails {
     cursor: pointer;
 }
-
+.NotifDetails p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 16rem;
+}
 .EditManagement,
 .DeleteManagement {
     cursor: pointer;
@@ -524,6 +529,10 @@ hr {
     position: absolute;
     bottom: 0.1rem;
     left: 1rem;
+}
+
+#alertContainer a {
+    text-decoration: none;
 }
 
 /* Post image */

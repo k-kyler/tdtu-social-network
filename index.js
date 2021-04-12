@@ -85,6 +85,11 @@ io.on("connection", (socket) => {
     socket.on("Delete comment", (commentUniqueId) => {
         io.sockets.emit("Deleting comment", commentUniqueId);
     });
+
+    // Server wait for emitting message from client to allow client to see the notification alert
+    socket.on("Notification alert", (notification) => {
+        io.sockets.emit("Displaying notification alert", notification);
+    });
 });
 
 // Default app endpoint
