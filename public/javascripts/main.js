@@ -2017,6 +2017,8 @@ const uploadAttachmentToFileIOAPI = (attachment) => {
     xhr.send(formData);
 };
 
+// Notification filter handler
+
 // Edit notification form handler
 // HERE
 

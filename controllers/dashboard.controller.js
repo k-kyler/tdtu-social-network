@@ -385,9 +385,11 @@ module.exports.updateUserInfo = async (req, res) => {
 // Notification
 module.exports.notification = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
+    let notifications = await Notification.find();
 
     res.render("dashboards/notification", {
         user: user,
+        notifications,
     });
 };
 

@@ -61,18 +61,21 @@ block dashboardContent
                             th(scope='col') Attachment
                             th(scope='col' style="width:100px;") Handler
                     tbody
-                        tr
-                            th(scope='row')= 2
-                            td(class="td-justify") NỘP HỌC PHÍ HỌC KỲ 2/2020-2021
-                            td(class="td-justify") 
-                                p Sinh viên thực hiện quy trình đăng ký môn học và đóng học phí mới bắt đầu áp dụng cho HK2/2020-2021 trở về sau. Thời gian thu: ngày 25/01/2021 đến 03/02/2021. 2. Hình thức thanh toán: sinh viên đăng nhập vào "Cổng thông tin sinh viên" chọn mục "Học phí" chọn “HD Thanh toán học phí” để xem các hướng dẫn thanh toán học phí tại Ngân hàng Vietcombank..
-                            td
-                                p Phòng Tài Chính
+                        if notifications
+                            each notification, index in notifications
+                                tr
+                                    th(scope='row')= index + 1
+                                    td(class="td-justify")= notification.title
+                                    td(class="td-justify") 
+                                        p= notification.content
+                                    td
+                                        p= notification.type
 
-                            td
-                                p HocPhi.xlxs
-                            td
-                                div(class="col-md-4 text-center p-2 EditNotif")
-                                    img(src="/images/edit_icon.png", width="28", height="28")
-                                div(class="col-md-4 text-center p-2 DeleteNotif",onclick="alert('Clicked Delete')")
-                                    img(src="/images/delete_icon.png", width="28", height="28")
+                                    td  
+                                        if notification.attachment
+                                            a(download, href=notification.attachment) Download
+                                    td
+                                        div(class="col-md-4 text-center p-2 EditNotif")
+                                            img(src="/images/edit_icon.png", width="28", height="28")
+                                        div(class="col-md-4 text-center p-2 DeleteNotif",onclick="alert('Clicked Delete')")
+                                            img(src="/images/delete_icon.png", width="28", height="28")
