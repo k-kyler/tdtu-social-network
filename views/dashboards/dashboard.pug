@@ -18,7 +18,7 @@ block dashboardContent
         div(class="col-md-8 pl-md-0")
             div(class="container-fluid")
                 div(class="row")
-                    div(class="dashboard__contentCommunication bg-white pt-3 pb-1 mb-4 col-md-12")
+                    div(class="dashboard__contentCommunication bg-white pt-3 pb-0 mb-4 col-md-12")
                         div(class="form-group row d-flex align-items-center")
                             div(class="col-md-1 col-sm-2 col-3")
                                 if user.avatar === ""
@@ -44,7 +44,7 @@ block dashboardContent
                     div(id="postArea" class="col-md-12 px-0")
                         if posts
                             each post in posts
-                                div(class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=post.postUniqueId)
+                                div(class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=post.postUniqueId)
                                     div(class="form-group row")
                                         div(class="col-md-1 col-sm-2 col-3")
                                             img(src=post.profileAvatar alt="user avatar" width="40" height="40")

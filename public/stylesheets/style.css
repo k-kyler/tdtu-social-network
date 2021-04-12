@@ -255,7 +255,7 @@ h4 {
 .dashboard__contentUsersForm,
 .dashboard__contentUsersList,
 .dashboard__contentUsersList > table > thead > tr > th {
-    border-radius: 6px;
+    border-radius: 12px;
     border-top-width: 0;
 }
 .dashboard__contentUsersListHandler {
@@ -344,7 +344,7 @@ h4 {
 /*--------------------*/
 .dashboard__contentCommunication,
 .dashboard__contentListNotifications {
-    border-radius: 6px;
+    border-radius: 12px;
     border-top-width: 0;
     width: 100%;
 }
@@ -427,7 +427,7 @@ hr {
 .dashboard__contentNotificationForm,
 .dashboard__contentNotificationList,
 .dashboard__contentNotificationList > table > thead > tr > th {
-    border-radius: 6px;
+    border-radius: 12px;
     border-top-width: 0;
 }
 .dashboard__contentNotificationListHandler {

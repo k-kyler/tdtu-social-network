@@ -869,7 +869,7 @@ $(document).ready(() => {
         // Render the post
         if (post.ownerId == document.getElementById("userObjectId").value) {
             $("#postArea").prepend(`
-                <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
+                <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${postUniqueId}>
                     <div class="form-group row">
                         <div class="col-md-1 col-sm-2 col-3">
                             <img src=${
@@ -974,7 +974,7 @@ $(document).ready(() => {
             `);
         } else {
             $("#postArea").prepend(`
-                <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
+                <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${postUniqueId}>
                     <div class="form-group row">
                         <div class="col-md-1 col-sm-2 col-3">
                             <img src=${
