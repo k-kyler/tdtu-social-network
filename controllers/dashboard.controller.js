@@ -26,7 +26,7 @@ const upload = multer({
 // Dashboard
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
-    let posts = await Post.find().sort({ number: -1 }); // Get desc posts list by number
+    let posts = await Post.find().sort({ timeSort: -1 }); // Get desc posts list by number
     let listOfficeFaculty = await ListOfficeFaculty.find();
     let notifications = await Notification.find();
 
@@ -546,13 +546,15 @@ module.exports.createNewStaff = async (req, res) => {
         let user = await User.findById(req.signedCookies.userId);
         let users = await User.find();
         let listOfficeFaculty = await ListOfficeFaculty.find();
-        let avatarPath = `public/uploads/${avatar.originalname}`;
+        let avatarPath = `public/uploads/${
+            avatar.originalname
+        }-${v4UniqueId()}`;
 
         // Rename avatar in public folder
         fs.renameSync(avatar.path, avatarPath);
 
         // Re-path to store in db
-        avatarPath = `/uploads/${avatar.originalname}`;
+        avatarPath = avatarPath.split("public")[1];
 
         // Check if image too large
         if (error) {
@@ -659,56 +661,100 @@ module.exports.addNewPost = async (req, res) => {
         image
     ) {
         let post = new Post();
-        let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
         let fetchResponse = await fetch(image);
         let buffer = await fetchResponse.buffer();
+        let imageExt = await fileType.fromBuffer(buffer);
+        let imageSize = Buffer.byteLength(buffer);
+        let imageURL = `./public/uploads/${v4UniqueId()}.${imageExt.ext}`;
 
-        post.ownerId = ownerId;
-        post.postUniqueId = postUniqueId;
-        post.name = name;
-        post.profileAvatar = profileAvatar;
-        post.timestamp = timestamp;
-        post.content = content;
-        post.video = video;
-        post.image = imageURL.split("./public")[1];
-        post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
-        post.save();
-
-        // Download file from file.io API then response back to client
-        fs.writeFile(imageURL, buffer, () => {
+        // Check if image size is over 10 MB
+        if (imageSize > 10000000) {
             res.json({
-                code: 1,
-                message: "You have added new post",
+                code: 0,
+                message: "Image size is over 10 MB",
                 alertId: shortid.generate(),
-                imageURL: imageURL.split("./public")[1],
             });
-        });
+        }
+        // Check image extension
+        else if (
+            new RegExp(["png", "jpg", "gif"].join("|")).test(imageExt.ext) ===
+            false
+        ) {
+            res.json({
+                code: 0,
+                message: "Not supported file",
+                alertId: shortid.generate(),
+            });
+        } else {
+            post.ownerId = ownerId;
+            post.postUniqueId = postUniqueId;
+            post.name = name;
+            post.profileAvatar = profileAvatar;
+            post.timestamp = timestamp;
+            post.content = content;
+            post.video = video;
+            post.image = imageURL.split("./public")[1];
+            post.timeSort = new Date().toISOString();
+            post.save();
+
+            // Download file from file.io API then response back to client
+            fs.writeFile(imageURL, buffer, () => {
+                res.json({
+                    code: 1,
+                    message: "You have added new post",
+                    alertId: shortid.generate(),
+                    imageURL: imageURL.split("./public")[1],
+                });
+            });
+        }
     } else if (!video && image && content !== "") {
         let post = new Post();
-        let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
         let fetchResponse = await fetch(image);
         let buffer = await fetchResponse.buffer();
+        let imageExt = await fileType.fromBuffer(buffer);
+        let imageSize = Buffer.byteLength(buffer);
+        let imageURL = `./public/uploads/${v4UniqueId()}.${imageExt.ext}`;
 
-        post.ownerId = ownerId;
-        post.postUniqueId = postUniqueId;
-        post.name = name;
-        post.profileAvatar = profileAvatar;
-        post.timestamp = timestamp;
-        post.content = content;
-        post.video = video;
-        post.image = imageURL.split("./public")[1];
-        post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
-        post.save();
-
-        // Download file from file.io API then response back to client
-        fs.writeFile(imageURL, buffer, () => {
+        // Check if image size is over 10 MB
+        if (imageSize > 10000000) {
             res.json({
-                code: 1,
-                message: "You have added new post",
+                code: 0,
+                message: "Image size is over 10 MB",
                 alertId: shortid.generate(),
-                imageURL: imageURL.split("./public")[1],
             });
-        });
+        }
+        // Check image extension
+        else if (
+            new RegExp(["png", "jpg", "gif"].join("|")).test(imageExt.ext) ===
+            false
+        ) {
+            res.json({
+                code: 0,
+                message: "Not supported file",
+                alertId: shortid.generate(),
+            });
+        } else {
+            post.ownerId = ownerId;
+            post.postUniqueId = postUniqueId;
+            post.name = name;
+            post.profileAvatar = profileAvatar;
+            post.timestamp = timestamp;
+            post.content = content;
+            post.video = video;
+            post.image = imageURL.split("./public")[1];
+            post.timeSort = new Date().toISOString();
+            post.save();
+
+            // Download file from file.io API then response back to client
+            fs.writeFile(imageURL, buffer, () => {
+                res.json({
+                    code: 1,
+                    message: "You have added new post",
+                    alertId: shortid.generate(),
+                    imageURL: imageURL.split("./public")[1],
+                });
+            });
+        }
     } else if (!video && !image && content !== "") {
         let post = new Post();
 
@@ -718,7 +764,7 @@ module.exports.addNewPost = async (req, res) => {
         post.profileAvatar = profileAvatar;
         post.timestamp = timestamp;
         post.content = content;
-        post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
+        post.timeSort = new Date().toISOString();
         post.save();
 
         res.json({
@@ -736,7 +782,7 @@ module.exports.addNewPost = async (req, res) => {
         post.timestamp = timestamp;
         post.content = content;
         post.video = video;
-        post.number = posts.length > 0 ? posts[posts.length - 1].number + 1 : 1;
+        post.timeSort = new Date().toISOString();
         post.save();
 
         res.json({
@@ -770,33 +816,59 @@ module.exports.editPost = async (req, res) => {
         image !== "No image" &&
         !image.includes("/uploads/")
     ) {
-        let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
         let fetchResponse = await fetch(image);
         let buffer = await fetchResponse.buffer();
+        let imageExt = await fileType.fromBuffer(buffer);
+        let imageSize = Buffer.byteLength(buffer);
+        let imageURL = `./public/uploads/${v4UniqueId()}.${imageExt.ext}`;
 
-        let updatePost = await Post.findOneAndUpdate(
-            { postUniqueId },
-            {
-                timestamp,
-                content,
-                video,
-                image: imageURL.split("./public")[1],
-            },
-            {
-                new: true,
-            }
-        );
-
-        // Download file from file.io API then response back to client
-        fs.writeFile(imageURL, buffer, () => {
+        // Check if image size is over 10 MB
+        if (imageSize > 10000000) {
             res.json({
-                code: 1,
-                message: "You have edited post",
-                alertId: shortid.generate(),
+                code: 0,
+                message: "Image size is over 10 MB",
                 ownerId: post.ownerId,
-                imageURL: imageURL.split("./public")[1],
+                alertId: shortid.generate(),
+                image: post.image,
             });
-        });
+        }
+        // Check image extension
+        else if (
+            new RegExp(["png", "jpg", "gif"].join("|")).test(imageExt.ext) ===
+            false
+        ) {
+            res.json({
+                code: 0,
+                message: "Not supported file",
+                ownerId: post.ownerId,
+                alertId: shortid.generate(),
+                image: post.image,
+            });
+        } else {
+            let updatePost = await Post.findOneAndUpdate(
+                { postUniqueId },
+                {
+                    timestamp,
+                    content,
+                    video,
+                    image: imageURL.split("./public")[1],
+                },
+                {
+                    new: true,
+                }
+            );
+
+            // Download file from file.io API then response back to client
+            fs.writeFile(imageURL, buffer, () => {
+                res.json({
+                    code: 1,
+                    message: "You have edited post",
+                    alertId: shortid.generate(),
+                    ownerId: post.ownerId,
+                    imageURL: imageURL.split("./public")[1],
+                });
+            });
+        }
     } else if (
         video === "No video" &&
         image &&
@@ -804,32 +876,58 @@ module.exports.editPost = async (req, res) => {
         !image.includes("/uploads/") &&
         content !== ""
     ) {
-        let imageURL = `./public/uploads/${v4UniqueId()}.jpg`;
         let fetchResponse = await fetch(image);
         let buffer = await fetchResponse.buffer();
+        let imageExt = await fileType.fromBuffer(buffer);
+        let imageSize = Buffer.byteLength(buffer);
+        let imageURL = `./public/uploads/${v4UniqueId()}.${imageExt.ext}`;
 
-        let updatePost = await Post.findOneAndUpdate(
-            { postUniqueId },
-            {
-                timestamp,
-                content,
-                image: imageURL.split("./public")[1],
-            },
-            {
-                new: true,
-            }
-        );
-
-        // Download file from file.io API then response back to client
-        fs.writeFile(imageURL, buffer, () => {
+        // Check if image size is over 10 MB
+        if (imageSize > 10000000) {
             res.json({
-                code: 1,
-                message: "You have edited post",
-                alertId: shortid.generate(),
+                code: 0,
+                message: "Image size is over 10 MB",
                 ownerId: post.ownerId,
-                imageURL: imageURL.split("./public")[1],
+                alertId: shortid.generate(),
+                image: post.image,
             });
-        });
+        }
+        // Check image extension
+        else if (
+            new RegExp(["png", "jpg", "gif"].join("|")).test(imageExt.ext) ===
+            false
+        ) {
+            res.json({
+                code: 0,
+                message: "Not supported file",
+                ownerId: post.ownerId,
+                alertId: shortid.generate(),
+                image: post.image,
+            });
+        } else {
+            let updatePost = await Post.findOneAndUpdate(
+                { postUniqueId },
+                {
+                    timestamp,
+                    content,
+                    image: imageURL.split("./public")[1],
+                },
+                {
+                    new: true,
+                }
+            );
+
+            // Download file from file.io API then response back to client
+            fs.writeFile(imageURL, buffer, () => {
+                res.json({
+                    code: 1,
+                    message: "You have edited post",
+                    alertId: shortid.generate(),
+                    ownerId: post.ownerId,
+                    imageURL: imageURL.split("./public")[1],
+                });
+            });
+        }
     } else if (video === "No video" && !image && content !== "") {
         let updatePost = await Post.findOneAndUpdate(
             { postUniqueId },

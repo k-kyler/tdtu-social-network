@@ -431,17 +431,41 @@ $(document).ready(() => {
                                     $(`.${result.alertId}`).alert("close");
                                 }, 4000);
 
-                                // Render back the edit image
+                                if (result.imageURL) {
+                                    // Render back the edit image
+                                    $(`#${postUniqueId} .post-image`).attr(
+                                        "src",
+                                        result.imageURL
+                                    );
+
+                                    // Remove old edit hidden image URL input
+                                    $("#editHiddenImageURL").remove();
+                                }
+                            }
+                        } else if (result.code === 0) {
+                            if (
+                                result.ownerId ==
+                                document.getElementById("userObjectId").value
+                            ) {
+                                // Display alert
+                                $("#alertContainer").prepend(`
+                                    <div class="alert alert-danger alert-dismissible fade show ${result.alertId}" role="alert">
+                                        <span>${result.message}</span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                                setTimeout(() => {
+                                    $(`.${result.alertId}`).alert("close");
+                                }, 4000);
+
+                                // Restore back the image
                                 $(`#${postUniqueId} .post-image`).attr(
                                     "src",
-                                    result.imageURL
+                                    result.image
                                 );
-
-                                // Remove old edit hidden image URL input
-                                $("#editHiddenImageURL").remove();
                             }
-                        } else {
-                            $("#errorEditPost").html(result.message);
                         }
                     })
                     .catch((error) => console.log(error));
@@ -529,8 +553,30 @@ $(document).ready(() => {
                                 // Remove old edit hidden image URL input
                                 $("#editHiddenImageURL").remove();
                             }
-                        } else {
-                            $("#errorEditPost").html(result.message);
+                        } else if (result.code === 0) {
+                            if (
+                                result.ownerId ==
+                                document.getElementById("userObjectId").value
+                            ) {
+                                // Display alert
+                                $("#alertContainer").prepend(`
+                                    <div class="alert alert-danger alert-dismissible fade show ${result.alertId}" role="alert">
+                                        <span>${result.message}</span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                                setTimeout(() => {
+                                    $(`.${result.alertId}`).alert("close");
+                                }, 4000);
+
+                                // Restore back the image
+                                $(`#${postUniqueId} .post-image`).attr(
+                                    "src",
+                                    result.image
+                                );
+                            }
                         }
                     })
                     .catch((error) => console.log(error));
@@ -820,6 +866,7 @@ $(document).ready(() => {
 
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
+        // Render the post
         if (post.ownerId == document.getElementById("userObjectId").value) {
             $("#postArea").prepend(`
                 <div class="dashboard__contentCommunication mb-4 bg-white p-3 col-md-12" id=${postUniqueId}>
@@ -1058,14 +1105,37 @@ $(document).ready(() => {
                             $(`.${result.alertId}`).alert("close");
                         }, 4000);
 
-                        // Render back the post image
-                        $(`#${postUniqueId} .post-image`).attr(
-                            "src",
-                            result.imageURL
-                        );
+                        if (result.imageURL) {
+                            // Render back the post image
+                            $(`#${postUniqueId} .post-image`).attr(
+                                "src",
+                                result.imageURL
+                            );
 
-                        // Remove old post hidden image URL input
-                        $("#hiddenImageURL").remove();
+                            // Remove old post hidden image URL input
+                            $("#hiddenImageURL").remove();
+                        }
+                    }
+                } else if (result.code === 0) {
+                    if (
+                        post.ownerId ==
+                        document.getElementById("userObjectId").value
+                    ) {
+                        // Display alert
+                        $("#alertContainer").prepend(`
+                            <div class="alert alert-danger alert-dismissible fade show ${result.alertId}" role="alert">
+                                <span>${result.message}</span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        `);
+                        setTimeout(() => {
+                            $(`.${result.alertId}`).alert("close");
+                        }, 4000);
+
+                        // Remove the loading post
+                        $(`#${postUniqueId}`).remove();
                     }
                 }
             })
@@ -1560,6 +1630,7 @@ let postImageInput = document.getElementById("postImage");
 
 if (postImageInput) {
     postImageInput.addEventListener("change", (event) => {
+        document.getElementById("errorPost").innerHTML = "";
         document
             .getElementById("modalPostButton")
             .setAttribute("disabled", true);
@@ -1648,6 +1719,7 @@ let editPostImageInput = document.getElementById("editPostImage");
 
 if (editPostImageInput) {
     editPostImageInput.addEventListener("change", (event) => {
+        document.getElementById("errorEditPost").innerHTML = "";
         document
             .getElementById("editPostButton")
             .setAttribute("disabled", true);
@@ -1818,6 +1890,7 @@ function editPostImageReviewHandler(image) {
 // Clear image of post modal handler
 if (document.getElementById("postClearImage")) {
     document.getElementById("postClearImage").addEventListener("click", () => {
+        document.getElementById("errorPost").innerHTML = "";
         document.getElementById("postImageName").innerHTML = "";
         document.getElementById("postImageName").innerHTML = "Add to post";
         document.getElementById("postImageReview").removeAttribute("src");
@@ -1834,6 +1907,7 @@ if (document.getElementById("editPostClearImage")) {
     document
         .getElementById("editPostClearImage")
         .addEventListener("click", () => {
+            document.getElementById("errorEditPost").innerHTML = "";
             document.getElementById("editPostImageName").innerHTML = "";
             document.getElementById("editPostImageName").innerHTML =
                 "Add to post";

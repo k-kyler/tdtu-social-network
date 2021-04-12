@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 let postSchema = new mongoose.Schema({
     ownerId: String,
-    number: Number,
+    timeSort: Date,
     name: String,
     postUniqueId: String,
     timestamp: String,
