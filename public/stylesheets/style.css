@@ -482,7 +482,7 @@ hr {
     background-color: #f1f1f1;
     color: var(--linear-background-color2) !important;
 }
-.tableNotifList > tbody > tr:hover span {
+.tableNotifList > tbody > tr:hover p:nth-child(2) {
     color: var(--linear-background-color2) !important;
 }
 .NotifDetails {

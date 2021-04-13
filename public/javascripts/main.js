@@ -272,6 +272,7 @@ $(document).ready(() => {
 
                 // Clear old and close modal
                 content.val("");
+                $("#video").val("");
                 $("#postImageReview").removeAttr("src");
                 $("#postImageReview").removeAttr("class");
                 $("#postImageName").html("Add to post");
@@ -301,6 +302,7 @@ $(document).ready(() => {
 
                 // Clear old and close modal
                 content.val("");
+                $("#video").val("");
                 $("#postImageReview").removeAttr("src");
                 $("#postImageReview").removeAttr("class");
                 $("#postImageName").html("Add to post");
@@ -658,6 +660,8 @@ $(document).ready(() => {
         $("#viewBiggerPostImage").attr("src", postImageSrc);
         $("#viewBiggerPostImageModal").modal("toggle");
     });
+
+    // Post lazy loading handler
 
     // Display edit comment modal
     $("body").on("click", ".editComment", (event) => {
