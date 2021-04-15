@@ -136,7 +136,7 @@ block dashboardContent
                                     option(value=item.name)= item.name
                             
                         hr
-                        .tableNotifListScroll
+                        .tableNotifListScroll.d-flex.justify-content-between.flex-column
                             table.table.table-bordered.tableNotifList
                                 tbody#notificationList
                                     if notifications
@@ -145,3 +145,19 @@ block dashboardContent
                                                 td(data-notifId=notification._id)
                                                     p(class="font-italic text-secondary", data-notifId=notification._id, title="[" + notification.type + "]" + " - " + notification.date) [#{notification.type}] - #{notification.date}
                                                     p.mb-0.text-primary(data-notifId=notification._id, title=notification.title)= notification.title
+
+                            ul.pagination.justify-content-center
+                                li.page-item.disabled
+                                    a.page-link(href='#' aria-label='Previous')
+                                        span(aria-hidden='true') &laquo;
+                                        span.sr-only Previous
+                                li.page-item.active
+                                    a.page-link(href='#') 1
+                                li.page-item
+                                    a.page-link(href='#') 2
+                                li.page-item
+                                    a.page-link(href='#') 3
+                                li.page-item
+                                    a.page-link(href='#' aria-label='Next')
+                                        span(aria-hidden='true') &raquo;
+                                        span.sr-only Next

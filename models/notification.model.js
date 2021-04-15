@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 let notificationSchema = new mongoose.Schema({
     title: String,
+    timeSort: Date,
     date: String,
     content: String,
     attachment: String,

@@ -26,15 +26,16 @@ const upload = multer({
 // Dashboard
 module.exports.dashboard = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
-    let posts = await Post.find().sort({ timeSort: -1 }); // Get desc posts list by number
+    let posts = await Post.find().sort({ timeSort: -1 }); // Get desc posts list by time
     let listOfficeFaculty = await ListOfficeFaculty.find();
-    let notifications = await Notification.find();
+    let notifications = await Notification.find().sort({ timeSort: -1 }); // Get desc notifications list by time
 
     res.render("dashboards/dashboard", {
         user,
         posts,
         listOfficeFaculty,
-        notifications,
+        notifications: notifications.slice(0, 10), // Get the first 10 notifications
+        totalNotifPages: Math.ceil(notifications.length / 10), // Calculate the total notification pages
     });
 };
 
@@ -411,9 +412,9 @@ module.exports.getNotification = async (req, res) => {
     }
 };
 
-// Get notification list by name
-module.exports.getNotificationList = async (req, res) => {
-    let { name } = req.params;
+// Notification list filter and pagination
+module.exports.notifPagination = async (req, res) => {
+    let { name, page } = req.params;
 
     if (name === "all") {
         let notifications = await Notification.find();
@@ -475,6 +476,7 @@ module.exports.addNewNotification = async (req, res) => {
         notification.attachment = notificationAttachment;
         notification.content = notificationContent;
         notification.date = notificationDate;
+        notification.timeSort = new Date().toISOString();
         notification.save();
 
         res.json({
@@ -526,6 +528,7 @@ module.exports.addNewNotification = async (req, res) => {
             notification.attachment = attachmentDest.split("./public")[1];
             notification.content = notificationContent;
             notification.date = notificationDate;
+            notification.timeSort = new Date().toISOString();
             notification.save();
 
             // Download file from file.io API then response back to client

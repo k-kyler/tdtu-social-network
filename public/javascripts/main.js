@@ -906,9 +906,11 @@ $(document).ready(() => {
             .catch((error) => console.log(error));
     });
 
-    // Notification list filter handler
+    // Notification list filter and pagination handler
     $("body").on("change", "#notifs", (event) => {
-        fetch(`/dashboard/notification/list/${event.target.value}`)
+        fetch(`/dashboard/notification/pagination/${1}/${event.target.value}`, {
+            method: "POST",
+        })
             .then((response) => response.json())
             .then((result) => {
                 if (result.code === 1) {
