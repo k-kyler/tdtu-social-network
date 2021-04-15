@@ -272,7 +272,6 @@ $(document).ready(() => {
 
                 // Clear old and close modal
                 content.val("");
-                $("#video").val("");
                 $("#postImageReview").removeAttr("src");
                 $("#postImageReview").removeAttr("class");
                 $("#postImageName").html("Add to post");
@@ -585,6 +584,7 @@ $(document).ready(() => {
 
                 // Clear old and close modal
                 content.val("");
+                $("#editPostVideo").css("visibility", "hidden");
                 $("#editPostImageReview").removeAttr("src");
                 $("#editPostImageReview").removeAttr("class");
                 $("#editPostImageName").html("Add to post");
@@ -661,7 +661,32 @@ $(document).ready(() => {
         $("#viewBiggerPostImageModal").modal("toggle");
     });
 
-    // Post lazy loading handler
+    // Post lazy loading on scrolling handler
+    let minPost = 10;
+    let maxPost = 20;
+
+    $("#postArea .dashboard__contentCommunication").slice(10).hide(); // Get the first 10 posts to display and hide the rest of posts
+    $(".dashboard__content").scroll(function (event) {
+        let dashboardContentElement = event.target;
+
+        // Check if user has scrolled to the bottom of each 10 posts
+        if (
+            dashboardContentElement.scrollHeight -
+                dashboardContentElement.scrollTop ===
+            dashboardContentElement.clientHeight
+        ) {
+            // setTimeout(() => {
+            //     $("#postArea").append("<div class='post-loading'></div>");
+            // }, 1500);
+            // $("#postArea .post-loading").remove();
+            $("#postArea .dashboard__contentCommunication")
+                .slice(minPost, maxPost)
+                .fadeIn(1500);
+
+            minPost += 10;
+            maxPost += 10;
+        }
+    });
 
     // Display edit comment modal
     $("body").on("click", ".editComment", (event) => {
