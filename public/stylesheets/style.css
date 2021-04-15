@@ -648,12 +648,19 @@ hr {
 }
 
 /* Dashboard post's loading effect */
+.post-loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .post-loading {
-    width: 2rem;
-    height: 2rem;
-    border: 7px solid var(--main-background-color);
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 5px solid var(--main-background-color);
     border-radius: 50%;
-    border-top: 7px solid var(--index-background-color);
+    border-top: 5px solid var(--linear-background-color1);
     -webkit-animation: spinner 1s linear infinite;
     animation: spinner 1s linear infinite;
 }

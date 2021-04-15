@@ -675,13 +675,20 @@ $(document).ready(() => {
                 dashboardContentElement.scrollTop ===
             dashboardContentElement.clientHeight
         ) {
-            // setTimeout(() => {
-            //     $("#postArea").append("<div class='post-loading'></div>");
-            // }, 1500);
-            // $("#postArea .post-loading").remove();
+            $(
+                `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
+            ).after(`
+                <div class='mt-5 mb-5 post-loading-container'>
+                    <div class='post-loading'></div>
+                </div>
+            `);
+            setTimeout(() => {
+                $(`#postArea .post-loading-container`).remove();
+            }, 1500);
+
             $("#postArea .dashboard__contentCommunication")
                 .slice(minPost, maxPost)
-                .fadeIn(1500);
+                .fadeIn(3000);
 
             minPost += 10;
             maxPost += 10;
