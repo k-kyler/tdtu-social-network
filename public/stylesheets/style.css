@@ -462,6 +462,7 @@ hr {
 }
 .tableNotifListScroll::-webkit-scrollbar {
     width: 0.5rem;
+    height: 0.5rem;
 }
 .tableNotifListScroll::-webkit-scrollbar-thumb {
     border: 0;
@@ -504,8 +505,12 @@ hr {
 }
 
 /* Management page scrollbar */
+#permission {
+    height: 10rem;
+}
 #permission::-webkit-scrollbar {
     width: 0.5rem;
+    height: 0.5rem;
 }
 #permission::-webkit-scrollbar-thumb {
     border: 0;
@@ -640,11 +645,6 @@ hr {
 /* Dashboard notification list */
 #notifs option {
     white-space: normal;
-}
-
-/* Management page */
-#permission {
-    height: 10rem;
 }
 
 /* Dashboard post's loading effect */

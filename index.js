@@ -69,6 +69,12 @@ io.on("connection", (socket) => {
         io.sockets.emit("Deleting post", postUniqueId);
     });
 
+    // Server wait for emitting message from client to allow client to render back post's image
+    // ...
+
+    // Server wait for emitting message from client to allow client to render back edit post's image
+    // ...
+
     // Server wait for emitting message from client to allow client to render comment
     socket.on("Add new comment", (comment) => {
         let commentUniqueId = v4UniqueId();
