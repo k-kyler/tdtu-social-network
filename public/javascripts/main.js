@@ -1100,21 +1100,25 @@ $(document).ready(() => {
                         .removeClass("text-light")
                         .addClass("text-primary");
 
-                    // Update page button number
-                    if (page % 3 === 0) {
-                        if (page < result.totalNotifPages) {
-                            $(`.page-item[data-page=${page - 2}]`).remove();
-                            $(`.page-item[data-page=${page}]`).after(`
-                            <li class="page-item" data-page=${
-                                parseInt(page) + 1
-                            }>
-                                <a class="page-link text-primary" type="button" data-page=${
-                                    parseInt(page) + 1
-                                }>${parseInt(page) + 1}</a>
-                            </li>
-                        `);
-                        }
-                    }
+                    // // Update page button number
+                    // if (page % 3 === 0) {
+                    //     if (page < result.totalNotifPages) {
+                    //         $(`.page-item[data-page=${page - 2}]`).remove();
+                    //         $(`.page-item[data-page=${page}]`).after(`
+                    //             <li class="page-item" data-page=${
+                    //                 parseInt(page) + 1
+                    //             }>
+                    //                 <a class="page-link text-primary" type="button" data-page=${
+                    //                     parseInt(page) + 1
+                    //                 }>${parseInt(page) + 1}</a>
+                    //             </li>
+                    //         `);
+                    //     }
+                    // }
+
+                    // if (page <= result.totalNotifPages) {
+                    //     $(".page-item[data-page='next']").addClass("disabled");
+                    // }
 
                     // Update viewing page
                     if (result.totalNotifPages > 1) {
