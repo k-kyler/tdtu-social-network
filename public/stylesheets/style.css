@@ -458,7 +458,7 @@ hr {
 }
 .tableNotifListScroll {
     overflow-y: auto;
-    height: 500px;
+    height: 26rem;
 }
 .tableNotifListScroll::-webkit-scrollbar {
     width: 0.5rem;

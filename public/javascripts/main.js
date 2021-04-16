@@ -916,22 +916,121 @@ $(document).ready(() => {
                 if (result.code === 1) {
                     $("#notificationList").html("");
 
+                    // Render new notification list
                     for (let notification of result.data) {
                         $("#notificationList").append(`
-                            <tr class="NotifDetails" data-notifId=${notification._id}>
+                            <tr class="NotifDetails" data-notifId=${
+                                notification._id
+                            }>
                                 <td data-notifId=${notification._id}>
-                                    <p class="font-italic text-secondary" data-notifId=${notification._id}>
-                                        [${notification.type}] - ${notification.date}
+                                    <p title="${
+                                        "[" +
+                                        notification.type +
+                                        "]" +
+                                        " - " +
+                                        notification.date
+                                    }" class="font-italic text-secondary" data-notifId=${
+                            notification._id
+                        }>
+                                        [${notification.type}] - ${
+                            notification.date
+                        }
                                     </p>
-                                    <span class="text-primary" data-notifId=${notification._id}>${notification.title}</span>
+                                    <p class="mb-0 text-primary" data-notifId=${
+                                        notification._id
+                                    } title=${notification.title}>${
+                            notification.title
+                        }</p>
                                 </td>
                             </tr>
                         `);
+                    }
+
+                    // Render new announce the current viewing page of total
+                    if (
+                        result.totalNotifPages &&
+                        result.totalNotifPages === 1
+                    ) {
+                        $(".pagination").html("");
+                        $(".pagination").append(`
+                            <li class="page-item disabled">
+                                <a class="page-link" type="button" data-page="previous" aria-label='Previous'>
+                                    <span aria-hidden='true'>&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item active">
+                                <a class="page-link text-light" type="button" data-page="1">1</a>
+                            </li>
+
+                            <li class="page-item disabled">
+                                <a class="page-link" type="button" data-page="next" aria-label='Next'>
+                                    <span aria-hidden='true'>&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        `);
+                        $("#currentViewingPage").html("Page 1");
+                    } else if (
+                        result.totalNotifPages &&
+                        result.totalNotifPages > 1
+                    ) {
+                        let index = 1;
+                        let pageNumberElement = "";
+
+                        while (index <= result.totalNotifPages) {
+                            if (index === 1) {
+                                pageNumberElement += `
+                                    <li class="page-item active">
+                                        <a class="page-link text-light" type="button" data-page=${index}>${index}</a>
+                                    </li>
+                                `;
+                            } else if (
+                                index === 4 ||
+                                result.totalNotifPages === 1
+                            ) {
+                                break;
+                            } else {
+                                pageNumberElement += `
+                                    <li class="page-item">
+                                        <a class="page-link text-primary" type="button" data-page=${index}>${index}</a>
+                                    </li>
+                                `;
+                            }
+
+                            index++;
+                        }
+
+                        $(".pagination").html("");
+                        $(".pagination").append(`
+                            <li class="page-item disabled">
+                                <a class="page-link" type="button" data-page="previous" aria-label='Previous'>
+                                    <span aria-hidden='true'>&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+
+                            ${pageNumberElement}
+
+                            <li class="page-item">
+                                <a class="page-link" type="button" data-page="next" aria-label='Next'>
+                                    <span aria-hidden='true'>&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        `);
+                        $("#currentViewingPage").html(
+                            `Page 1 of ${result.totalNotifPages}`
+                        );
                     }
                 }
             })
             .catch((error) => console.log(error));
     });
+
+    // Notification list switching page handler
+    // ...
 
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
@@ -1284,6 +1383,12 @@ $(document).ready(() => {
     socket.on("Deleting post", (postUniqueId) => {
         $(`#${postUniqueId}`).remove();
     });
+
+    // Client listen to the rendering message from server to render back post's image
+    // ...
+
+    // Client listen to the rendering message from server to render back edit post's image
+    // ...
 
     // Client listen to the rendering message from server to render new comment
     socket.on("Rendering new comment", (comment, commentUniqueId) => {

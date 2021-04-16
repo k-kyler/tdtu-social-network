@@ -29,13 +29,14 @@ module.exports.dashboard = async (req, res) => {
     let posts = await Post.find().sort({ timeSort: -1 }); // Get desc posts list by time
     let listOfficeFaculty = await ListOfficeFaculty.find();
     let notifications = await Notification.find().sort({ timeSort: -1 }); // Get desc notifications list by time
+    let totalNotifPages = Math.ceil(notifications.length / 10); // Calculate the total notification pages
 
     res.render("dashboards/dashboard", {
         user,
         posts,
         listOfficeFaculty,
         notifications: notifications.slice(0, 10), // Get the first 10 notifications
-        totalNotifPages: Math.ceil(notifications.length / 10), // Calculate the total notification pages
+        totalNotifPages,
     });
 };
 
@@ -417,12 +418,18 @@ module.exports.notifPagination = async (req, res) => {
     let { name, page } = req.params;
 
     if (name === "all") {
-        let notifications = await Notification.find();
+        let notifications = await Notification.find().sort({ timeSort: -1 });
 
         if (notifications) {
+            let totalNotifPages = Math.ceil(notifications.length / 10); // Calculate the total notification pages
+            let perPage = 10;
+            let start = (page - 1) * perPage;
+            let end = start + perPage;
+
             res.json({
                 code: 1,
-                data: notifications,
+                data: notifications.slice(start, end),
+                totalNotifPages,
             });
         } else {
             res.json({
@@ -431,12 +438,20 @@ module.exports.notifPagination = async (req, res) => {
             });
         }
     } else if (name !== "all") {
-        let notificationsByType = await Notification.find({ type: name });
+        let notificationsByType = await Notification.find({ type: name }).sort({
+            timeSort: -1,
+        });
 
         if (notificationsByType) {
+            let totalNotifPages = Math.ceil(notificationsByType.length / 10); // Calculate the total notification pages
+            let perPage = 10;
+            let start = (page - 1) * perPage;
+            let end = start + perPage;
+
             res.json({
                 code: 1,
-                data: notificationsByType,
+                data: notificationsByType.slice(start, end),
+                totalNotifPages,
             });
         } else {
             res.json({

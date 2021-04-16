@@ -136,7 +136,7 @@ block dashboardContent
                                     option(value=item.name)= item.name
                             
                         hr
-                        .tableNotifListScroll.d-flex.justify-content-between.flex-column
+                        .tableNotifListScroll
                             table.table.table-bordered.tableNotifList
                                 tbody#notificationList
                                     if notifications
@@ -146,18 +146,37 @@ block dashboardContent
                                                     p(class="font-italic text-secondary", data-notifId=notification._id, title="[" + notification.type + "]" + " - " + notification.date) [#{notification.type}] - #{notification.date}
                                                     p.mb-0.text-primary(data-notifId=notification._id, title=notification.title)= notification.title
 
-                            ul.pagination.justify-content-center
+                        div.d-flex.justify-content-between.align-items-center.mt-3
+                            ul.pagination
+                                //- Previous button
                                 li.page-item.disabled
-                                    a.page-link(href='#' aria-label='Previous')
+                                    a.page-link(type="button", data-page="previous", aria-label='Previous')
                                         span(aria-hidden='true') &laquo;
                                         span.sr-only Previous
-                                li.page-item.active
-                                    a.page-link(href='#') 1
+
+                                //- Render the pages panel, display limit is 3 pages
+                                - var index = 1
+
+                                if totalNotifPages
+                                    while index <= totalNotifPages
+                                        if index === 1
+                                            li.page-item.active
+                                                a.page-link(type="button", data-page=index, class="text-light")= index++
+                                        else if index === 4 || totalNotifPages === 1
+                                            - break
+                                        else
+                                            li.page-item
+                                                a.page-link(type="button", data-page=index, class="text-primary")= index++
+
+                                //- Next button
                                 li.page-item
-                                    a.page-link(href='#') 2
-                                li.page-item
-                                    a.page-link(href='#') 3
-                                li.page-item
-                                    a.page-link(href='#' aria-label='Next')
+                                    a.page-link(type="button", data-page="next", class="text-primary", aria-label='Next')
                                         span(aria-hidden='true') &raquo;
                                         span.sr-only Next
+                            
+                            //- Announce the current viewing page of total
+                            if totalNotifPages
+                                if totalNotifPages === 1
+                                    p.text-secondary(id="currentViewingPage") Page 1
+                                else
+                                    p.text-secondary(id="currentViewingPage") Page 1 of #{totalNotifPages}
