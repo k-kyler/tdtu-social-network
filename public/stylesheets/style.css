@@ -682,3 +682,15 @@ hr {
         transform: rotate(360deg);
     }
 }
+
+/* Pagination navigator */
+.page-link:first-child,
+.page-link:last-child {
+    border-radius: 0 !important;
+}
+
+#innerPagination {
+    overflow-x: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06) !important;
+    max-width: 8.5rem;
+}

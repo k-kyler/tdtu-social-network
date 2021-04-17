@@ -951,24 +951,10 @@ $(document).ready(() => {
                         result.totalNotifPages &&
                         result.totalNotifPages === 1
                     ) {
-                        $(".pagination").html("");
-                        $(".pagination").append(`
-                            <li class="page-item disabled" data-page="previous">
-                                <a class="page-link" type="button" data-page="previous" aria-label='Previous'>
-                                    <span aria-hidden='true' data-page="previous">&laquo;</span>
-                                    <span class="sr-only" data-page="previous">Previous</span>
-                                </a>
-                            </li>
-
-                            <li class="page-item active" data-page="1">
-                                <a class="page-link text-light" type="button" data-page="1">1</a>
-                            </li>
-
-                            <li class="page-item disabled" data-page="next">
-                                <a class="page-link" type="button" data-page="next" aria-label='Next'>
-                                    <span aria-hidden='true' data-page="next">&raquo;</span>
-                                    <span class="sr-only" data-page="next">Next</span>
-                                </a>
+                        $("#innerPagination").html("");
+                        $("#innerPagination").append(`
+                            <li class="page-item text-light active" data-page="1">
+                                <a class="page-link" type="button" data-page="1">1</a>
                             </li>
                         `);
                         $("#currentViewingPage").html("Page 1");
@@ -986,11 +972,6 @@ $(document).ready(() => {
                                         <a class="page-link" type="button" data-page=${index}>${index}</a>
                                     </li>
                                 `;
-                            } else if (
-                                index === 4 ||
-                                result.totalNotifPages === 1
-                            ) {
-                                break;
                             } else {
                                 pageNumberElement += `
                                     <li class="page-item text-primary" data-page=${index}>
@@ -1002,45 +983,16 @@ $(document).ready(() => {
                             index++;
                         }
 
-                        $(".pagination").html("");
-                        $(".pagination").append(`
-                            <li class="page-item disabled" data-page="previous">
-                                <a class="page-link" type="button" data-page="previous" aria-label='Previous'>
-                                    <span aria-hidden='true' data-page="previous">&laquo;</span>
-                                    <span class="sr-only" data-page="previous">Previous</span>
-                                </a>
-                            </li>
-
+                        $("#innerPagination").html("");
+                        $("#innerPagination").append(`
                             ${pageNumberElement}
-
-                            <li class="page-item" data-page="next">
-                                <a class="page-link text-primary" type="button" data-page="next" aria-label='Next'>
-                                    <span aria-hidden='true' data-page="next">&raquo;</span>
-                                    <span class="sr-only" data-page="next">Next</span>
-                                </a>
-                            </li>
                         `);
                         $("#currentViewingPage").html(
                             `Page 1 of ${result.totalNotifPages}`
                         );
                     } else if (result.totalNotifPages === 0) {
-                        $(".pagination").html("");
-                        $(".pagination").append(`
-                            <li class="page-item disabled" data-page="previous">
-                                <a class="page-link" type="button" data-page="previous" aria-label='Previous'>
-                                    <span aria-hidden='true' data-page="previous">&laquo;</span>
-                                    <span class="sr-only" data-page="previous">Previous</span>
-                                </a>
-                            </li>
-
-                            <li class="page-item disabled" data-page="next">
-                                <a class="page-link" type="button" data-page="next" aria-label='Next'>
-                                    <span aria-hidden='true' data-page="next">&raquo;</span>
-                                    <span class="sr-only" data-page="next">Next</span>
-                                </a>
-                            </li>
-                        `);
-                        $("#currentViewingPage").html("No notification");
+                        $("#innerPagination").html("");
+                        $("#currentViewingPage").html("");
                     }
                 }
             })
@@ -1100,26 +1052,6 @@ $(document).ready(() => {
                         .removeClass("text-light")
                         .addClass("text-primary");
 
-                    // // Update page button number
-                    // if (page % 3 === 0) {
-                    //     if (page < result.totalNotifPages) {
-                    //         $(`.page-item[data-page=${page - 2}]`).remove();
-                    //         $(`.page-item[data-page=${page}]`).after(`
-                    //             <li class="page-item" data-page=${
-                    //                 parseInt(page) + 1
-                    //             }>
-                    //                 <a class="page-link text-primary" type="button" data-page=${
-                    //                     parseInt(page) + 1
-                    //                 }>${parseInt(page) + 1}</a>
-                    //             </li>
-                    //         `);
-                    //     }
-                    // }
-
-                    // if (page <= result.totalNotifPages) {
-                    //     $(".page-item[data-page='next']").addClass("disabled");
-                    // }
-
                     // Update viewing page
                     if (result.totalNotifPages > 1) {
                         $("#currentViewingPage").html(
@@ -1131,6 +1063,27 @@ $(document).ready(() => {
                 }
             })
             .catch((error) => console.log(error));
+    });
+
+    // Pagination navigator handler for notification list
+    $("body").on("click", ".page-item[data-page='previous']", (event) => {
+        $("#innerPagination").animate(
+            {
+                opacity: 0.8,
+                scrollLeft: "-=80",
+            },
+            400
+        );
+    });
+
+    $("body").on("click", ".page-item[data-page='next']", (event) => {
+        $("#innerPagination").animate(
+            {
+                opacity: 0.8,
+                scrollLeft: "+=80",
+            },
+            400
+        );
     });
 
     // Client listen to the rendering message from server to render new post

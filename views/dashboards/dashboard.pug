@@ -147,35 +147,24 @@ block dashboardContent
                                                     p.mb-0.text-primary(data-notifId=notification._id, title=notification.title)= notification.title
 
                         hr
-                        div.d-flex.flex-column.justify-content-between.align-items-center
-                            ul.pagination
+                        div.d-flex.flex-column.justify-content-between.align-items-center            
+                            ul.pagination.align-items-center
                                 //- Previous button
-                                li.page-item.disabled(data-page="previous")
+                                li.page-item.text-primary(data-page="previous")
                                     a.page-link(type="button", data-page="previous", aria-label='Previous')
                                         span(aria-hidden='true', data-page="previous") &laquo;
                                         span.sr-only(data-page="previous") Previous
 
-                                //- Render the pages panel, display limit is 3 pages
-                                - var index = 1
+                                ul.pagination#innerPagination
+                                    - var index = 1
 
-                                //- if totalNotifPages
-                                //-     while index <= totalNotifPages
-                                //-         if index === 1
-                                //-             li.page-item.text-light.active(data-page=index)
-                                //-                 a.page-link(type="button", data-page=index)= index++
-                                //-         else if index === 4 || totalNotifPages === 1
-                                //-             - break
-                                //-         else
-                                //-             li.page-item.text-primary(data-page=index)
-                                //-                 a.page-link(type="button", data-page=index)= index++
-
-                                while index <= totalNotifPages
-                                    if index === 1
-                                        li.page-item.text-light.active(data-page=index)
-                                            a.page-link(type="button", data-page=index)= index++
-                                    else
-                                        li.page-item.text-primary(data-page=index)
-                                            a.page-link(type="button", data-page=index)= index++
+                                    while index <= totalNotifPages
+                                        if index === 1
+                                            li.page-item.text-light.active(data-page=index)
+                                                a.page-link(type="button", data-page=index)= index++
+                                        else
+                                            li.page-item.text-primary(data-page=index)
+                                                a.page-link(type="button", data-page=index)= index++
 
                                 //- Next button
                                 li.page-item.text-primary(data-page="next")
