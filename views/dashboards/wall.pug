@@ -1,7 +1,7 @@
 extends ../layouts/dashboardLayout
 
 block dashboardFunctions
-    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard") Dashboard 
+    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard") Dashboard 
 
     if user.type === "Admin"
         a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/users") Management
@@ -15,30 +15,18 @@ block dashboardContent
     input(type="hidden" value=user._id id="userObjectId")
 
     div(class="row")
+        div.col-md-2
         div(class="col-md-8 pl-md-0")
             div(class="container-fluid")
                 div(class="row")
-                    div(class="dashboard__contentCommunication bg-white pt-3 pb-0 mb-4 col-md-12")
-                        div(class="form-group row d-flex align-items-center")
-                            div(class="col-md-1 col-sm-2 col-3")
-                                if user.avatar === ""
-                                    img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
-                                else 
-                                    img(src=user.avatar, alt="user avatar", width="45", height="45")
-                            div(class="col-md-11 col-sm-10 col-9")
-                                input(type="text", name="textThinking", id="textThinking", class="form-control", readonly, autocomplete="off", placeholder="What are you thinking?")
-                        hr
-                        div(class="m-3")
-                            div(class="btn-postStatus form-group row mb-0")
-                                div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center")
-                                    i(class="text-danger fas fa-images")
-                                    span(class="ml-2") Photos/Videos
-                                div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center") 
-                                    i(class="text-success fas fa-tags")
-                                    span(class="ml-2") Tag friends
-                                div(class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center")
-                                    i(class="text-warning far fa-laugh-squint")
-                                    span(class="ml-2") Feeling/Activity
+                    div(class="dashboard__contentCommunication bg-white py-3 pb-0 mb-4 col-md-12")
+                        div(class="d-flex align-items-center justify-content-center flex-column")
+                            if user.avatar === ""
+                                img(src="/images/default_avatar.svg", alt="user avatar", width="90", height="90")
+                            else 
+                                img(src=user.avatar, alt="user avatar", width="90", height="90")
+                            h5.mt-3
+                                strong= user.name
 
                     //- Posts
                     div(id="postArea" class="col-md-12 px-0")
@@ -123,58 +111,4 @@ block dashboardContent
                                                     button(class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=post.postUniqueId)
                                                         i(class="fas fa-paper-plane" data-postUniqueId=post.postUniqueId)
 
-        div(class="col-md-4 pr-md-0")
-            div(class="container-fluid sticky-top")
-                div(class="row")
-                    div(class="dashboard__contentNotificationList notifList-height bg-white pt-3 pb-1 mb-4 col-md-12")
-                        p(class="text-center font-weight-bold") Notification List
-                        select(name="notifs", id="notifs", class="rounded align-center form-control") 
-                            option(value="all") Tất cả
-
-                            if listOfficeFaculty 
-                                each item, index in listOfficeFaculty 
-                                    option(value=item.name)= item.name
-                            
-                        hr
-                        .tableNotifListScroll
-                            table.table.table-bordered.tableNotifList
-                                tbody#notificationList
-                                    if notifications
-                                        each notification in notifications
-                                            tr(class="NotifDetails", data-notifId=notification._id)
-                                                td(data-notifId=notification._id)
-                                                    p(class="font-italic text-secondary", data-notifId=notification._id, title="[" + notification.type + "]" + " - " + notification.date) [#{notification.type}] - #{notification.date}
-                                                    p.mb-0.text-primary(data-notifId=notification._id, title=notification.title)= notification.title
-
-                        hr
-                        div.d-flex.flex-column.justify-content-between.align-items-center            
-                            ul.pagination.align-items-center
-                                //- Previous button
-                                li.page-item.text-primary(data-page="previous")
-                                    a.page-link(type="button", data-page="previous", aria-label='Previous')
-                                        span(aria-hidden='true', data-page="previous") &laquo;
-                                        span.sr-only(data-page="previous") Previous
-
-                                ul.pagination#innerPagination
-                                    - var index = 1
-
-                                    while index <= totalNotifPages
-                                        if index === 1
-                                            li.page-item.text-light.active(data-page=index)
-                                                a.page-link(type="button", data-page=index)= index++
-                                        else
-                                            li.page-item.text-primary(data-page=index)
-                                                a.page-link(type="button", data-page=index)= index++
-
-                                //- Next button
-                                li.page-item.text-primary(data-page="next")
-                                    a.page-link(type="button", data-page="next", aria-label='Next')
-                                        span(aria-hidden='true', data-page="next") &raquo;
-                                        span.sr-only(data-page="next") Next
-                            
-                            //- Announce the current viewing page of total
-                            if totalNotifPages
-                                if totalNotifPages === 1
-                                    p.text-secondary(id="currentViewingPage") Page 1
-                                else
-                                    p.text-secondary(id="currentViewingPage") Page 1 of #{totalNotifPages}
+        div.col-md-2

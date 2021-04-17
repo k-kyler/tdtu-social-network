@@ -384,6 +384,24 @@ module.exports.updateUserInfo = async (req, res) => {
     }
 };
 
+// Get user's wall
+module.exports.getUserWall = async (req, res) => {
+    let { id } = req.params;
+    let user = await User.findById(req.signedCookies.userId);
+    let posts = await Post.find().sort({ timeSort: -1 }); // Get desc posts list by time
+    let listOfficeFaculty = await ListOfficeFaculty.find();
+    let notifications = await Notification.find().sort({ timeSort: -1 }); // Get desc notifications list by time
+    let totalNotifPages = Math.ceil(notifications.length / 10); // Calculate the total notification pages
+
+    res.render("dashboards/wall", {
+        user,
+        posts,
+        listOfficeFaculty,
+        notifications: notifications.slice(0, 10), // Get the first 10 notifications
+        totalNotifPages,
+    });
+};
+
 // Notification
 module.exports.notification = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);

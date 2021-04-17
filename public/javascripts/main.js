@@ -1096,7 +1096,7 @@ $(document).ready(() => {
                         <div class="col-md-1 col-sm-2 col-3">
                             <img src=${
                                 post.profileAvatar
-                            } alt="user avatar" width="40" height="40"/>
+                            } alt="user avatar" width="45" height="45"/>
                         </div>
                         <div class="col-md-11 col-sm-9 col-8">
                             <div class="d-flex align-items-center justify-content-between">
@@ -1201,7 +1201,7 @@ $(document).ready(() => {
                         <div class="col-md-1 col-sm-2 col-3">
                             <img src=${
                                 post.profileAvatar
-                            } alt="user avatar" width="40" height="40"/>
+                            } alt="user avatar" width="45" height="45"/>
                         </div>
                         <div class="col-md-11 col-sm-9 col-8">
                             <div class="d-flex align-items-center justify-content-between">
@@ -1450,7 +1450,7 @@ $(document).ready(() => {
             $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
                 <div class="form-group row" id=${commentUniqueId}>
                     <div class="col-md-1 col-sm-2 col-3">
-                        <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="35" height="35"/>
+                        <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
                     </div>
                     <div class="col-md-11 col-sm-9 col-8">
                         <div class="commentContainerStyles d-flex align-items-center">
@@ -1476,7 +1476,7 @@ $(document).ready(() => {
             $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
                 <div class="form-group row" id=${commentUniqueId}>
                     <div class="col-md-1 col-sm-2 col-3">
-                        <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="35" height="35"/>
+                        <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
                     </div>
                     <div class="col-md-11 col-sm-9 col-8">
                         <div class="commentContainerStyles d-flex align-items-center">
