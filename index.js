@@ -70,10 +70,14 @@ io.on("connection", (socket) => {
     });
 
     // Server wait for emitting message from client to allow client to render back post's image
-    // ...
+    socket.on("Update post image", (updatePostImage) => {
+        io.sockets.emit("Rendering post image", updatePostImage);
+    });
 
     // Server wait for emitting message from client to allow client to render back edit post's image
-    // ...
+    socket.on("Update edit post image", (updateEditPostImage) => {
+        io.sockets.emit("Rendering edit post image", updateEditPostImage);
+    });
 
     // Server wait for emitting message from client to allow client to render comment
     socket.on("Add new comment", (comment) => {

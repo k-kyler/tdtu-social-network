@@ -746,7 +746,6 @@ module.exports.addNewPost = async (req, res) => {
         video,
         image,
     } = req.body;
-    let posts = await Post.find();
 
     if (
         video &&
@@ -759,7 +758,9 @@ module.exports.addNewPost = async (req, res) => {
         let buffer = await fetchResponse.buffer();
         let imageExt = await fileType.fromBuffer(buffer);
         let imageSize = Buffer.byteLength(buffer);
-        let imageURL = `./public/uploads/${v4UniqueId()}.${imageExt.ext}`;
+        let imageURL = imageExt
+            ? `./public/uploads/${v4UniqueId()}.${imageExt.ext}`
+            : "";
 
         // Check if image size is over 10 MB
         if (imageSize > 10000000) {
@@ -771,8 +772,9 @@ module.exports.addNewPost = async (req, res) => {
         }
         // Check image extension
         else if (
+            imageExt &&
             new RegExp(["png", "jpg", "gif"].join("|")).test(imageExt.ext) ===
-            false
+                false
         ) {
             res.json({
                 code: 0,
@@ -807,7 +809,9 @@ module.exports.addNewPost = async (req, res) => {
         let buffer = await fetchResponse.buffer();
         let imageExt = await fileType.fromBuffer(buffer);
         let imageSize = Buffer.byteLength(buffer);
-        let imageURL = `./public/uploads/${v4UniqueId()}.${imageExt.ext}`;
+        let imageURL = imageExt
+            ? `./public/uploads/${v4UniqueId()}.${imageExt.ext}`
+            : "";
 
         // Check if image size is over 10 MB
         if (imageSize > 10000000) {
@@ -819,8 +823,9 @@ module.exports.addNewPost = async (req, res) => {
         }
         // Check image extension
         else if (
+            imageExt &&
             new RegExp(["png", "jpg", "gif"].join("|")).test(imageExt.ext) ===
-            false
+                false
         ) {
             res.json({
                 code: 0,
@@ -914,7 +919,9 @@ module.exports.editPost = async (req, res) => {
         let buffer = await fetchResponse.buffer();
         let imageExt = await fileType.fromBuffer(buffer);
         let imageSize = Buffer.byteLength(buffer);
-        let imageURL = `./public/uploads/${v4UniqueId()}.${imageExt.ext}`;
+        let imageURL = imageExt
+            ? `./public/uploads/${v4UniqueId()}.${imageExt.ext}`
+            : "";
 
         // Check if image size is over 10 MB
         if (imageSize > 10000000) {
@@ -928,8 +935,9 @@ module.exports.editPost = async (req, res) => {
         }
         // Check image extension
         else if (
+            imageExt &&
             new RegExp(["png", "jpg", "gif"].join("|")).test(imageExt.ext) ===
-            false
+                false
         ) {
             res.json({
                 code: 0,
@@ -974,7 +982,9 @@ module.exports.editPost = async (req, res) => {
         let buffer = await fetchResponse.buffer();
         let imageExt = await fileType.fromBuffer(buffer);
         let imageSize = Buffer.byteLength(buffer);
-        let imageURL = `./public/uploads/${v4UniqueId()}.${imageExt.ext}`;
+        let imageURL = imageExt
+            ? `./public/uploads/${v4UniqueId()}.${imageExt.ext}`
+            : "";
 
         // Check if image size is over 10 MB
         if (imageSize > 10000000) {
@@ -988,8 +998,9 @@ module.exports.editPost = async (req, res) => {
         }
         // Check image extension
         else if (
+            imageExt &&
             new RegExp(["png", "jpg", "gif"].join("|")).test(imageExt.ext) ===
-            false
+                false
         ) {
             res.json({
                 code: 0,

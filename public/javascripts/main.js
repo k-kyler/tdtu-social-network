@@ -433,11 +433,11 @@ $(document).ready(() => {
                                 }, 4000);
 
                                 if (result.imageURL) {
-                                    // Render back the edit image
-                                    $(`#${postUniqueId} .post-image`).attr(
-                                        "src",
-                                        result.imageURL
-                                    );
+                                    // Send emitting message to render back the edit post image
+                                    socket.emit("Update edit post image", {
+                                        postUniqueId,
+                                        imageURL: result.imageURL,
+                                    });
 
                                     // Remove old edit hidden image URL input
                                     $("#editHiddenImageURL").remove();
@@ -545,14 +545,16 @@ $(document).ready(() => {
                                     $(`.${result.alertId}`).alert("close");
                                 }, 4000);
 
-                                // Render back the edit image
-                                $(`#${postUniqueId} .post-image`).attr(
-                                    "src",
-                                    result.imageURL
-                                );
+                                if (result.imageURL) {
+                                    // Send emitting message to render back the edit post image
+                                    socket.emit("Update edit post image", {
+                                        postUniqueId,
+                                        imageURL: result.imageURL,
+                                    });
 
-                                // Remove old edit hidden image URL input
-                                $("#editHiddenImageURL").remove();
+                                    // Remove old edit hidden image URL input
+                                    $("#editHiddenImageURL").remove();
+                                }
                             }
                         } else if (result.code === 0) {
                             if (
@@ -1356,11 +1358,11 @@ $(document).ready(() => {
                         }, 4000);
 
                         if (result.imageURL) {
-                            // Render back the post image
-                            $(`#${postUniqueId} .post-image`).attr(
-                                "src",
-                                result.imageURL
-                            );
+                            // Send emitting message to render back the post image
+                            socket.emit("Update post image", {
+                                postUniqueId,
+                                imageURL: result.imageURL,
+                            });
 
                             // Remove old post hidden image URL input
                             $("#hiddenImageURL").remove();
@@ -1467,10 +1469,22 @@ $(document).ready(() => {
     });
 
     // Client listen to the rendering message from server to render back post's image
-    // ...
+    socket.on("Rendering post image", (updatePostImage) => {
+        // Render back the post image
+        $(`#${updatePostImage.postUniqueId} .post-image`).attr(
+            "src",
+            updatePostImage.imageURL
+        );
+    });
 
     // Client listen to the rendering message from server to render back edit post's image
-    // ...
+    socket.on("Rendering edit post image", (updateEditPostImage) => {
+        // Render back the edit post image
+        $(`#${updateEditPostImage.postUniqueId} .post-image`).attr(
+            "src",
+            updateEditPostImage.imageURL
+        );
+    });
 
     // Client listen to the rendering message from server to render new comment
     socket.on("Rendering new comment", (comment, commentUniqueId) => {
