@@ -1086,6 +1086,18 @@ $(document).ready(() => {
         );
     });
 
+    // Focus effect on user sidebar avatar and name in self wall
+    if ($("#userWallId").val() == $("#userObjectId").val()) {
+        $("img[alt='user sidebar avatar']").css(
+            "box-shadow",
+            "0 0 0 5px rgba(104, 104, 230, 0.06)"
+        );
+        $("img[alt='user sidebar avatar']").css(
+            "border",
+            "3px solid rgba(128, 189, 255, 0.4)"
+        );
+    }
+
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post, postUniqueId) => {
         // Render the post
@@ -1094,14 +1106,22 @@ $(document).ready(() => {
                 <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${postUniqueId}>
                     <div class="form-group row">
                         <div class="col-md-1 col-sm-2 col-3">
-                            <img src=${
-                                post.profileAvatar
-                            } alt="user avatar" width="45" height="45"/>
+                            <a href="/dashboard/wall/${
+                                post.ownerId
+                            }" class="text-dark">
+                                <img src=${
+                                    post.profileAvatar
+                                } alt="user avatar" width="45" height="45"/>
+                            </a>
                         </div>
                         <div class="col-md-11 col-sm-9 col-8">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <strong>${post.name}</strong>
+                                    <a href="/dashboard/wall/${
+                                        post.ownerId
+                                    }" class="text-dark">
+                                        <strong>${post.name}</strong>
+                                    </a>
                                     <p class="mb-0">
                                         <small class="text-secondary timestamp-post">${
                                             post.timestamp
@@ -1199,14 +1219,22 @@ $(document).ready(() => {
                 <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${postUniqueId}>
                     <div class="form-group row">
                         <div class="col-md-1 col-sm-2 col-3">
-                            <img src=${
-                                post.profileAvatar
-                            } alt="user avatar" width="45" height="45"/>
+                            <a href="/dashboard/wall/${
+                                post.ownerId
+                            }" class="text-dark">
+                                <img src=${
+                                    post.profileAvatar
+                                } alt="user avatar" width="45" height="45"/>
+                            </a>
                         </div>
                         <div class="col-md-11 col-sm-9 col-8">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <strong>${post.name}</strong>
+                                    <a href="/dashboard/wall/${
+                                        post.ownerId
+                                    }" class="text-dark">
+                                        <strong>${post.name}</strong>
+                                    </a>
                                     <p class="mb-0 text-secondary timestamp-post">
                                         ${post.timestamp}
                                     </p>
@@ -1450,12 +1478,16 @@ $(document).ready(() => {
             $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
                 <div class="form-group row" id=${commentUniqueId}>
                     <div class="col-md-1 col-sm-2 col-3">
-                        <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
+                        <a href="/dashboard/wall/${comment.guestId}" class="text-dark">
+                            <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
+                        </a>
                     </div>
                     <div class="col-md-11 col-sm-9 col-8">
                         <div class="commentContainerStyles d-flex align-items-center">
                             <div class="py-1 px-2">
-                                <strong>${comment.guestName}</strong>
+                                <a href="/dashboard/wall/${comment.guestId}" class="text-dark">
+                                    <strong>${comment.guestName}</strong>
+                                </a>
                                 <p class="mb-0">${comment.guestComment}</p>
                             </div>
                             <div class="dropdown show commentHandler">
@@ -1476,12 +1508,16 @@ $(document).ready(() => {
             $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
                 <div class="form-group row" id=${commentUniqueId}>
                     <div class="col-md-1 col-sm-2 col-3">
-                        <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
+                        <a href="/dashboard/wall/${comment.guestId}" class="text-dark">
+                            <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
+                        </a>
                     </div>
                     <div class="col-md-11 col-sm-9 col-8">
                         <div class="commentContainerStyles d-flex align-items-center">
                             <div class="py-1 px-2">
-                                <strong>${comment.guestName}</strong>
+                                <a href="/dashboard/wall/${comment.guestId}" class="text-dark">
+                                    <strong>${comment.guestName}</strong>
+                                </a>
                                 <p class="mb-0">${comment.guestComment}</p>
                             </div>
                         </div>

@@ -388,17 +388,14 @@ module.exports.updateUserInfo = async (req, res) => {
 module.exports.getUserWall = async (req, res) => {
     let { id } = req.params;
     let user = await User.findById(req.signedCookies.userId);
-    let posts = await Post.find().sort({ timeSort: -1 }); // Get desc posts list by time
-    let listOfficeFaculty = await ListOfficeFaculty.find();
-    let notifications = await Notification.find().sort({ timeSort: -1 }); // Get desc notifications list by time
-    let totalNotifPages = Math.ceil(notifications.length / 10); // Calculate the total notification pages
+    let wallUser = await User.findById(id);
+    let posts = await Post.find({ ownerId: id }).sort({ timeSort: -1 }); // Get desc posts list by time
 
     res.render("dashboards/wall", {
         user,
+        wallUser,
         posts,
-        listOfficeFaculty,
-        notifications: notifications.slice(0, 10), // Get the first 10 notifications
-        totalNotifPages,
+        wallId: id,
     });
 };
 

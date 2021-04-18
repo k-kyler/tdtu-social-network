@@ -1,15 +1,23 @@
 extends ../layouts/dashboardLayout
 
 block dashboardFunctions
-    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard") Dashboard 
+    a(class="mb-2 px-3 py-2 d-flex align-items-center justify-content-between dashboard__sideMenuFunction", href="/dashboard")
+        span Dashboard
+        i(class="fas fa-home h5 mb-0")
 
     if user.type === "Admin"
-        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/users") Management
-        
+        a(class="d-flex align-items-center justify-content-between mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/users")
+            span Management
+            i(class="fas fa-user-friends h5 mb-0")
+
     if (user.type === "Admin" || user.type === "Staff")
-        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard/notification") Notification 
-   
-    a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Sign out
+        a(class="mb-2 px-3 py-2 d-flex align-items-center justify-content-between dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard/notification")
+            span Notification
+            i(class="fas fa-bullhorn h5 mb-0")
+
+    a(class="px-3 py-2 d-flex align-items-center justify-content-between dashboard__sideMenuFunction", href="javascript:void", id="logoutButton")
+        span Sign out
+        i(class="fas fa-sign-out-alt h5 mb-0")
 
 block dashboardContent
     div(class="dashboard__contentUsers row")

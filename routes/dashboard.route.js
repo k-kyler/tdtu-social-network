@@ -13,7 +13,7 @@ router.get("/user", controller.getUserInfo);
 router.get("/users", controller.users);
 router.post("/users", controller.createNewStaff);
 
-router.get("/wall", controller.getUserWall);
+router.get("/wall/:id", controller.getUserWall);
 
 // Notification routes
 router.get("/notification", controller.notification);

@@ -10,11 +10,12 @@ block content
                 div(class="dashboard__sideMenuInfo px-3 py-2 mb-4 d-flex flex-column align-items-center justify-content-center")
                     
                     if user.avatar === ""
-                        img(id="displayInfo", src="/images/default_avatar.svg", alt="user avatar", width="50", height="50")
+                        img(id="displayInfo", src="/images/default_avatar.svg", alt="user sidebar avatar", width="50", height="50")
                     else 
-                        img(id="displayInfo", src=user.avatar, alt="user avatar", width="50", height="50")
+                        img(id="displayInfo", src=user.avatar, alt="user sidebar avatar", width="50", height="50")
 
-                    div(class="mt-2 text-dark", id="sidebarUsername") #{user.name}
+                    a(href="/dashboard/wall/" + user._id, class="text-decoration-none") 
+                        div(class="mt-2 text-dark", id="sidebarUsername") #{user.name}
                 div(class="dashboard__sideMenuFunctions d-flex flex-column")
                     block dashboardFunctions
             div(class="dashboard__content col-md-10 p-4")

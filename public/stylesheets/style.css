@@ -221,8 +221,9 @@ h4 {
     border-radius: 50px;
     cursor: pointer;
 }
-.dashboard__sideMenuInfo > div:hover {
+.dashboard__sideMenuInfo > a:hover {
     opacity: 0.6;
+    text-decoration: none;
     transition: opacity 0.3s ease-in-out;
 }
 .dashboard__sideMenuFunction {
@@ -696,7 +697,21 @@ hr {
 }
 
 /* Avatar */
-img[alt="user avatar"] {
+img[alt="user avatar"],
+img[alt="user sidebar avatar"] {
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 50%;
+}
+
+/* Wall avatar */
+img[alt="user wall avatar"] {
+    border-radius: 50%;
+    box-shadow: 0 0 0 5px rgba(104, 104, 230, 0.06);
+    border: 3px solid rgba(128, 189, 255, 0.4);
+}
+
+/* Clear all text-decoration */
+a,
+a:hover {
+    text-decoration: none;
 }

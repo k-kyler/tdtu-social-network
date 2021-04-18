@@ -1,15 +1,23 @@
 extends ../layouts/dashboardLayout
 
 block dashboardFunctions
-    a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard") Dashboard 
+    a(class="mb-2 px-3 py-2 d-flex align-items-center justify-content-between dashboard__sideMenuFunction dashboard__sideMenuFunction--active", href="/dashboard")
+        span Dashboard
+        i(class="fas fa-home h5 mb-0")
 
     if user.type === "Admin"
-        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/users") Management
+        a(class="d-flex align-items-center justify-content-between mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/users")
+            span Management
+            i(class="fas fa-user-friends h5 mb-0")
 
     if (user.type === "Admin" || user.type === "Staff")
-        a(class="mb-2 px-3 py-2 dashboard__sideMenuFunction", href="/dashboard/notification") Notification 
+        a(class="mb-2 px-3 py-2 d-flex align-items-center justify-content-between dashboard__sideMenuFunction", href="/dashboard/notification")
+            span Notification
+            i(class="fas fa-bullhorn h5 mb-0")
 
-    a(class="px-3 py-2 dashboard__sideMenuFunction", href="javascript:void", id="logoutButton") Sign out
+    a(class="px-3 py-2 d-flex align-items-center justify-content-between dashboard__sideMenuFunction", href="javascript:void", id="logoutButton")
+        span Sign out
+        i(class="fas fa-sign-out-alt h5 mb-0")
 
 block dashboardContent
     input(type="hidden" value=user._id id="userObjectId")
@@ -22,9 +30,11 @@ block dashboardContent
                         div(class="form-group row d-flex align-items-center")
                             div(class="col-md-1 col-sm-2 col-3")
                                 if user.avatar === ""
-                                    img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
+                                    a(href="/dashboard/wall/" + user._id) 
+                                        img(src="/images/default_avatar.svg", alt="user avatar", width="45", height="45")
                                 else 
-                                    img(src=user.avatar, alt="user avatar", width="45", height="45")
+                                    a(href="/dashboard/wall/" + user._id) 
+                                        img(src=user.avatar, alt="user avatar", width="45", height="45")
                             div(class="col-md-11 col-sm-10 col-9")
                                 input(type="text", name="textThinking", id="textThinking", class="form-control", readonly, autocomplete="off", placeholder="What are you thinking?")
                         hr
@@ -47,11 +57,13 @@ block dashboardContent
                                 div(class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=post.postUniqueId)
                                     div(class="form-group row")
                                         div(class="col-md-1 col-sm-2 col-3")
-                                            img(src=post.profileAvatar alt="user avatar" width="45" height="45")
+                                            a(href="/dashboard/wall/" + post.ownerId) 
+                                                img(src=post.profileAvatar alt="user avatar" width="45" height="45")
                                         div(class="col-md-11 col-sm-9 col-8")
                                             div(class="d-flex align-items-center justify-content-between")
                                                 div
-                                                    strong= post.name
+                                                    a(href="/dashboard/wall/" + post.ownerId, class="text-dark") 
+                                                        strong= post.name
                                                     p(class="mb-0")
                                                         small(class="text-secondary timestamp-post")= post.timestamp
 
@@ -100,11 +112,13 @@ block dashboardContent
                                                 each comment in post.comment
                                                     div(class="form-group row" id=comment.commentUniqueId)
                                                         div(class="col-md-1 col-sm-2 col-3")
-                                                            img(class="comment-ProfilePic" src=comment.guestAvatar alt="user avatar" width="40" height="40")
+                                                            a(href="/dashboard/wall/" + comment.guestId, class="text-dark") 
+                                                                img(class="comment-ProfilePic" src=comment.guestAvatar alt="user avatar" width="40" height="40")
                                                         div(class="col-md-11 col-sm-9 col-8")
                                                             div(class="commentContainerStyles d-flex align-items-center")
                                                                 div(class="py-1 px-2")
-                                                                    strong #{comment.guestName}
+                                                                    a(href="/dashboard/wall/" + comment.guestId, class="text-dark") 
+                                                                        strong #{comment.guestName}
                                                                     p(class="mb-0") #{comment.guestComment}
                                                                 if comment.guestId == user._id
                                                                     div(class="dropdown show commentHandler")
