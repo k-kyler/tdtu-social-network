@@ -8,10 +8,12 @@ router.get("/", controller.dashboard);
 
 // User routes
 router.post("/info", controller.updateUserInfo);
-
 router.get("/user", controller.getUserInfo);
+
 router.get("/users", controller.users);
 router.post("/users", controller.createNewStaff);
+router.put("/users/:id", controller.editUser);
+router.delete("/users/:id", controller.deleteUser);
 
 router.get("/wall/:id", controller.getUserWall);
 
@@ -19,6 +21,8 @@ router.get("/wall/:id", controller.getUserWall);
 router.get("/notification", controller.notification);
 router.get("/notification/:id", controller.getNotification);
 router.post("/notification", controller.addNewNotification);
+router.put("/notification/:id", controller.editNotification);
+router.delete("/notification/:id", controller.deleteNotification);
 
 // Notification filter and pagination route
 router.post("/notification/pagination/:page/:name", controller.notifPagination);

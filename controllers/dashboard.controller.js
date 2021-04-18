@@ -595,6 +595,16 @@ module.exports.addNewNotification = async (req, res) => {
     }
 };
 
+// Edit notification
+module.exports.editNotification = async (req, res) => {
+    // Write code here
+};
+
+// Delete notification
+module.exports.deleteNotification = async (req, res) => {
+    // Write code here
+};
+
 // Users
 module.exports.users = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
@@ -694,6 +704,16 @@ module.exports.createNewStaff = async (req, res) => {
             res.redirect("/dashboard/users");
         }
     });
+};
+
+// Edit user in management
+module.exports.editUser = async (req, res) => {
+    // Write code here
+};
+
+// Delete user in management
+module.exports.deleteUser = async (req, res) => {
+    // Write code here
 };
 
 // Get post
