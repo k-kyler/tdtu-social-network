@@ -260,7 +260,7 @@ $(document).ready(() => {
                 $("#errorPost").html("");
 
                 // Emitting an message to announce server about the post information
-                socket.emit("Add new post", {
+                socket.emit("Store new post", {
                     ownerId,
                     profileAvatar,
                     name,
@@ -286,7 +286,7 @@ $(document).ready(() => {
                 $("#errorPost").html("");
 
                 // Emitting an message to announce server about the post information
-                socket.emit("Add new post", {
+                socket.emit("Store new post", {
                     ownerId,
                     profileAvatar,
                     name,
@@ -1100,224 +1100,19 @@ $(document).ready(() => {
         );
     }
 
-    // Client listen to the rendering message from server to render new post
-    socket.on("Rendering new post", (post, postUniqueId) => {
-        // Render the post
-        if (post.ownerId == document.getElementById("userObjectId").value) {
-            $("#postArea").prepend(`
-                <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${postUniqueId}>
-                    <div class="form-group row">
-                        <div class="col-md-1 col-sm-2 col-3">
-                            <a href="/dashboard/wall/${
-                                post.ownerId
-                            }" class="text-dark">
-                                <img src=${
-                                    post.profileAvatar
-                                } alt="user avatar" width="45" height="45"/>
-                            </a>
-                        </div>
-                        <div class="col-md-11 col-sm-9 col-8">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <a href="/dashboard/wall/${
-                                        post.ownerId
-                                    }" class="text-dark">
-                                        <strong>${post.name}</strong>
-                                    </a>
-                                    <p class="mb-0">
-                                        <small class="text-secondary timestamp-post">${
-                                            post.timestamp
-                                        }</small>
-                                    </p>
-                                </div>
-                                <div class="dropdown show">
-                                    <a class="btn btn-link text-dark dropdown-toggle" role="button" id="postHandlerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-h"></i>
-                                    </a>
-                                    
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="postHandlerDropdown">
-                                        <button class="dropdown-item btn btn-link editPost" data-postUniqueId=${postUniqueId}>Edit</button>
-                                        <button class="dropdown-item btn btn-link deletePost" data-postUniqueId=${postUniqueId}>Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="post-content">${post.content}</p>
-                    <div id="imageAndVideoContainer">
-                        ${
-                            post.image && post.video
-                                ? `
-                                <div class="row">
-                                    <div class="px-0 col-md-6">
-                                        <img src="/images/imageLoading.gif" class="post-image" />
-                                    </div>
-                                    <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
-                                    </div>
-                                </div>   
-                            `
-                                : !post.image && post.video
-                                ? `
-                                <div class="row">
-                                    <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
-                                    </div>
-                                </div>
-                            `
-                                : post.image && !post.video
-                                ? `
-                                <div class="row">
-                                    <div class="px-0 col-md-12">
-                                        <img src="/images/imageLoading.gif" class="post-image" />
-                                    </div>
-                                </div>
-                            `
-                                : `
-                                
-                            `
-                        }
-                    </div>
-                    <div class="m-3">
-                        <hr class="my-0" />
-                        <div class="btn-postStatus form-group row mb-0">
-                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
-                                <i class="far fa-thumbs-up"></i>
-                                <span class="ml-2">Like</span>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-4 p-2">
-                                <label class="mb-0 d-flex align-items-center justify-content-center" for="commentInput-${postUniqueId}">
-                                    <i class="far fa-comment-dots"></i>
-                                    <span class="ml-2">Comment</span>
-                                </label>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-share-square"></i>
-                                <span class="ml-2">Share</span>
-                            </div>
-                        </div>
-                        <hr class="mt-0 mb-4" />
-
-                        <!-- Comment -->
-                        <div class="dashboard__contentCommunicationComment" id="comment-${postUniqueId}">
-                            <div id="commentSection" data-postUniqueId=${postUniqueId}></div>
-                        </div>
-
-                        <div class="row">
-                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
-                                <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                        <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `);
-        } else {
-            $("#postArea").prepend(`
-                <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${postUniqueId}>
-                    <div class="form-group row">
-                        <div class="col-md-1 col-sm-2 col-3">
-                            <a href="/dashboard/wall/${
-                                post.ownerId
-                            }" class="text-dark">
-                                <img src=${
-                                    post.profileAvatar
-                                } alt="user avatar" width="45" height="45"/>
-                            </a>
-                        </div>
-                        <div class="col-md-11 col-sm-9 col-8">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <a href="/dashboard/wall/${
-                                        post.ownerId
-                                    }" class="text-dark">
-                                        <strong>${post.name}</strong>
-                                    </a>
-                                    <p class="mb-0 text-secondary timestamp-post">
-                                        ${post.timestamp}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="post-content">${post.content}</p>
-                    <div id="imageAndVideoContainer">
-                        ${
-                            post.image && post.video
-                                ? `
-                                <div class="row">
-                                    <div class="px-0 col-md-6">
-                                        <img src="/images/imageLoading.gif" class="post-image" />
-                                    </div>
-                                    <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
-                                    </div>
-                                </div>   
-                            `
-                                : !post.image && post.video
-                                ? `
-                                <div class="row">
-                                    <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
-                                    </div>
-                                </div>
-                            `
-                                : post.image && !post.video
-                                ? `
-                                <div class="row">
-                                    <div class="px-0 col-md-12">
-                                        <img src="/images/imageLoading.gif" class="post-image" />
-                                    </div>
-                                </div>
-                            `
-                                : `
-                                
-                            `
-                        }
-                    </div>
-                    <div class="m-3">
-                        <hr class="my-0" />
-                        <div class="btn-postStatus form-group row mb-0">
-                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
-                                <i class="far fa-thumbs-up"></i>
-                                <span class="ml-2">Like</span>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-4 p-2">
-                                <label class="mb-0 d-flex align-items-center justify-content-center" for="commentInput-${postUniqueId}">
-                                    <i class="far fa-comment-dots"></i>
-                                    <span class="ml-2">Comment</span>
-                                </label>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
-                                <i class="fas fa-share-square"></i>
-                                <span class="ml-2">Share</span>
-                            </div>
-                        </div>
-                        <hr class="mt-0 mb-4" />
-
-                        <!-- Comment -->
-                        <div class="dashboard__contentCommunicationComment" id="comment-${postUniqueId}">
-                            <div id="commentSection" data-postUniqueId=${postUniqueId}></div>
-                        </div>
-
-                        <div class="row">
-                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
-                                <input type="text" placeholder="Write your comment..." id="commentInput-${postUniqueId}" class="form-control commentInput" data-inputComment=${postUniqueId} onkeypress="emitComment(event)" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${postUniqueId}>
-                                        <i class="fas fa-paper-plane" data-postUniqueId=${postUniqueId}></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `);
-        }
+    // Client listen to the storing message from server to fetch new post
+    socket.on("Fetching new post", (post, postUniqueId) => {
+        // Send emitting message to render new post
+        socket.emit("Add new post", {
+            ownerId: post.ownerId,
+            postUniqueId,
+            profileAvatar: post.profileAvatar,
+            name: post.name,
+            timestamp: post.timestamp,
+            content: post.content,
+            video: post.video,
+            image: post.image,
+        });
 
         // Send request to store post to db
         fetch("/dashboard/post", {
@@ -1392,6 +1187,262 @@ $(document).ready(() => {
                 }
             })
             .catch((error) => console.error(error));
+    });
+
+    // Client listen to the rendering message from server to render new post
+    socket.on("Rendering new post", (post) => {
+        // Render the post
+        if (post.ownerId == document.getElementById("userObjectId").value) {
+            $("#postArea").prepend(`
+                <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${
+                    post.postUniqueId
+                }>
+                    <div class="form-group row">
+                        <div class="col-md-1 col-sm-2 col-3">
+                            <a href="/dashboard/wall/${
+                                post.ownerId
+                            }" class="text-dark">
+                                <img src=${
+                                    post.profileAvatar
+                                } alt="user avatar" width="45" height="45"/>
+                            </a>
+                        </div>
+                        <div class="col-md-11 col-sm-9 col-8">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <a href="/dashboard/wall/${
+                                        post.ownerId
+                                    }" class="text-dark">
+                                        <strong>${post.name}</strong>
+                                    </a>
+                                    <p class="mb-0">
+                                        <small class="text-secondary timestamp-post">${
+                                            post.timestamp
+                                        }</small>
+                                    </p>
+                                </div>
+                                <div class="dropdown show">
+                                    <a class="btn btn-link text-dark dropdown-toggle" role="button" id="postHandlerDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-h"></i>
+                                    </a>
+                                    
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="postHandlerDropdown">
+                                        <button class="dropdown-item btn btn-link editPost" data-postUniqueId=${
+                                            post.postUniqueId
+                                        }>Edit</button>
+                                        <button class="dropdown-item btn btn-link deletePost" data-postUniqueId=${
+                                            post.postUniqueId
+                                        }>Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="post-content">${post.content}</p>
+                    <div id="imageAndVideoContainer">
+                        ${
+                            post.image && post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-6">
+                                        <img src="/images/imageLoading.gif" class="post-image" />
+                                    </div>
+                                    <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                    </div>
+                                </div>   
+                            `
+                                : !post.image && post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            `
+                                : post.image && !post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-12">
+                                        <img src="/images/imageLoading.gif" class="post-image" />
+                                    </div>
+                                </div>
+                            `
+                                : `
+                                
+                            `
+                        }
+                    </div>
+                    <div class="m-3">
+                        <hr class="my-0" />
+                        <div class="btn-postStatus form-group row mb-0">
+                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
+                                <i class="far fa-thumbs-up"></i>
+                                <span class="ml-2">Like</span>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-4 p-2">
+                                <label class="mb-0 d-flex align-items-center justify-content-center" for="commentInput-${
+                                    post.postUniqueId
+                                }">
+                                    <i class="far fa-comment-dots"></i>
+                                    <span class="ml-2">Comment</span>
+                                </label>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-share-square"></i>
+                                <span class="ml-2">Share</span>
+                            </div>
+                        </div>
+                        <hr class="mt-0 mb-4" />
+
+                        <!-- Comment -->
+                        <div class="dashboard__contentCommunicationComment" id="comment-${
+                            post.postUniqueId
+                        }">
+                            <div id="commentSection" data-postUniqueId=${
+                                post.postUniqueId
+                            }></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
+                                <input type="text" placeholder="Write your comment..." id="commentInput-${
+                                    post.postUniqueId
+                                }" class="form-control commentInput" data-inputComment=${
+                post.postUniqueId
+            } onkeypress="emitComment(event)" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${
+                                        post.postUniqueId
+                                    }>
+                                        <i class="fas fa-paper-plane" data-postUniqueId=${
+                                            post.postUniqueId
+                                        }></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        } else {
+            $("#postArea").prepend(`
+                <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${
+                    post.postUniqueId
+                }>
+                    <div class="form-group row">
+                        <div class="col-md-1 col-sm-2 col-3">
+                            <a href="/dashboard/wall/${
+                                post.ownerId
+                            }" class="text-dark">
+                                <img src=${
+                                    post.profileAvatar
+                                } alt="user avatar" width="45" height="45"/>
+                            </a>
+                        </div>
+                        <div class="col-md-11 col-sm-9 col-8">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <a href="/dashboard/wall/${
+                                        post.ownerId
+                                    }" class="text-dark">
+                                        <strong>${post.name}</strong>
+                                    </a>
+                                    <p class="mb-0 text-secondary timestamp-post">
+                                        ${post.timestamp}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="post-content">${post.content}</p>
+                    <div id="imageAndVideoContainer">
+                        ${
+                            post.image && post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-6">
+                                        <img src="/images/imageLoading.gif" class="post-image" />
+                                    </div>
+                                    <div class="px-0 col-md-6 embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                    </div>
+                                </div>   
+                            `
+                                : !post.image && post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-12 embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" src=${post.video} allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            `
+                                : post.image && !post.video
+                                ? `
+                                <div class="row">
+                                    <div class="px-0 col-md-12">
+                                        <img src="/images/imageLoading.gif" class="post-image" />
+                                    </div>
+                                </div>
+                            `
+                                : `
+                                
+                            `
+                        }
+                    </div>
+                    <div class="m-3">
+                        <hr class="my-0" />
+                        <div class="btn-postStatus form-group row mb-0">
+                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
+                                <i class="far fa-thumbs-up"></i>
+                                <span class="ml-2">Like</span>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-4 p-2">
+                                <label class="mb-0 d-flex align-items-center justify-content-center" for="commentInput-${
+                                    post.postUniqueId
+                                }">
+                                    <i class="far fa-comment-dots"></i>
+                                    <span class="ml-2">Comment</span>
+                                </label>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-4 p-2 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-share-square"></i>
+                                <span class="ml-2">Share</span>
+                            </div>
+                        </div>
+                        <hr class="mt-0 mb-4" />
+
+                        <!-- Comment -->
+                        <div class="dashboard__contentCommunicationComment" id="comment-${
+                            post.postUniqueId
+                        }">
+                            <div id="commentSection" data-postUniqueId=${
+                                post.postUniqueId
+                            }></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="px-0 pt-3 col-md-12 input-group commentInputStyles">
+                                <input type="text" placeholder="Write your comment..." id="commentInput-${
+                                    post.postUniqueId
+                                }" class="form-control commentInput" data-inputComment=${
+                post.postUniqueId
+            } onkeypress="emitComment(event)" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" onclick="emitCommentOnButton(event)" data-postUniqueId=${
+                                        post.postUniqueId
+                                    }>
+                                        <i class="fas fa-paper-plane" data-postUniqueId=${
+                                            post.postUniqueId
+                                        }></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        }
     });
 
     // Client listen to the rendering message from server to render update post
