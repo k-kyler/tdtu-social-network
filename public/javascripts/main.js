@@ -668,12 +668,11 @@ $(document).ready(() => {
     let maxPost = 20;
 
     $("#postArea .dashboard__contentCommunication").slice(10).hide(); // Get the first 10 posts to display and hide the rest of posts
-    $(".dashboard__content").on("scroll", function () {
+    $(".dashboard__content").on("scroll", function (event) {
+        let element = event.target;
+
         // Check if user has scrolled to the bottom of each 10 posts
-        if (
-            $(this).scrollTop() + $(this).innerHeight() ===
-            $(this)[0].scrollHeight
-        ) {
+        if (element.scrollTop >= element.scrollHeight - element.offsetHeight) {
             $(
                 `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
             ).after(`
