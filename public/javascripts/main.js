@@ -1361,8 +1361,10 @@ $(document).ready(() => {
                                     }" class="text-dark">
                                         <strong>${post.name}</strong>
                                     </a>
-                                    <p class="mb-0 text-secondary timestamp-post">
-                                        ${post.timestamp}
+                                    <p class="mb-0">
+                                        <small class="text-secondary timestamp-post">${
+                                            post.timestamp
+                                        }</small>
                                     </p>
                                 </div>
                             </div>
