@@ -671,7 +671,7 @@ $(document).ready(() => {
     $(".dashboard__content").on("scroll", function () {
         // Check if user has scrolled to the bottom of each 10 posts
         if (
-            $(this).scrollTop() + $(this).innerHeight() >=
+            $(this).scrollTop() + $(this).innerHeight() ===
             $(this)[0].scrollHeight
         ) {
             $(
