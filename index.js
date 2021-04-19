@@ -46,17 +46,39 @@ app.use(express.static("public"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 
+// MongoDB setup
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
 
+// Socket.io events
+let users = [];
+
 io.on("connection", (socket) => {
+    // Server wait for emitting message from client to allow client to count the number of connecting user
+    socket.on("Add new user", (userId) => {
+        users.push(userId);
+
+        io.sockets.emit("Updating users", users);
+    });
+
+    // Server wait for emitting message from client to allow client to remove the sign out user
+    socket.on("Remove user", (removeUserId) => {
+        users = users.filter((userId) => userId !== removeUserId);
+
+        io.sockets.emit("Updating users", users);
+    });
+
     // Server wait for emitting message from client to allow client to fetch post
-    socket.on("Store new post", (post) => {
+    socket.on("Store new post", (post, users) => {
         let postUniqueId = v4UniqueId();
 
-        socket.broadcast.emit("Fetching new post", post, postUniqueId);
+        if (users[0].length === 1) {
+            io.sockets.emit("Fetching new post", post, postUniqueId); // If server has only one user
+        } else if (users[0].length > 1) {
+            socket.broadcast.emit("Fetching new post", post, postUniqueId);
+        }
     });
 
     // Server wait for emitting message from client to allow client to render post
@@ -85,10 +107,18 @@ io.on("connection", (socket) => {
     });
 
     // Server wait for emitting message from client to allow client to fetch comment
-    socket.on("Store new comment", (comment) => {
+    socket.on("Store new comment", (comment, users) => {
         let commentUniqueId = v4UniqueId();
 
-        socket.broadcast.emit("Fetching new comment", comment, commentUniqueId);
+        if (users[0].length === 1) {
+            io.sockets.emit("Fetching new comment", comment, commentUniqueId); // If server has only one user
+        } else if (users[0].length > 1) {
+            socket.broadcast.emit(
+                "Fetching new comment",
+                comment,
+                commentUniqueId
+            );
+        }
     });
 
     // Server wait for emitting message from client to allow client to render comment

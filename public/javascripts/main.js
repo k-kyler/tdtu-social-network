@@ -1,6 +1,11 @@
 // Socket.io setup for client
 const socket = io("/");
 
+// Counting connecting users
+let totalUsers = {
+    users: [],
+};
+
 // jQuery code
 $(document).ready(() => {
     // Display log out modal when clicked on log out button
@@ -18,6 +23,9 @@ $(document).ready(() => {
         fetch("/logout")
             .then((response) => {
                 if (response.status === 200) {
+                    // Sending emitting message to server if user has signed out
+                    socket.emit("Remove user", $("#userObjectId").val());
+
                     window.location.href = "/";
                 }
             })
@@ -260,15 +268,19 @@ $(document).ready(() => {
                 $("#errorPost").html("");
 
                 // Emitting an message to announce server about the post information
-                socket.emit("Store new post", {
-                    ownerId,
-                    profileAvatar,
-                    name,
-                    content: content.val(),
-                    timestamp,
-                    image: $("#hiddenImageURL").val(),
-                    video,
-                });
+                socket.emit(
+                    "Store new post",
+                    {
+                        ownerId,
+                        profileAvatar,
+                        name,
+                        content: content.val(),
+                        timestamp,
+                        image: $("#hiddenImageURL").val(),
+                        video,
+                    },
+                    totalUsers.users
+                );
 
                 // Clear old and close modal
                 content.val("");
@@ -286,18 +298,22 @@ $(document).ready(() => {
                 $("#errorPost").html("");
 
                 // Emitting an message to announce server about the post information
-                socket.emit("Store new post", {
-                    ownerId,
-                    profileAvatar,
-                    name,
-                    content: content.val(),
-                    timestamp,
-                    image: $("#hiddenImageURL").val(),
-                    video:
-                        video.split("watch?v=")[0] +
-                        "embed/" +
-                        video.split("watch?v=")[1],
-                });
+                socket.emit(
+                    "Store new post",
+                    {
+                        ownerId,
+                        profileAvatar,
+                        name,
+                        content: content.val(),
+                        timestamp,
+                        image: $("#hiddenImageURL").val(),
+                        video:
+                            video.split("watch?v=")[0] +
+                            "embed/" +
+                            video.split("watch?v=")[1],
+                    },
+                    totalUsers.users
+                );
 
                 // Clear old and close modal
                 content.val("");
@@ -1097,6 +1113,16 @@ $(document).ready(() => {
         );
     }
 
+    // Sending emitting message for adding new user to server if user has signed in
+    if ($("#userObjectId").val()) {
+        socket.emit("Add new user", $("#userObjectId").val());
+    }
+
+    // Client listen to the updating message from server to check the number of connecting users on the server
+    socket.on("Updating users", (users) => {
+        totalUsers.users.push(users);
+    });
+
     // Client listen to the storing message from server to fetch new post
     socket.on("Fetching new post", (post, postUniqueId) => {
         // Send request to store post to db
@@ -1893,17 +1919,22 @@ const emitComment = (event) => {
         let inputComment = event.target.value;
 
         if (inputComment !== "") {
-            socket.emit("Store new comment", {
-                guestId: guestId,
-                postUniqueId: postUniqueId,
-                guestAvatar: displayInfo,
-                guestComment: inputComment,
-                guestName: sidebarUsername,
-                commentTimeStamp:
-                    new Date().toLocaleDateString() +
-                    ", " +
-                    new Date().toLocaleTimeString(),
-            });
+            socket.emit(
+                "Store new comment",
+                {
+                    guestId: guestId,
+                    postUniqueId: postUniqueId,
+                    guestAvatar: displayInfo,
+                    guestComment: inputComment,
+                    guestName: sidebarUsername,
+                    commentTimeStamp:
+                        new Date().toLocaleDateString() +
+                        ", " +
+                        new Date().toLocaleTimeString(),
+                },
+                totalUsers.users
+            );
+
             event.target.value = "";
         }
     }
@@ -1925,19 +1956,24 @@ const emitCommentOnButton = (event) => {
             `input[data-inputComment="${postUniqueId}"]`
         ).value !== ""
     ) {
-        socket.emit("Store new comment", {
-            guestId: guestId,
-            postUniqueId: postUniqueId,
-            guestAvatar: displayInfo,
-            guestComment: document.body.querySelector(
-                `input[data-inputComment="${postUniqueId}"]`
-            ).value,
-            guestName: sidebarUsername,
-            commentTimeStamp:
-                new Date().toLocaleDateString() +
-                ", " +
-                new Date().toLocaleTimeString(),
-        });
+        socket.emit(
+            "Store new comment",
+            {
+                guestId: guestId,
+                postUniqueId: postUniqueId,
+                guestAvatar: displayInfo,
+                guestComment: document.body.querySelector(
+                    `input[data-inputComment="${postUniqueId}"]`
+                ).value,
+                guestName: sidebarUsername,
+                commentTimeStamp:
+                    new Date().toLocaleDateString() +
+                    ", " +
+                    new Date().toLocaleTimeString(),
+            },
+            totalUsers.users
+        );
+
         document.body.querySelector(
             `input[data-inputComment="${postUniqueId}"]`
         ).value = "";
