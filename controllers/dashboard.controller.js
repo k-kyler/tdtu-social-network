@@ -630,9 +630,9 @@ module.exports.createNewStaff = async (req, res) => {
         let user = await User.findById(req.signedCookies.userId);
         let users = await User.find();
         let listOfficeFaculty = await ListOfficeFaculty.find();
-        let avatarPath = `public/uploads/${
+        let avatarPath = `public/uploads/${v4UniqueId()}-${
             avatar.originalname
-        }-${v4UniqueId()}`;
+        }`;
 
         // Rename avatar in public folder
         fs.renameSync(avatar.path, avatarPath);

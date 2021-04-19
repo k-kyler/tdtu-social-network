@@ -669,10 +669,13 @@ $(document).ready(() => {
 
     $("#postArea .dashboard__contentCommunication").slice(10).hide(); // Get the first 10 posts to display and hide the rest of posts
     $(".dashboard__content").on("scroll", function (event) {
-        let element = event.target;
+        let scrollElement = event.target;
 
         // Check if user has scrolled to the bottom of each 10 posts
-        if (element.scrollTop >= element.scrollHeight - element.offsetHeight) {
+        if (
+            $(scrollElement)[0].scrollTop ===
+            $(scrollElement)[0].scrollHeight - $(scrollElement)[0].clientHeight
+        ) {
             $(
                 `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
             ).after(`
@@ -1067,7 +1070,6 @@ $(document).ready(() => {
     $("body").on("click", ".page-item[data-page='previous']", (event) => {
         $("#innerPagination").animate(
             {
-                opacity: 0.8,
                 scrollLeft: "-=80",
             },
             400
@@ -1077,7 +1079,6 @@ $(document).ready(() => {
     $("body").on("click", ".page-item[data-page='next']", (event) => {
         $("#innerPagination").animate(
             {
-                opacity: 0.8,
                 scrollLeft: "+=80",
             },
             400
