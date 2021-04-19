@@ -46,7 +46,7 @@ app.use(express.static("public"));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 
-mongoose.connect(process.env.MONGO_URL, {
+mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
