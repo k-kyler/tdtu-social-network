@@ -73,7 +73,7 @@ io.on("connection", (socket) => {
     // Server wait for emitting message from client to allow client to fetch post
     socket.on("Store new post", (post, users) => {
         let postUniqueId = v4UniqueId();
-
+        console.log(users[0]);
         if (users[0].length === 1) {
             io.sockets.emit("Fetching new post", post, postUniqueId); // If server has only one user
         } else if (users[0].length > 1) {
