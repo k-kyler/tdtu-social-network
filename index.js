@@ -84,11 +84,16 @@ io.on("connection", (socket) => {
         io.sockets.emit("Rendering edit post image", updateEditPostImage);
     });
 
-    // Server wait for emitting message from client to allow client to render comment
-    socket.on("Add new comment", (comment) => {
+    // Server wait for emitting message from client to allow client to fetch comment
+    socket.on("Store new comment", (comment) => {
         let commentUniqueId = v4UniqueId();
 
-        io.sockets.emit("Rendering new comment", comment, commentUniqueId);
+        socket.broadcast.emit("Fetching new comment", comment, commentUniqueId);
+    });
+
+    // Server wait for emitting message from client to allow client to render comment
+    socket.on("Add new comment", (comment) => {
+        io.sockets.emit("Rendering new comment", comment);
     });
 
     // Server wait for emitting message from client to allow client to update comment

@@ -1102,18 +1102,6 @@ $(document).ready(() => {
 
     // Client listen to the storing message from server to fetch new post
     socket.on("Fetching new post", (post, postUniqueId) => {
-        // Send emitting message to render new post
-        socket.emit("Add new post", {
-            ownerId: post.ownerId,
-            postUniqueId,
-            profileAvatar: post.profileAvatar,
-            name: post.name,
-            timestamp: post.timestamp,
-            content: post.content,
-            video: post.video,
-            image: post.image,
-        });
-
         // Send request to store post to db
         fetch("/dashboard/post", {
             headers: {
@@ -1134,56 +1122,51 @@ $(document).ready(() => {
             .then((response) => response.json())
             .then((result) => {
                 if (result.code === 1) {
-                    if (
-                        post.ownerId ==
-                        document.getElementById("userObjectId").value
-                    ) {
-                        // Display alert
-                        $("#alertContainer").prepend(`
-                            <div class="alert alert-success alert-dismissible fade show ${result.alertId}" role="alert">
-                                <i class="fas fa-bell h5 mr-2 text-warning"></i>
-                                <span>${result.message}</span>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        `);
-                        setTimeout(() => {
-                            $(`.${result.alertId}`).alert("close");
-                        }, 4000);
+                    // Send emitting message to render new post
+                    socket.emit("Add new post", {
+                        ownerId: post.ownerId,
+                        postUniqueId,
+                        profileAvatar: post.profileAvatar,
+                        name: post.name,
+                        timestamp: post.timestamp,
+                        content: post.content,
+                        video: post.video,
+                        image: post.image,
+                        successAlert: {
+                            alertId: result.alertId,
+                            message: result.message,
+                        },
+                    });
 
-                        if (result.imageURL) {
-                            // Send emitting message to render back the post image
-                            socket.emit("Update post image", {
-                                postUniqueId,
-                                imageURL: result.imageURL,
-                            });
+                    if (result.imageURL) {
+                        // Send emitting message to render back the post image
+                        socket.emit("Update post image", {
+                            postUniqueId,
+                            imageURL: result.imageURL,
+                        });
 
-                            // Remove old post hidden image URL input
-                            $("#hiddenImageURL").remove();
-                        }
+                        // Remove old post hidden image URL input
+                        $("#hiddenImageURL").remove();
                     }
                 } else if (result.code === 0) {
-                    if (
-                        post.ownerId ==
-                        document.getElementById("userObjectId").value
-                    ) {
-                        // Display alert
-                        $("#alertContainer").prepend(`
-                            <div class="alert alert-danger alert-dismissible fade show ${result.alertId}" role="alert">
-                                <span>${result.message}</span>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        `);
-                        setTimeout(() => {
-                            $(`.${result.alertId}`).alert("close");
-                        }, 4000);
+                    // Send emitting message to announce error post
+                    socket.emit("Add new post", {
+                        ownerId: post.ownerId,
+                        postUniqueId,
+                        profileAvatar: post.profileAvatar,
+                        name: post.name,
+                        timestamp: post.timestamp,
+                        content: post.content,
+                        video: post.video,
+                        image: post.image,
+                        errorAlert: {
+                            alertId: result.alertId,
+                            message: result.message,
+                        },
+                    });
 
-                        // Remove the loading post
-                        $(`#${postUniqueId}`).remove();
-                    }
+                    // Remove the loading post
+                    $(`#${postUniqueId}`).remove();
                 }
             })
             .catch((error) => console.error(error));
@@ -1325,6 +1308,36 @@ $(document).ready(() => {
                     </div>
                 </div>
             `);
+
+            if (post.successAlert) {
+                // Display success alert
+                $("#alertContainer").prepend(`
+                    <div class="alert alert-success alert-dismissible fade show ${post.successAlert.alertId}" role="alert">
+                        <i class="fas fa-bell h5 mr-2 text-warning"></i>
+                        <span>${post.successAlert.message}</span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+                setTimeout(() => {
+                    $(`.${post.successAlert.alertId}`).alert("close");
+                }, 4000);
+            } else if (post.errorAlert) {
+                // Display success alert
+                $("#alertContainer").prepend(`
+                    <div class="alert alert-success alert-dismissible fade show ${post.errorAlert.alertId}" role="alert">
+                        <i class="fas fa-bell h5 mr-2 text-warning"></i>
+                        <span>${post.errorAlert.message}</span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                `);
+                setTimeout(() => {
+                    $(`.${post.errorAlert.alertId}`).alert("close");
+                }, 4000);
+            }
         } else {
             $("#postArea").prepend(`
                 <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${
@@ -1537,11 +1550,42 @@ $(document).ready(() => {
         );
     });
 
+    // Client listen to the storing message from server to fetch new comment
+    socket.on("Fetching new comment", (comment, commentUniqueId) => {
+        // Send emitting message to render new post
+        socket.emit("Add new comment", {
+            guestId: comment.guestId,
+            postUniqueId: comment.postUniqueId,
+            commentUniqueId,
+            guestAvatar: comment.guestAvatar,
+            guestName: comment.guestName,
+            guestComment: comment.guestComment,
+            commentTimeStamp: comment.commentTimeStamp,
+        });
+
+        // Send request to store comment of post to db
+        fetch(`/dashboard/post`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                guestId: comment.guestId,
+                postUniqueId: comment.postUniqueId,
+                commentUniqueId,
+                guestAvatar: comment.guestAvatar,
+                guestName: comment.guestName,
+                guestComment: comment.guestComment,
+                commentTimeStamp: comment.commentTimeStamp,
+            }),
+        }).catch((error) => console.error(error));
+    });
+
     // Client listen to the rendering message from server to render new comment
-    socket.on("Rendering new comment", (comment, commentUniqueId) => {
+    socket.on("Rendering new comment", (comment) => {
         if (comment.guestId == document.getElementById("userObjectId").value) {
             $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
-                <div class="form-group row" id=${commentUniqueId}>
+                <div class="form-group row" id=${comment.commentUniqueId}>
                     <div class="col-md-1 col-sm-2 col-3">
                         <a href="/dashboard/wall/${comment.guestId}" class="text-dark">
                             <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
@@ -1560,8 +1604,8 @@ $(document).ready(() => {
                                     <i class="fas fa-ellipsis-h"></i>                                
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="commentHandlerDropdown">
-                                    <button class="dropdown-item btn btn-link editComment" data-postUniqueId=${comment.postUniqueId} data-commentUniqueId=${commentUniqueId}>Edit</button>
-                                    <button class="dropdown-item btn btn-link deleteComment" data-postUniqueId=${comment.postUniqueId} data-commentUniqueId=${commentUniqueId}>Delete</button>
+                                    <button class="dropdown-item btn btn-link editComment" data-postUniqueId=${comment.postUniqueId} data-commentUniqueId=${comment.commentUniqueId}>Edit</button>
+                                    <button class="dropdown-item btn btn-link deleteComment" data-postUniqueId=${comment.postUniqueId} data-commentUniqueId=${comment.commentUniqueId}>Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -1571,7 +1615,7 @@ $(document).ready(() => {
             `);
         } else {
             $("div[data-postUniqueId=" + comment.postUniqueId + "]").append(`
-                <div class="form-group row" id=${commentUniqueId}>
+                <div class="form-group row" id=${comment.commentUniqueId}>
                     <div class="col-md-1 col-sm-2 col-3">
                         <a href="/dashboard/wall/${comment.guestId}" class="text-dark">
                             <img class="comment-ProfilePic" src=${comment.guestAvatar} alt="user avatar" width="40" height="40"/>
@@ -1598,23 +1642,6 @@ $(document).ready(() => {
         ).scrollTop = document.getElementById(
             "comment-" + comment.postUniqueId
         ).scrollHeight;
-
-        // Send request to store comment of post to db
-        fetch(`/dashboard/post`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                guestId: comment.guestId,
-                postUniqueId: comment.postUniqueId,
-                commentUniqueId,
-                guestAvatar: comment.guestAvatar,
-                guestName: comment.guestName,
-                guestComment: comment.guestComment,
-                commentTimeStamp: comment.commentTimeStamp,
-            }),
-        }).catch((error) => console.error(error));
     });
 
     // Client listen to the rendering message from server to render update comment
@@ -1867,7 +1894,7 @@ const emitComment = (event) => {
         let inputComment = event.target.value;
 
         if (inputComment !== "") {
-            socket.emit("Add new comment", {
+            socket.emit("Store new comment", {
                 guestId: guestId,
                 postUniqueId: postUniqueId,
                 guestAvatar: displayInfo,
@@ -1899,7 +1926,7 @@ const emitCommentOnButton = (event) => {
             `input[data-inputComment="${postUniqueId}"]`
         ).value !== ""
     ) {
-        socket.emit("Add new comment", {
+        socket.emit("Store new comment", {
             guestId: guestId,
             postUniqueId: postUniqueId,
             guestAvatar: displayInfo,
