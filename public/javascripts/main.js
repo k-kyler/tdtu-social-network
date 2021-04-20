@@ -791,21 +791,21 @@ $(document).ready(() => {
     let maxPost = 20;
 
     $("#postArea .dashboard__contentCommunication").slice(10).hide(); // Get the first 10 posts to display and hide the rest of posts
-    $(".dashboard__content").on("scroll", function (event) {
-        let scrollElement = event.target;
+    $(".dashboard__content").on("scroll", function () {
+        const rect = document
+            .querySelector(
+                `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
+            )
+            .getBoundingClientRect().top;
 
-        // Check if user has scrolled to the bottom of each 10 posts
-        if (
-            $(scrollElement)[0].scrollTop ===
-            $(scrollElement)[0].scrollHeight - $(scrollElement)[0].clientHeight
-        ) {
+        if (rect <= $(".dashboard__content").height()) {
             $(
                 `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
             ).after(`
-                <div class='mt-5 mb-5 post-loading-container'>
-                    <div class='post-loading'></div>
-                </div>
-            `);
+                        <div class='mt-5 mb-5 post-loading-container'>
+                            <div class='post-loading'></div>
+                        </div>
+                    `);
             setTimeout(() => {
                 $(`#postArea .post-loading-container`).remove();
             }, 1500);
