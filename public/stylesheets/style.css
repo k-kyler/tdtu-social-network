@@ -1,22 +1,22 @@
 /* All colors and background colors */
 :root {
-    --main-background-color: #f1f2f5;
-    --index-background-color: #402aa3;
-    --linear-background-color1: #4a00e0;
-    --linear-background-color2: #8e2de2;
-    --line-style: rgb(160, 160, 160);
+    --color-1: #f1f2f5;
+    --color-2: #402aa3;
+    --color-3: #4a00e0;
+    --color-4: #8e2de2;
+    --color-5: rgb(160, 160, 160);
 }
 
 /* Body */
 body {
-    background-color: var(--main-background-color);
+    background-color: var(--color-1);
 }
 
 /*----------*/
 /* Home page*/
 /*----------*/
 .bg-homebar {
-    background-color: var(--index-background-color);
+    background-color: var(--color-2);
 }
 .bg-homebar img {
     width: 50px;
@@ -62,7 +62,7 @@ body {
 #textfocus {
     padding: 8px;
     margin-top: 30px;
-    background-color: var(--index-background-color);
+    background-color: var(--color-2);
     color: white;
     text-align: center;
     border-radius: 10px;
@@ -83,7 +83,7 @@ body {
     text-align: center;
     letter-spacing: 2px;
     padding: 30px;
-    background-color: var(--index-background-color);
+    background-color: var(--color-2);
     color: white;
     margin-top: 50px;
 }
@@ -187,13 +187,13 @@ h4 {
 
 .line-style {
     width: 100%;
-    border-bottom: 1px solid var(--line-style);
+    border-bottom: 1px solid var(--color-5);
     line-height: 0.1em;
-    color: var(--line-style);
+    color: var(--color-5);
 }
 
 .login > form > p > span {
-    background: var(--main-background-color);
+    background: var(--color-1);
 }
 
 /*-----------------*/
@@ -204,7 +204,7 @@ h4 {
 }
 .dashboard__content {
     height: 100vh;
-    background-color: var(--main-background-color);
+    background-color: var(--color-1);
 }
 .dashboard__sideMenu,
 .dashboard__contentUsersForm,
@@ -233,21 +233,17 @@ h4 {
     border-radius: 6px;
 }
 .dashboard__sideMenuFunction:hover {
-    background-color: var(--main-background-color);
+    background-color: var(--color-1);
     transition: all 0.3s ease-in-out;
 }
 .dashboard__sideMenuFunction--active {
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
     color: white !important;
 }
 .dashboard__content {
@@ -268,14 +264,14 @@ h4 {
 }
 #textThinking {
     cursor: pointer;
-    background-color: var(--main-background-color);
+    background-color: var(--color-1);
 }
 .dashboard__contentUsersList img {
     border-radius: 50px;
 }
 .commentInput,
 .commentContainerStyles > div {
-    background-color: var(--main-background-color);
+    background-color: var(--color-1);
 }
 .commentContainerStyles > div {
     border-radius: 12px;
@@ -356,17 +352,13 @@ h4 {
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 500ms ease-in;
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
     color: white !important;
     border-radius: 8px;
 }
@@ -401,17 +393,13 @@ hr {
 .dashboard__contentCommunicationComment::-webkit-scrollbar-thumb {
     border: 0;
     border-radius: 12px;
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
 }
 .dashboard__contentCommunication > p {
     word-wrap: break-word;
@@ -468,24 +456,20 @@ hr {
 .tableNotifListScroll::-webkit-scrollbar-thumb {
     border: 0;
     border-radius: 12px;
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
 }
 .tableNotifList > tbody > tr:hover {
     background-color: #f1f1f1;
-    color: var(--linear-background-color2) !important;
+    color: var(--color-4) !important;
 }
 .tableNotifList > tbody > tr:hover p:nth-child(2) {
-    color: var(--linear-background-color2) !important;
+    color: var(--color-4) !important;
 }
 .NotifDetails {
     cursor: pointer;
@@ -517,17 +501,13 @@ hr {
     border: 0;
     height: 2rem;
     border-radius: 12px;
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
 }
 
 /* Alert container */
@@ -553,62 +533,46 @@ hr {
 }
 
 .progressBar-2 {
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
     width: 25%;
 }
 
 .progressBar-3 {
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
     width: 50%;
 }
 
 .progressBar-4 {
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
     width: 75%;
 }
 
 .progressBar-5 {
-    background: var(--linear-background-color2);
+    background: var(--color-4);
     background: -webkit-linear-gradient(
         to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
+        var(--color-3),
+        var(--color-4)
     );
-    background: linear-gradient(
-        to right,
-        var(--linear-background-color1),
-        var(--linear-background-color2)
-    );
+    background: linear-gradient(to right, var(--color-3), var(--color-4));
     width: 100%;
 }
 
@@ -659,9 +623,9 @@ hr {
 .post-loading {
     width: 3.5rem;
     height: 3.5rem;
-    border: 5px solid var(--main-background-color);
+    border: 5px solid var(--color-1);
     border-radius: 50%;
-    border-top: 5px solid var(--linear-background-color1);
+    border-top: 5px solid var(--color-3);
     -webkit-animation: spinner 1s linear infinite;
     animation: spinner 1s linear infinite;
 }

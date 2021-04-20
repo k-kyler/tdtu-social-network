@@ -1216,6 +1216,8 @@ module.exports.addNewComment = async (req, res) => {
     let post = await Post.findOne({ postUniqueId: req.body.postUniqueId });
     let commentUniqueId = v4UniqueId();
 
+    req.body.commentUniqueId = commentUniqueId;
+
     if (req.body.guestComment) {
         let updatePostWithComment = await Post.findOneAndUpdate(
             { postUniqueId: req.body.postUniqueId },

@@ -280,6 +280,7 @@ $(document).ready(() => {
                             // Send emitting message to render new post
                             socket.emit("Add new post", {
                                 postUniqueId: result.postUniqueId,
+                                userType: result.userType,
                                 ownerId,
                                 profileAvatar,
                                 name,
@@ -368,6 +369,7 @@ $(document).ready(() => {
                             // Send emitting message to render new post
                             socket.emit("Add new post", {
                                 postUniqueId: result.postUniqueId,
+                                userType: result.userType,
                                 ownerId,
                                 profileAvatar,
                                 name,
@@ -1920,6 +1922,7 @@ const emitComment = (event) => {
                     // Send emitting message to render new comment
                     socket.emit("Add new comment", {
                         commentUniqueId: result.commentUniqueId,
+                        userType: result.userType,
                         guestId: guestId,
                         postUniqueId: postUniqueId,
                         guestAvatar: displayInfo,
@@ -1979,6 +1982,7 @@ const emitCommentOnButton = (event) => {
                 // Send emitting message to render new comment
                 socket.emit("Add new comment", {
                     commentUniqueId: result.commentUniqueId,
+                    userType: result.userType,
                     guestId: guestId,
                     postUniqueId: postUniqueId,
                     guestAvatar: displayInfo,
