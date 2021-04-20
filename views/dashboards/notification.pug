@@ -47,8 +47,10 @@ block dashboardContent
                                         option(value=item.postName)= item.postName
 
                         label(for="notificationAttachment", class="col-form-label col-md-1") Attach
-                        div(class="col-md-5")
+                        div(class="col-md-5 d-flex")
                             input(accept="image/*,.pdf,.docx,.doc,.xls,.xlsx,.rar,.zip", type="file", name="notificationAttachment", id="notificationAttachment", class="form-control")
+                            button(type="button", id="clearNotificationAttachment", class="btn btn-danger d-flex align-items-center justify-content-center")
+                                i(class="fas fa-backspace")
 
                     div(class="form-group row")
                         div(class="col-md-12", id="uploadAttachment")

@@ -2382,6 +2382,9 @@ if (attachmentInput) {
         document
             .getElementById("addNewNotification")
             .setAttribute("disabled", true);
+        document
+            .getElementById("clearNotificationAttachment")
+            .setAttribute("disabled", true);
         document.getElementById("uploadAttachment").innerHTML = "";
         document.getElementById("uploadAttachment").innerHTML = `
             <div class="progress">
@@ -2444,7 +2447,7 @@ const uploadAttachmentToFileIOAPI = (attachment) => {
             );
             document.querySelector("body").append(hiddenInput);
 
-            // Set message and enable post button
+            // Set message and enable button
             document.getElementById("uploadAttachment").innerHTML = "";
             document.getElementById("uploadAttachment").innerHTML = `
                 <div class="progress">
@@ -2457,10 +2460,24 @@ const uploadAttachmentToFileIOAPI = (attachment) => {
             document
                 .getElementById("addNewNotification")
                 .removeAttribute("disabled");
+            document
+                .getElementById("clearNotificationAttachment")
+                .removeAttribute("disabled");
         }
     };
     xhr.send(formData);
 };
+
+// Clear choosing file attachment of notification function
+document
+    .getElementById("clearNotificationAttachment")
+    .addEventListener("click", () => {
+        document.getElementById("notificationAttachment").value = "";
+
+        if (document.getElementById("hiddenAttachmentURL")) {
+            document.getElementById("hiddenAttachmentURL").remove();
+        }
+    });
 
 // Edit notification form handler
 // HERE

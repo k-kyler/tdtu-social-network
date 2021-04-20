@@ -684,3 +684,14 @@ a:hover {
 .modal-xl {
     max-width: 70rem;
 }
+
+/* Notification attachment */
+#notificationAttachment {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#clearNotificationAttachment {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
