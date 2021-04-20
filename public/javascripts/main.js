@@ -139,6 +139,14 @@ $(document).ready(() => {
                     $("#userPhone").val(result.data.phone);
                     $("#newAvatar").val("");
                     $("#avatarInfo").attr("src", result.data.avatar);
+
+                    if ($("#class")) {
+                        $("#class").val(result.data.class);
+                    }
+
+                    if ($("#faculty")) {
+                        $("#faculty").val(result.data.faculty);
+                    }
                 }
             })
             .catch((error) => console.log(error));
