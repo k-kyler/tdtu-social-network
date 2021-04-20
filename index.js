@@ -53,34 +53,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Socket.io events
-let users = [];
-
 io.on("connection", (socket) => {
-    // Server wait for emitting message from client to allow client to count the number of connecting user
-    socket.on("Add new user", (userId) => {
-        users.push(userId);
-
-        io.sockets.emit("Updating users", users);
-    });
-
-    // Server wait for emitting message from client to allow client to remove the sign out user
-    socket.on("Remove user", (removeUserId) => {
-        users = users.filter((userId) => userId !== removeUserId);
-
-        io.sockets.emit("Updating users", users);
-    });
-
-    // Server wait for emitting message from client to allow client to fetch post
-    socket.on("Store new post", (post, users) => {
-        let postUniqueId = v4UniqueId();
-        console.log(users[0]);
-        if (users[0].length === 1) {
-            io.sockets.emit("Fetching new post", post, postUniqueId); // If server has only one user
-        } else if (users[0].length > 1) {
-            socket.broadcast.emit("Fetching new post", post, postUniqueId);
-        }
-    });
-
     // Server wait for emitting message from client to allow client to render post
     socket.on("Add new post", (post) => {
         io.sockets.emit("Rendering new post", post);
@@ -104,21 +77,6 @@ io.on("connection", (socket) => {
     // Server wait for emitting message from client to allow client to render back edit post's image
     socket.on("Update edit post image", (updateEditPostImage) => {
         io.sockets.emit("Rendering edit post image", updateEditPostImage);
-    });
-
-    // Server wait for emitting message from client to allow client to fetch comment
-    socket.on("Store new comment", (comment, users) => {
-        let commentUniqueId = v4UniqueId();
-
-        if (users[0].length === 1) {
-            io.sockets.emit("Fetching new comment", comment, commentUniqueId); // If server has only one user
-        } else if (users[0].length > 1) {
-            socket.broadcast.emit(
-                "Fetching new comment",
-                comment,
-                commentUniqueId
-            );
-        }
     });
 
     // Server wait for emitting message from client to allow client to render comment

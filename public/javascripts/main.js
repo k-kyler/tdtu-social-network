@@ -1,11 +1,6 @@
 // Socket.io setup for client
 const socket = io("/");
 
-// Counting connecting users
-let totalUsers = {
-    users: [],
-};
-
 // jQuery code
 $(document).ready(() => {
     // Display log out modal when clicked on log out button
@@ -23,9 +18,6 @@ $(document).ready(() => {
         fetch("/logout")
             .then((response) => {
                 if (response.status === 200) {
-                    // Sending emitting message to server if user has signed out
-                    socket.emit("Remove user", $("#userObjectId").val());
-
                     window.location.href = "/";
                 }
             })
@@ -267,23 +259,77 @@ $(document).ready(() => {
             if (content.val() !== "") {
                 $("#errorPost").html("");
 
-                // Emitting an message to announce server about the post information
-                socket.emit(
-                    "Store new post",
-                    {
+                // Send request to store post to db
+                fetch("/dashboard/post", {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: "POST",
+                    body: JSON.stringify({
                         ownerId,
                         profileAvatar,
                         name,
                         content: content.val(),
                         timestamp,
                         image: $("#hiddenImageURL").val(),
-                        video,
-                    },
-                    totalUsers.users
-                );
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (result.code === 1) {
+                            // Send emitting message to render new post
+                            socket.emit("Add new post", {
+                                postUniqueId: result.postUniqueId,
+                                ownerId,
+                                profileAvatar,
+                                name,
+                                content: content.val(),
+                                timestamp,
+                                image: $("#hiddenImageURL").val(),
+                                successAlert: {
+                                    alertId: result.alertId,
+                                    message: result.message,
+                                },
+                            });
+
+                            content.val("");
+
+                            if (result.imageURL) {
+                                // Send emitting message to render back the post image
+                                socket.emit("Update post image", {
+                                    postUniqueId: result.postUniqueId,
+                                    imageURL: result.imageURL,
+                                });
+
+                                // Remove old post hidden image URL input
+                                $("#hiddenImageURL").remove();
+                            }
+                        } else if (result.code === 0) {
+                            if (
+                                result.ownerId ==
+                                document.getElementById("userObjectId").value
+                            ) {
+                                // Display success alert
+                                $("#alertContainer").prepend(`
+                                    <div class="alert alert-success alert-dismissible fade show ${post.errorAlert.alertId}" role="alert">
+                                        <i class="fas fa-bell h5 mr-2 text-warning"></i>
+                                        <span>${post.errorAlert.message}</span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                                setTimeout(() => {
+                                    $(`.${post.errorAlert.alertId}`).alert(
+                                        "close"
+                                    );
+                                }, 4000);
+                            }
+                        }
+                    })
+                    .catch((error) => console.error(error));
 
                 // Clear old and close modal
-                content.val("");
                 $("#postImageReview").removeAttr("src");
                 $("#postImageReview").removeAttr("class");
                 $("#postImageName").html("Add to post");
@@ -297,10 +343,13 @@ $(document).ready(() => {
             if (content.val() !== "") {
                 $("#errorPost").html("");
 
-                // Emitting an message to announce server about the post information
-                socket.emit(
-                    "Store new post",
-                    {
+                // Send request to store post to db
+                fetch("/dashboard/post", {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: "POST",
+                    body: JSON.stringify({
                         ownerId,
                         profileAvatar,
                         name,
@@ -311,12 +360,68 @@ $(document).ready(() => {
                             video.split("watch?v=")[0] +
                             "embed/" +
                             video.split("watch?v=")[1],
-                    },
-                    totalUsers.users
-                );
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (result.code === 1) {
+                            // Send emitting message to render new post
+                            socket.emit("Add new post", {
+                                postUniqueId: result.postUniqueId,
+                                ownerId,
+                                profileAvatar,
+                                name,
+                                content: content.val(),
+                                timestamp,
+                                image: $("#hiddenImageURL").val(),
+                                video:
+                                    video.split("watch?v=")[0] +
+                                    "embed/" +
+                                    video.split("watch?v=")[1],
+                                successAlert: {
+                                    alertId: result.alertId,
+                                    message: result.message,
+                                },
+                            });
+
+                            content.val("");
+
+                            if (result.imageURL) {
+                                // Send emitting message to render back the post image
+                                socket.emit("Update post image", {
+                                    postUniqueId: result.postUniqueId,
+                                    imageURL: result.imageURL,
+                                });
+
+                                // Remove old post hidden image URL input
+                                $("#hiddenImageURL").remove();
+                            }
+                        } else if (result.code === 0) {
+                            if (
+                                result.ownerId ==
+                                document.getElementById("userObjectId").value
+                            ) {
+                                // Display success alert
+                                $("#alertContainer").prepend(`
+                                    <div class="alert alert-success alert-dismissible fade show ${post.errorAlert.alertId}" role="alert">
+                                        <i class="fas fa-bell h5 mr-2 text-warning"></i>
+                                        <span>${post.errorAlert.message}</span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                `);
+                                setTimeout(() => {
+                                    $(`.${post.errorAlert.alertId}`).alert(
+                                        "close"
+                                    );
+                                }, 4000);
+                            }
+                        }
+                    })
+                    .catch((error) => console.error(error));
 
                 // Clear old and close modal
-                content.val("");
                 $("#video").val("");
                 $("#postImageReview").removeAttr("src");
                 $("#postImageReview").removeAttr("class");
@@ -1113,88 +1218,6 @@ $(document).ready(() => {
         );
     }
 
-    // Sending emitting message for adding new user to server if user has signed in
-    if ($("#userObjectId").val()) {
-        socket.emit("Add new user", $("#userObjectId").val());
-    }
-
-    // Client listen to the updating message from server to check the number of connecting users on the server
-    socket.on("Updating users", (users) => {
-        totalUsers.users.push(users);
-    });
-
-    // Client listen to the storing message from server to fetch new post
-    socket.on("Fetching new post", (post, postUniqueId) => {
-        // Send request to store post to db
-        fetch("/dashboard/post", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify({
-                ownerId: post.ownerId,
-                postUniqueId,
-                profileAvatar: post.profileAvatar,
-                name: post.name,
-                timestamp: post.timestamp,
-                content: post.content,
-                video: post.video,
-                image: post.image,
-            }),
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                if (result.code === 1) {
-                    // Send emitting message to render new post
-                    socket.emit("Add new post", {
-                        ownerId: post.ownerId,
-                        postUniqueId,
-                        profileAvatar: post.profileAvatar,
-                        name: post.name,
-                        timestamp: post.timestamp,
-                        content: post.content,
-                        video: post.video,
-                        image: post.image,
-                        successAlert: {
-                            alertId: result.alertId,
-                            message: result.message,
-                        },
-                    });
-
-                    if (result.imageURL) {
-                        // Send emitting message to render back the post image
-                        socket.emit("Update post image", {
-                            postUniqueId,
-                            imageURL: result.imageURL,
-                        });
-
-                        // Remove old post hidden image URL input
-                        $("#hiddenImageURL").remove();
-                    }
-                } else if (result.code === 0) {
-                    // Send emitting message to announce error post
-                    socket.emit("Add new post", {
-                        ownerId: post.ownerId,
-                        postUniqueId,
-                        profileAvatar: post.profileAvatar,
-                        name: post.name,
-                        timestamp: post.timestamp,
-                        content: post.content,
-                        video: post.video,
-                        image: post.image,
-                        errorAlert: {
-                            alertId: result.alertId,
-                            message: result.message,
-                        },
-                    });
-
-                    // Remove the loading post
-                    $(`#${postUniqueId}`).remove();
-                }
-            })
-            .catch((error) => console.error(error));
-    });
-
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post) => {
         // Render the post
@@ -1332,35 +1355,19 @@ $(document).ready(() => {
                 </div>
             `);
 
-            if (post.successAlert) {
-                // Display success alert
-                $("#alertContainer").prepend(`
-                    <div class="alert alert-success alert-dismissible fade show ${post.successAlert.alertId}" role="alert">
-                        <i class="fas fa-bell h5 mr-2 text-warning"></i>
-                        <span>${post.successAlert.message}</span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                `);
-                setTimeout(() => {
-                    $(`.${post.successAlert.alertId}`).alert("close");
-                }, 4000);
-            } else if (post.errorAlert) {
-                // Display success alert
-                $("#alertContainer").prepend(`
-                    <div class="alert alert-success alert-dismissible fade show ${post.errorAlert.alertId}" role="alert">
-                        <i class="fas fa-bell h5 mr-2 text-warning"></i>
-                        <span>${post.errorAlert.message}</span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                `);
-                setTimeout(() => {
-                    $(`.${post.errorAlert.alertId}`).alert("close");
-                }, 4000);
-            }
+            // Display success alert
+            $("#alertContainer").prepend(`
+                <div class="alert alert-success alert-dismissible fade show ${post.successAlert.alertId}" role="alert">
+                    <i class="fas fa-bell h5 mr-2 text-warning"></i>
+                    <span>${post.successAlert.message}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `);
+            setTimeout(() => {
+                $(`.${post.successAlert.alertId}`).alert("close");
+            }, 4000);
         } else {
             $("#postArea").prepend(`
                 <div class="dashboard__contentCommunication mb-4 pb-1 px-3 pt-3 bg-white col-md-12" id=${
@@ -1733,7 +1740,9 @@ function onGoogleSignIn(googleUser) {
 
 function onGoogleSignOut() {
     let authentication2 = gapi.auth2.getAuthInstance();
-    authentication2.signOut();
+    authentication2.signOut().then(function () {
+        console.log("Student has signed out");
+    });
 }
 
 // Edit info form avatar handler

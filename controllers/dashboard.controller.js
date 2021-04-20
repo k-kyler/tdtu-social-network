@@ -737,7 +737,6 @@ module.exports.getPost = async (req, res) => {
 // Add new post
 module.exports.addNewPost = async (req, res) => {
     let {
-        postUniqueId,
         profileAvatar,
         name,
         timestamp,
@@ -746,6 +745,7 @@ module.exports.addNewPost = async (req, res) => {
         video,
         image,
     } = req.body;
+    let postUniqueId = v4UniqueId();
 
     if (
         video &&
@@ -767,6 +767,7 @@ module.exports.addNewPost = async (req, res) => {
             res.json({
                 code: 0,
                 message: "Image size is over 10 MB",
+                ownerId,
                 alertId: shortid.generate(),
             });
         }
@@ -779,6 +780,7 @@ module.exports.addNewPost = async (req, res) => {
             res.json({
                 code: 0,
                 message: "Not supported file",
+                ownerId,
                 alertId: shortid.generate(),
             });
         } else {
@@ -799,6 +801,7 @@ module.exports.addNewPost = async (req, res) => {
                     code: 1,
                     message: "You have added new post",
                     alertId: shortid.generate(),
+                    postUniqueId,
                     imageURL: imageURL.split("./public")[1],
                 });
             });
@@ -818,6 +821,7 @@ module.exports.addNewPost = async (req, res) => {
             res.json({
                 code: 0,
                 message: "Image size is over 10 MB",
+                ownerId,
                 alertId: shortid.generate(),
             });
         }
@@ -830,6 +834,7 @@ module.exports.addNewPost = async (req, res) => {
             res.json({
                 code: 0,
                 message: "Not supported file",
+                ownerId,
                 alertId: shortid.generate(),
             });
         } else {
@@ -850,6 +855,7 @@ module.exports.addNewPost = async (req, res) => {
                     code: 1,
                     message: "You have added new post",
                     alertId: shortid.generate(),
+                    postUniqueId,
                     imageURL: imageURL.split("./public")[1],
                 });
             });
@@ -869,6 +875,7 @@ module.exports.addNewPost = async (req, res) => {
         res.json({
             code: 1,
             message: "You have added new post",
+            postUniqueId,
             alertId: shortid.generate(),
         });
     } else if (video && !image && content !== "") {
@@ -887,17 +894,22 @@ module.exports.addNewPost = async (req, res) => {
         res.json({
             code: 1,
             message: "You have added new post",
+            postUniqueId,
             alertId: shortid.generate(),
         });
     } else if (video && !video.includes("https://www.youtube.com/embed/")) {
         res.json({
             code: 0,
             message: "Invalid Youtube URL!",
+            ownerId,
+            alertId: shortid.generate(),
         });
     } else if (content === "") {
         res.json({
             code: 0,
             message: "Content can not be empty!",
+            ownerId,
+            alertId: shortid.generate(),
         });
     }
 };
