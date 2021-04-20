@@ -1582,37 +1582,6 @@ $(document).ready(() => {
         );
     });
 
-    // Client listen to the storing message from server to fetch new comment
-    socket.on("Fetching new comment", (comment, commentUniqueId) => {
-        // Send emitting message to render new post
-        socket.emit("Add new comment", {
-            guestId: comment.guestId,
-            postUniqueId: comment.postUniqueId,
-            commentUniqueId,
-            guestAvatar: comment.guestAvatar,
-            guestName: comment.guestName,
-            guestComment: comment.guestComment,
-            commentTimeStamp: comment.commentTimeStamp,
-        });
-
-        // Send request to store comment of post to db
-        fetch(`/dashboard/post`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                guestId: comment.guestId,
-                postUniqueId: comment.postUniqueId,
-                commentUniqueId,
-                guestAvatar: comment.guestAvatar,
-                guestName: comment.guestName,
-                guestComment: comment.guestComment,
-                commentTimeStamp: comment.commentTimeStamp,
-            }),
-        }).catch((error) => console.error(error));
-    });
-
     // Client listen to the rendering message from server to render new comment
     socket.on("Rendering new comment", (comment) => {
         if (comment.guestId == document.getElementById("userObjectId").value) {
@@ -1928,9 +1897,13 @@ const emitComment = (event) => {
         let inputComment = event.target.value;
 
         if (inputComment !== "") {
-            socket.emit(
-                "Store new comment",
-                {
+            // Send request to store comment of post to db
+            fetch(`/dashboard/post`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
                     guestId: guestId,
                     postUniqueId: postUniqueId,
                     guestAvatar: displayInfo,
@@ -1940,11 +1913,27 @@ const emitComment = (event) => {
                         new Date().toLocaleDateString() +
                         ", " +
                         new Date().toLocaleTimeString(),
-                },
-                totalUsers.users
-            );
+                }),
+            })
+                .then((response) => response.json())
+                .then((result) => {
+                    // Send emitting message to render new comment
+                    socket.emit("Add new comment", {
+                        commentUniqueId: result.commentUniqueId,
+                        guestId: guestId,
+                        postUniqueId: postUniqueId,
+                        guestAvatar: displayInfo,
+                        guestComment: inputComment,
+                        guestName: sidebarUsername,
+                        commentTimeStamp:
+                            new Date().toLocaleDateString() +
+                            ", " +
+                            new Date().toLocaleTimeString(),
+                    });
 
-            event.target.value = "";
+                    event.target.value = "";
+                })
+                .catch((error) => console.error(error));
         }
     }
 };
@@ -1965,9 +1954,13 @@ const emitCommentOnButton = (event) => {
             `input[data-inputComment="${postUniqueId}"]`
         ).value !== ""
     ) {
-        socket.emit(
-            "Store new comment",
-            {
+        // Send request to store comment of post to db
+        fetch(`/dashboard/post`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
                 guestId: guestId,
                 postUniqueId: postUniqueId,
                 guestAvatar: displayInfo,
@@ -1979,13 +1972,31 @@ const emitCommentOnButton = (event) => {
                     new Date().toLocaleDateString() +
                     ", " +
                     new Date().toLocaleTimeString(),
-            },
-            totalUsers.users
-        );
+            }),
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                // Send emitting message to render new comment
+                socket.emit("Add new comment", {
+                    commentUniqueId: result.commentUniqueId,
+                    guestId: guestId,
+                    postUniqueId: postUniqueId,
+                    guestAvatar: displayInfo,
+                    guestComment: document.body.querySelector(
+                        `input[data-inputComment="${postUniqueId}"]`
+                    ).value,
+                    guestName: sidebarUsername,
+                    commentTimeStamp:
+                        new Date().toLocaleDateString() +
+                        ", " +
+                        new Date().toLocaleTimeString(),
+                });
 
-        document.body.querySelector(
-            `input[data-inputComment="${postUniqueId}"]`
-        ).value = "";
+                document.body.querySelector(
+                    `input[data-inputComment="${postUniqueId}"]`
+                ).value = "";
+            })
+            .catch((error) => console.error(error));
     }
 };
 
