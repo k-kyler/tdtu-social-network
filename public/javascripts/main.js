@@ -800,11 +800,15 @@ $(document).ready(() => {
 
     $("#postArea .dashboard__contentCommunication").slice(10).hide(); // Get the first 10 posts to display and hide the rest of posts
     $(".dashboard__content").on("scroll", function () {
-        const rect = document
-            .querySelector(
-                `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
-            )
-            .getBoundingClientRect().top;
+        const rect = document.querySelector(
+            `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
+        )
+            ? document
+                  .querySelector(
+                      `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
+                  )
+                  .getBoundingClientRect().top
+            : 9999;
 
         if (rect <= $(".dashboard__content").height()) {
             $(
@@ -2469,15 +2473,17 @@ const uploadAttachmentToFileIOAPI = (attachment) => {
 };
 
 // Clear choosing file attachment of notification function
-document
-    .getElementById("clearNotificationAttachment")
-    .addEventListener("click", () => {
-        document.getElementById("notificationAttachment").value = "";
+if (document.getElementById("clearNotificationAttachment")) {
+    document
+        .getElementById("clearNotificationAttachment")
+        .addEventListener("click", () => {
+            document.getElementById("notificationAttachment").value = "";
 
-        if (document.getElementById("hiddenAttachmentURL")) {
-            document.getElementById("hiddenAttachmentURL").remove();
-        }
-    });
+            if (document.getElementById("hiddenAttachmentURL")) {
+                document.getElementById("hiddenAttachmentURL").remove();
+            }
+        });
+}
 
 // Edit notification form handler
 // HERE
