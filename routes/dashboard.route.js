@@ -26,7 +26,7 @@ router.delete("/notification/:id", controller.deleteNotification);
 
 router.post("/notification/pagination/:page/:name", controller.notifPagination); // Notification filter and pagination route
 
-router.get("/notification/smallscreen", controller.notificationSmallScreen);
+router.get("/notificationlist", controller.notificationSmallScreen);
 
 // Post routes
 router.get("/post/:postUniqueId", controller.getPost);

@@ -211,6 +211,8 @@ h4 {
 .dashboard__contentUsersList,
 .dashboard__contentCommunication,
 .dashboard__contentNotificationList,
+.dashboard__contentNotificationListBlank,
+.dashboard__contentNotificationListManage,
 .dashboard__contentNotificationForm {
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.06);
 }
@@ -299,6 +301,9 @@ h4 {
     border: none;
     margin-left: 0;
 }
+#mobileOption {
+    display: none !important;
+}
 @media only screen and (max-width: 1024px) {
     .btn-postStatus > div > span {
         font-size: 80%;
@@ -321,6 +326,8 @@ h4 {
     .dashboard__sideMenu {
         height: 100%;
         align-items: center;
+        border-bottom: 1px solid rgb(160, 160, 160);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
     }
     .dashboard__sideMenu > div:nth-child(1) {
         flex-direction: row-reverse !important;
@@ -365,11 +372,25 @@ h4 {
     div[class="col-md-11 col-sm-10 col-9"] {
         padding-left: 0;
     }
+    div[class="col-md-11 col-sm-9 col-8"] {
+        padding-right: 0;
+    }
+    #mobileOption {
+        display: block !important;
+    }
     .btn-postStatus > div:nth-child(2) span {
         display: none;
     }
     #textThinking {
         font-size: 70%;
+    }
+    .dashboard__contentUsers {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    label[for="avatar"],
+    label[for="notificationAttachment"] {
+        margin-top: 1rem;
     }
 }
 
@@ -462,7 +483,11 @@ hr {
 /*--------------------*/
 .dashboard__contentNotificationForm,
 .dashboard__contentNotificationList,
-.dashboard__contentNotificationList > table > thead > tr > th {
+.dashboard__contentNotificationListBlank,
+.dashboard__contentNotificationListManage,
+.dashboard__contentNotificationList > table > thead > tr > th,
+.dashboard__contentNotificationListManage > table > thead > tr > th,
+.dashboard__contentNotificationListBlank > table > thead > tr > th {
     border-radius: 12px;
     border-top-width: 0;
 }
@@ -474,7 +499,8 @@ hr {
     transition: all 0.3s ease-in-out;
 }
 
-.dashboard__contentNotificationList img {
+.dashboard__contentNotificationList img,
+.dashboard__contentNotificationListBlank img {
     border-radius: 50px;
 }
 .imageNotification > div {
