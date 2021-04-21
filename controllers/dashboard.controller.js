@@ -477,6 +477,19 @@ module.exports.notifPagination = async (req, res) => {
     }
 };
 
+// Notification page rendering for mobile & tablet
+module.exports.notificationSmallScreen = async (req, res) => {
+    let user = await User.findById(req.signedCookies.userId);
+    let notifications = await Notification.find().sort({ timeSort: -1 }); // Get desc notifications list by time
+    let totalNotifPages = Math.ceil(notifications.length / 10); // Calculate the total notification pages
+
+    res.render("dashboards/notificationSmallScreen", {
+        user,
+        notifications: notifications.slice(0, 10), // Get the first 10 notifications
+        totalNotifPages,
+    });
+};
+
 // Add new notification
 module.exports.addNewNotification = async (req, res) => {
     let {

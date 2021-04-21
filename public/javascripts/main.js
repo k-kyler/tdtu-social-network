@@ -800,34 +800,36 @@ $(document).ready(() => {
 
     $("#postArea .dashboard__contentCommunication").slice(10).hide(); // Get the first 10 posts to display and hide the rest of posts
     $(".dashboard__content").on("scroll", function () {
-        const rect = document.querySelector(
-            `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
-        )
-            ? document
-                  .querySelector(
-                      `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
-                  )
-                  .getBoundingClientRect().top
-            : 9999;
-
-        if (rect <= $(".dashboard__content").height()) {
-            $(
+        if (
+            document.querySelector(
                 `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
-            ).after(`
-                        <div class='mt-5 mb-5 post-loading-container'>
-                            <div class='post-loading'></div>
-                        </div>
-                    `);
-            setTimeout(() => {
-                $(`#postArea .post-loading-container`).remove();
-            }, 1500);
+            )
+        ) {
+            const rect = document
+                .querySelector(
+                    `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
+                )
+                .getBoundingClientRect().top;
 
-            $("#postArea .dashboard__contentCommunication")
-                .slice(minPost, maxPost)
-                .fadeIn(3000);
+            if (rect <= $(".dashboard__content").height()) {
+                $(
+                    `#postArea .dashboard__contentCommunication:nth-child(${minPost})`
+                ).after(`
+                                <div class='mt-5 mb-5 post-loading-container'>
+                                    <div class='post-loading'></div>
+                                </div>
+                            `);
+                setTimeout(() => {
+                    $(`#postArea .post-loading-container`).remove();
+                }, 1500);
 
-            minPost += 10;
-            maxPost += 10;
+                $("#postArea .dashboard__contentCommunication")
+                    .slice(minPost, maxPost)
+                    .fadeIn(3000);
+
+                minPost += 10;
+                maxPost += 10;
+            }
         }
     });
 

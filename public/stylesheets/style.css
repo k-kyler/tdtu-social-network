@@ -12,9 +12,9 @@ body {
     background-color: var(--color-1);
 }
 
-/*----------*/
-/* Home page*/
-/*----------*/
+/*-----------*/
+/* Home page */
+/*-----------*/
 .bg-homebar {
     background-color: var(--color-2);
 }
@@ -319,7 +319,54 @@ h4 {
 }
 @media only screen and (max-width: 376px) {
     .dashboard__sideMenu {
-        height: 60vh;
+        height: 100%;
+        align-items: center;
+    }
+    .dashboard__sideMenu > div:nth-child(1) {
+        flex-direction: row-reverse !important;
+        justify-content: space-between !important;
+        width: 100%;
+        padding: 0.5rem 0 1.4rem 0;
+    }
+    .dashboard__sideMenu > div:nth-child(1) a {
+        margin: 0 !important;
+    }
+    .dashboard__sideMenuFunctions {
+        flex-direction: row !important;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .dashboard__sideMenuFunctions span {
+        display: none;
+    }
+    .dashboard__sideMenuFunction i {
+        padding: 0.5rem;
+    }
+    .dashboard__sideMenuInfo {
+        margin-bottom: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        flex-direction: row !important;
+    }
+    #sidebarUsername {
+        margin-left: 1rem;
+    }
+    .dashboard__content {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .dashboard__contentNotificationList {
+        display: none;
+    }
+    div[class="col-md-1 col-sm-2 col-3"] {
+        padding-right: 0;
+    }
+    div[class="col-md-11 col-sm-9 col-8"],
+    div[class="col-md-11 col-sm-10 col-9"] {
+        padding-left: 0;
+    }
+    .btn-postStatus > div:nth-child(2) span {
+        display: none;
     }
     #textThinking {
         font-size: 70%;
