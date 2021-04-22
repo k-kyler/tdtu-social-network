@@ -315,82 +315,8 @@ h4 {
     }
 }
 @media only screen and (max-width: 480px) {
-    .dashboard__sideMenu {
-        height: 54vh;
-    }
     #textThinking {
         font-size: 80%;
-    }
-}
-@media only screen and (max-width: 376px) {
-    .dashboard__sideMenu {
-        height: 100%;
-        align-items: center;
-        border-bottom: 1px solid rgb(160, 160, 160);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-    }
-    .dashboard__sideMenu > div:nth-child(1) {
-        flex-direction: row-reverse !important;
-        justify-content: space-between !important;
-        width: 100%;
-        padding: 0.5rem 0 1.4rem 0;
-    }
-    .dashboard__sideMenu > div:nth-child(1) a {
-        margin: 0 !important;
-    }
-    .dashboard__sideMenuFunctions {
-        flex-direction: row !important;
-        justify-content: space-between;
-        width: 100%;
-    }
-    .dashboard__sideMenuFunctions span {
-        display: none;
-    }
-    .dashboard__sideMenuFunction i {
-        padding: 0.5rem;
-    }
-    .dashboard__sideMenuInfo {
-        margin-bottom: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        flex-direction: row !important;
-    }
-    #sidebarUsername {
-        margin-left: 1rem;
-    }
-    .dashboard__content {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-    }
-    .dashboard__contentNotificationList {
-        display: none;
-    }
-    div[class="col-md-1 col-sm-2 col-3"] {
-        padding-right: 0;
-    }
-    div[class="col-md-11 col-sm-9 col-8"],
-    div[class="col-md-11 col-sm-10 col-9"] {
-        padding-left: 0;
-    }
-    div[class="col-md-11 col-sm-9 col-8"] {
-        padding-right: 0;
-    }
-    #mobileOption {
-        display: block !important;
-    }
-    .btn-postStatus > div:nth-child(2) span {
-        display: none;
-    }
-    #textThinking {
-        font-size: 70%;
-    }
-    .dashboard__contentUsers {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-    label[for="avatar"],
-    label[for="notificationAttachment"] {
-        margin-top: 1rem;
     }
 }
 
@@ -767,4 +693,94 @@ a:hover {
 #clearNotificationAttachment {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+/* Responsive configuring */
+
+/* Small mobile */
+@media (max-width: 600px) {
+    .dashboard__sideMenu {
+        height: 100%;
+        align-items: center;
+        border-bottom: 1px solid rgb(160, 160, 160);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+    .dashboard__sideMenu > div:nth-child(1) {
+        flex-direction: row-reverse !important;
+        justify-content: space-between !important;
+        width: 100%;
+        padding: 0.5rem 0 1.4rem 0;
+    }
+    .dashboard__sideMenu > div:nth-child(1) a {
+        margin: 0 !important;
+    }
+    .dashboard__sideMenuFunctions {
+        flex-direction: row !important;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .dashboard__sideMenuFunction {
+        padding: 0.5rem !important;
+    }
+    .dashboard__sideMenuFunctions span {
+        display: none;
+    }
+    .dashboard__sideMenuFunction i {
+        padding: 0.5rem;
+    }
+    .dashboard__sideMenuInfo {
+        margin-bottom: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        flex-direction: row !important;
+    }
+    #sidebarUsername {
+        margin-left: 1rem;
+    }
+    .dashboard__content {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .dashboard__contentNotificationList {
+        display: none;
+    }
+    div[class="col-md-1 col-sm-2 col-3"] {
+        padding-right: 0;
+    }
+    div[class="col-md-11 col-sm-9 col-8"],
+    div[class="col-md-11 col-sm-10 col-9"] {
+        padding-left: 0;
+    }
+    div[class="col-md-11 col-sm-9 col-8"] {
+        padding-right: 0;
+    }
+    #mobileOption {
+        display: block !important;
+    }
+    .btn-postStatus > div:nth-child(2) span {
+        display: none;
+    }
+    #textThinking {
+        font-size: 70%;
+    }
+    .dashboard__contentUsers {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    label[for="avatar"],
+    label[for="notificationAttachment"] {
+        margin-top: 1rem;
+    }
+}
+
+/* Portrait tablet/large phone responsive */
+@media (min-width: 600px) {
+}
+
+/* Landscape tablet/large phone responsive */
+@media (min-width: 1024px) {
+}
+
+/* Desktop/laptop responsive */
+@media (min-width: 1200px) {
 }
