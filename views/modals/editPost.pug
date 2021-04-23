@@ -9,14 +9,12 @@
                 form 
                     if user 
                         .form-group.row.d-flex.align-items-center
-                            .col-md-1
-                                if user.avatar === ""
-                                    img(id="profileAvatar", width="40", height="40", src="/images/default_avatar.svg", alt="user avatar")
-                                else
-                                    img(id="profileAvatar", width="40", height="40", src=user.avatar, alt="user avatar")
+                            if user.avatar === ""
+                                img(class="mx-3", id="profileAvatar", width="40", height="40", src="/images/default_avatar.svg", alt="user avatar")
+                            else
+                                img(class="mx-3", id="profileAvatar", width="40", height="40", src=user.avatar, alt="user avatar")
 
-                            .col-md-11.pl-0
-                                span(id="owner") #{user.name}
+                            span(id="owner") #{user.name}
 
                         .form-group.row 
                             .col-md-12 
