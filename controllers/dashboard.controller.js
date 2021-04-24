@@ -80,7 +80,9 @@ module.exports.updateUserInfo = async (req, res) => {
         hiddenNewAvatarURL,
         userName,
         userPhone,
+        oldPassword,
         newPassword,
+        confirmPassword,
         studentClass,
         studentFaculty,
     } = req.body;
@@ -95,6 +97,25 @@ module.exports.updateUserInfo = async (req, res) => {
         res.json({
             code: 0,
             message: "Phone can not be empty!",
+        });
+    } else if (
+        newPassword &&
+        confirmPassword &&
+        newPassword !== confirmPassword
+    ) {
+        res.json({
+            code: 0,
+            message: "Your confirm password does not match!",
+        });
+    } else if (newPassword && newPassword.length < 6) {
+        res.json({
+            code: 0,
+            message: "Your password must be at least 6 characters!",
+        });
+    } else if (oldPassword && md5(oldPassword) !== user.password) {
+        res.json({
+            code: 0,
+            message: "Your old password is incorrect!",
         });
     } else if (
         userPhone &&
@@ -666,8 +687,13 @@ module.exports.createNewStaff = async (req, res) => {
         }
 
         // Check if email is not tdtu
-        if (!email.includes("@tdtu.edu.vn")) {
+        if (email && !email.includes("@tdtu.edu.vn")) {
             errorMessage = "Email is not TDTU type";
+        }
+
+        // Check password
+        if (password && password.length < 6) {
+            errorMessage = "Password must be at least 6 characters";
         }
 
         // Display error or create new staff

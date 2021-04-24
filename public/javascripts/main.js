@@ -76,12 +76,32 @@ $(document).ready(() => {
         }
     });
 
-    $("label[for='newPassword']").click(() => {
+    $("label[for='changePassword']").click(() => {
+        $("#oldPassword").attr("disabled", false);
         $("#newPassword").attr("disabled", false);
+        $("#confirmPassword").attr("disabled", false);
         $("#btnDefault").attr("disabled", false);
     });
 
+    $("body").on("keyup", "#oldPassword", (event) => {
+        if (event.target.value) {
+            $("#btnUpdate").attr("disabled", false);
+            $("#btnDefault").attr("disabled", false);
+        } else {
+            $("#btnUpdate").attr("disabled", true);
+        }
+    });
+
     $("body").on("keyup", "#newPassword", (event) => {
+        if (event.target.value) {
+            $("#btnUpdate").attr("disabled", false);
+            $("#btnDefault").attr("disabled", false);
+        } else {
+            $("#btnUpdate").attr("disabled", true);
+        }
+    });
+
+    $("body").on("keyup", "#confirmPassword", (event) => {
         if (event.target.value) {
             $("#btnUpdate").attr("disabled", false);
             $("#btnDefault").attr("disabled", false);
@@ -127,6 +147,10 @@ $(document).ready(() => {
         $("#faculty").attr("disabled", true);
         $("#newPassword").attr("disabled", true);
         $("#newPassword").val("");
+        $("#oldPassword").attr("disabled", true);
+        $("#oldPassword").val("");
+        $("#confirmPassword").attr("disabled", true);
+        $("#confirmPassword").val("");
         $("#updateInfoError").html("");
         $("#hiddenNewAvatarURL").remove();
 
@@ -1749,7 +1773,9 @@ if (document.getElementById("btnUpdate")) {
 
         let userName = document.getElementById("userName");
         let userPhone = document.getElementById("userPhone");
+        let oldPassword = document.getElementById("oldPassword");
         let newPassword = document.getElementById("newPassword");
+        let confirmPassword = document.getElementById("confirmPassword");
         let studentClass = document.getElementById("class");
         let studentFaculty = document.getElementById("faculty");
         let hiddenNewAvatarURL = document.getElementById("hiddenNewAvatarURL");
@@ -1769,7 +1795,9 @@ if (document.getElementById("btnUpdate")) {
                     : "",
                 userName: userName ? userName.value : "",
                 userPhone: userPhone ? userPhone.value : "",
+                oldPassword: oldPassword ? oldPassword.value : "",
                 newPassword: newPassword ? newPassword.value : "",
+                confirmPassword: confirmPassword ? confirmPassword.value : "",
                 studentClass: studentClass ? studentClass.value : "",
                 studentFaculty: studentFaculty ? studentFaculty.value : "",
             }),
@@ -1784,8 +1812,16 @@ if (document.getElementById("btnUpdate")) {
                     btnUpdate.setAttribute("disabled", "disabled");
                     btnDefault.setAttribute("disabled", "disabled");
 
+                    if (oldPassword) {
+                        oldPassword.setAttribute("disabled", "disabled");
+                    }
+
                     if (newPassword) {
                         newPassword.setAttribute("disabled", "disabled");
+                    }
+
+                    if (confirmPassword) {
+                        confirmPassword.setAttribute("disabled", "disabled");
                     }
 
                     if (studentClass) {

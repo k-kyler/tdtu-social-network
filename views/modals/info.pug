@@ -40,11 +40,17 @@
                                 .col-md-12
                                     input(disabled, class="form-control", type="tel", name="userPhone", id="userPhone", value=user.phone)
                             .form-group.row
-                                label.col-md-12.col-form-label(for='newPassword') Change password
+                                label.col-md-12.col-form-label(for='changePassword') Change password
                                     span 
                                         i(class="fas fa-pen")
                                 .col-md-12
-                                    input(disabled, placeholder="Enter new password", class="form-control", type="password", name="newPassword", id="newPassword")
+                                    input(disabled, placeholder="Enter old password", class="form-control", type="password", name="changePassword", id="oldPassword")
+                            .form-group.row
+                                .col-md-12
+                                    input(disabled, placeholder="Enter new password", class="form-control", type="password", name="changePassword", id="newPassword")
+                            .form-group.row
+                                .col-md-12
+                                    input(disabled, placeholder="Confirm new password", class="form-control", type="password", name="changePassword", id="confirmPassword")
                         else if (user.type === "Student")
                             .form-group.row
                                 label.col-md-12.col-form-label(for="userEmail") Email
