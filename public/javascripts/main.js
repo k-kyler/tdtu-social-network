@@ -249,10 +249,15 @@ $(document).ready(() => {
         $("#EditNotifModal").modal("toggle");
     });
 
+    // Edit notification form handler
+
     // Display editManagement user modal
     $(".EditManagement").click(() => {
         $("#EditManagementModal").modal("toggle");
     });
+
+    // Edit staff management form handler
+    // HERE
 
     // Display post modal and focus on content field
     $("#textThinking").click(() => {
@@ -2522,9 +2527,3 @@ if (document.getElementById("clearNotificationAttachment")) {
             }
         });
 }
-
-// Edit notification form handler
-// HERE
-
-// Edit staff management form handler
-// HERE

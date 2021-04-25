@@ -72,7 +72,7 @@ block dashboardContent
                             th(scope='col') Content
                             th(scope='col') Type
                             th(scope='col') Attachment
-                            th(scope='col' style="width:100px;") Handler
+                            th(scope='col') Handler
                     tbody
                         if notifications
                             each notification, index in notifications
@@ -88,7 +88,7 @@ block dashboardContent
                                         if notification.attachment
                                             a(download, href=notification.attachment) Download
                                     td
-                                        div(class="col-md-4 text-center p-2 EditNotif")
-                                            img(src="/images/edit_icon.png", width="28", height="28")
-                                        div(class="col-md-4 text-center p-2 DeleteNotif",onclick="alert('Clicked Delete')")
-                                            img(src="/images/delete_icon.png", width="28", height="28")
+                                        div(class="col-md-4 text-center px-3 pb-3 EditNotif", data-notificationId=notification._id)
+                                            i(class="h5 fas fa-edit text-primary EditNotif", data-notificationId=notification._id)
+                                        div(class="col-md-4 text-center px-3 pb-3 DeleteNotif", data-notificationId=notification._id)
+                                            i(class="h5 fas fa-trash-alt text-danger DeleteNotif", data-notificationId=notification._id)
