@@ -680,18 +680,19 @@ a:hover {
 }
 
 /* Notification attachment */
-#notificationAttachment {
+#notificationAttachment,
+#editAttachment {
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
 }
 
-#clearNotificationAttachment {
+#clearNotificationAttachment,
+#clearEditNotificationAttachment {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
 
 /* Responsive configuring */
-
 /* Mobile */
 @media (max-width: 767px) {
     .dashboard__sideMenu {

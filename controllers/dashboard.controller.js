@@ -632,7 +632,9 @@ module.exports.addNewNotification = async (req, res) => {
 };
 
 // Edit notification
-module.exports.editNotification = async (req, res) => {};
+module.exports.editNotification = async (req, res) => {
+    // Write code here
+};
 
 // Delete notification
 module.exports.deleteNotification = async (req, res) => {

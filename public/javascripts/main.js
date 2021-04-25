@@ -176,26 +176,6 @@ $(document).ready(() => {
             .catch((error) => console.log(error));
     });
 
-    // Edit notification form field handler
-    $("label[for='editTittle']").click(() => {
-        $("#editTittle").attr("disabled", false);
-        $("#btnUpdateNotif").attr("disabled", false);
-    });
-
-    $("label[for='editContent']").click(() => {
-        $("#editContent").attr("disabled", false);
-        $("#btnUpdateNotif").attr("disabled", false);
-    });
-
-    $("label[for='editType']").click(() => {
-        $("#editType").attr("disabled", false);
-        $("#btnUpdateNotif").attr("disabled", false);
-    });
-
-    $("label[for='editAttachment']").click(() => {
-        $("#editAttachment").attr("disabled", false);
-    });
-
     // Edit management user form field handler
     $("label[for='editPassword']").click(() => {
         $("#editPassword").attr("disabled", false);
@@ -244,19 +224,32 @@ $(document).ready(() => {
         $("#NotifDetailsModal").modal("toggle");
     });
 
-    // Display editNotif modal
-    $(".EditNotif").click(() => {
+    // Dispaly edit notification modal
+    $(".EditNotif").click((event) => {
+        let notificationId = event.target.dataset.notificationid;
+
+        $("#btnUpdateNotif").attr("data-notificationId", notificationId);
+
+        fetch(`/dashboard/notification/${notificationId}`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#editTitle").val(result.data.title);
+                    $("#editContent").val(result.data.content);
+                    $("#editType").val(result.data.type);
+                }
+            })
+            .catch((error) => console.log(error));
+
         $("#EditNotifModal").modal("toggle");
     });
 
-    // Edit notification form handler
-
-    // Display editManagement user modal
+    // Display edit management user modal
     $(".EditManagement").click(() => {
         $("#EditManagementModal").modal("toggle");
     });
 
-    // Edit staff management form handler
+    // Edit staff management handler
     // HERE
 
     // Display post modal and focus on content field
@@ -1072,6 +1065,9 @@ $(document).ready(() => {
             })
             .catch((error) => console.log(error));
     });
+
+    // Edit notification handler
+    $("body").on("click", "#btnUpdateNotif", (event) => {});
 
     // Notification list filter and pagination handler
     $("body").on("change", "#notifs", (event) => {
@@ -2524,6 +2520,117 @@ if (document.getElementById("clearNotificationAttachment")) {
 
             if (document.getElementById("hiddenAttachmentURL")) {
                 document.getElementById("hiddenAttachmentURL").remove();
+            }
+        });
+}
+
+// Upload edit attachment to file.io API when choosing edit attachment handler
+let editAttachmentInput = document.getElementById("editAttachment");
+
+if (editAttachmentInput) {
+    editAttachmentInput.addEventListener("change", (event) => {
+        if (document.getElementById("hiddenEditAttachmentURL")) {
+            document.getElementById("hiddenEditAttachmentURL").remove();
+        }
+
+        document
+            .getElementById("btnUpdateNotif")
+            .setAttribute("disabled", true);
+        document
+            .getElementById("clearEditNotificationAttachment")
+            .setAttribute("disabled", true);
+        document.getElementById("uploadEditAttachment").innerHTML = "";
+        document.getElementById("uploadEditAttachment").innerHTML = `
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        `;
+
+        // Set time out for progress bar 2
+        setTimeout(() => {
+            document.getElementById("uploadEditAttachment").innerHTML = "";
+            document.getElementById("uploadEditAttachment").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-2" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 700);
+
+        // Set time out for progress bar 3
+        setTimeout(() => {
+            document.getElementById("uploadEditAttachment").innerHTML = "";
+            document.getElementById("uploadEditAttachment").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-3" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 900);
+
+        // Set time out for progress bar 4
+        setTimeout(() => {
+            document.getElementById("uploadEditAttachment").innerHTML = "";
+            document.getElementById("uploadEditAttachment").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-4" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+        }, 1100);
+
+        // Upload image...
+        uploadEditAttachmentToFileIOAPI(event.target.files[0]);
+    });
+}
+
+const uploadEditAttachmentToFileIOAPI = (editAttachment) => {
+    let xhr = new XMLHttpRequest();
+    let formData = new FormData();
+
+    formData.append("file", editAttachment);
+
+    xhr.open("POST", "https://file.io", true);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Create a hidden input to store the image's download link from file.io API
+            let hiddenInput = document.createElement("input");
+
+            hiddenInput.setAttribute("type", "hidden");
+            hiddenInput.setAttribute("id", "hiddenEditAttachmentURL");
+            hiddenInput.setAttribute(
+                "value",
+                JSON.parse(xhr.responseText).link
+            );
+            document.querySelector("body").append(hiddenInput);
+
+            // Set message and enable button
+            document.getElementById("uploadEditAttachment").innerHTML = "";
+            document.getElementById("uploadEditAttachment").innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar progressBar-5" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+            setTimeout(() => {
+                document.getElementById("uploadEditAttachment").innerHTML = "";
+            }, 500);
+            document
+                .getElementById("btnUpdateNotif")
+                .removeAttribute("disabled");
+            document
+                .getElementById("clearEditNotificationAttachment")
+                .removeAttribute("disabled");
+        }
+    };
+    xhr.send(formData);
+};
+
+// Clear choosing edit file attachment of notification function
+if (document.getElementById("clearEditNotificationAttachment")) {
+    document
+        .getElementById("clearEditNotificationAttachment")
+        .addEventListener("click", () => {
+            document.getElementById("editAttachment").value = "";
+
+            if (document.getElementById("hiddenEditAttachmentURL")) {
+                document.getElementById("hiddenEditAttachmentURL").remove();
             }
         });
 }

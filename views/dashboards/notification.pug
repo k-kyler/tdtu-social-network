@@ -51,7 +51,7 @@ block dashboardContent
 
                         label(for="notificationAttachment", class="col-form-label col-md-1") Attach
                         div(class="col-md-5 d-flex")
-                            input(accept="image/*,.pdf,.docx,.doc,.xls,.xlsx,.rar,.zip", type="file", name="notificationAttachment", id="notificationAttachment", class="form-control")
+                            input(accept="image/*,.pdf,.docx,.xlsx,.rar,.zip", type="file", name="notificationAttachment", id="notificationAttachment", class="form-control")
                             button(type="button", id="clearNotificationAttachment", class="btn btn-danger d-flex align-items-center justify-content-center")
                                 i(class="fas fa-backspace")
 
@@ -89,6 +89,6 @@ block dashboardContent
                                             a(download, href=notification.attachment) Download
                                     td
                                         div(class="col-md-4 text-center px-3 pb-3 EditNotif", data-notificationId=notification._id)
-                                            i(class="h5 fas fa-edit text-primary EditNotif", data-notificationId=notification._id)
+                                            i(class="h5 fas fa-edit text-primary", data-notificationId=notification._id)
                                         div(class="col-md-4 text-center px-3 pb-3 DeleteNotif", data-notificationId=notification._id)
-                                            i(class="h5 fas fa-trash-alt text-danger DeleteNotif", data-notificationId=notification._id)
+                                            i(class="h5 fas fa-trash-alt text-danger", data-notificationId=notification._id)
