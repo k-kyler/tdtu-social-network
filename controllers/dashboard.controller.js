@@ -934,7 +934,105 @@ module.exports.createNewStaff = async (req, res) => {
 
 // Edit user in management
 module.exports.editUser = async (req, res) => {
-    // Write code here
+    let uploader = upload.single("editAvatar");
+
+    uploader(req, res, async (error) => {
+        let { id } = req.params;
+        let {
+            email,
+            password,
+            name,
+            phone,
+            faculty,
+            editClass,
+            workplace,
+            permission,
+        } = req.body;
+        let avatar = req.file;
+        let errorMessage = "";
+        let checkUser = await User.findOne({ email: req.body.email });
+        let user = await User.findById(req.signedCookies.userId);
+        let users = await User.find();
+        let listOfficeFaculty = await ListOfficeFaculty.find();
+        let avatarPath = `public/uploads/${v4UniqueId()}-${
+            avatar.originalname
+        }`;
+
+        // Rename avatar in public folder
+        fs.renameSync(avatar.path, avatarPath);
+
+        // Re-path to store in db
+        avatarPath = avatarPath.split("public")[1];
+
+        // Check if image too large
+        if (error) {
+            errorMessage = "Image too large";
+        }
+
+        // Check if email was used
+        if (checkUser) {
+            errorMessage = "Email has been used";
+        }
+
+        // Check if email is not tdtu
+        if (email && !email.includes("@tdtu.edu.vn")) {
+            errorMessage = "Email is not TDTU type";
+        }
+
+        // Check password
+        if (password && password.length < 6) {
+            errorMessage = "Password must be at least 6 characters";
+        }
+
+        // Display error or create new staff
+        if (errorMessage) {
+            res.render("dashboards/users", {
+                user: user,
+                users: users,
+                listOfficeFaculty: listOfficeFaculty,
+                errorMessage: errorMessage,
+                email: email,
+                password: password,
+                name: name,
+                phone: phone,
+                workplace: workplace,
+                permission: permission,
+            });
+        } else {
+            let u = new User();
+            let permissionObj;
+
+            // Check if permission input is string (one choice) or array (multiple)
+            if (typeof permission !== "string") {
+                permissionObj = permission.map((p) => {
+                    return {
+                        postName: p,
+                    };
+                });
+            } else {
+                permissionObj = [
+                    {
+                        postName: permission,
+                    },
+                ];
+            }
+
+            // Store to db
+            u.userId = shortid.generate();
+            u.email = email;
+            u.password = md5(password);
+            u.name = name;
+            u.phone = phone;
+            u.workplace = workplace;
+            u.permission = permissionObj;
+            u.avatar = avatarPath;
+            u.faculty = "";
+            u.class = "";
+            u.type = "Staff";
+            u.save();
+            res.redirect("/dashboard/users");
+        }
+    });
 };
 
 // Delete user in management

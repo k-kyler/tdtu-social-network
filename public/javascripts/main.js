@@ -216,6 +216,7 @@ $(document).ready(() => {
         let notificationId = event.target.dataset.notificationid;
 
         $("#btnUpdateNotif").attr("data-notificationId", notificationId);
+        $("#btnUpdateNotif").attr("disabled", true);
 
         fetch(`/dashboard/notification/${notificationId}`)
             .then((response) => response.json())
@@ -262,6 +263,8 @@ $(document).ready(() => {
         let userId = event.target.dataset.userid;
 
         $("#btnUpdateManagement").attr("data-userId", userId);
+        $("#btnUpdateManagement").attr("disabled", true);
+        $("#editPermission").val("");
 
         fetch(`/dashboard/users/${userId}`)
             .then((response) => response.json())
@@ -1445,8 +1448,110 @@ $(document).ready(() => {
         );
     }
 
+    // Edit management input on change event handler
+    $("body").on("keydown", "#editEmail", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
+    $("body").on("keydown", "#editName", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
+    $("body").on("keydown", "#editPhone", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
+    $("body").on("keydown", "#editFaculty", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
+    $("body").on("keydown", "#editClass", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
+    $("body").on("keydown", "#editPassword", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
+    $("body").on("change", "#editWorkplace", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
+    $("body").on("change", "#editPermission", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
     // Edit management user handler
-    // ...
+    $("body").on("click", "#btnUpdateManagement", (event) => {
+        event.preventDefault();
+
+        let userId = event.target.dataset.userid;
+        let formData = new FormData();
+        let editAvatar = document.getElementById("editAvatar");
+
+        formData.append("email", $("#editEmail").val());
+        formData.append("phone", $("#editPhone").val());
+        formData.append("name", $("#editName").val());
+        formData.append("workplace", $("#editWorkplace").val());
+        formData.append(
+            "permission",
+            $("#editPermission") && $("#editPermission").val()
+        );
+        formData.append("class", $("#editClass") && $("#editClass").val());
+        formData.append(
+            "faculty",
+            $("#editFaculty") && $("#editFaculty").val()
+        );
+        formData.append(
+            "password",
+            $("#editPassword") && $("#editPassword").val()
+        );
+        formData.append("avatar", editAvatar.files[0]);
+
+        fetch(`/dashboard/users/${userId}`, {
+            method: "PUT",
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                } else if (result.code === 0) {
+                }
+            })
+            .catch((error) => console.log(error));
+    });
 
     // Delete management user handler
     $("body").on("click", "#deleteManagementBtn", (event) => {

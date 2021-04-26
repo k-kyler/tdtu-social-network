@@ -44,10 +44,13 @@
                                     if listOfficeFaculty 
                                         each item, index in listOfficeFaculty 
                                             option(value=item.name)= item.name
-
+                        .form-group.row
+                            label(for="editAvatar", class="col-form-label col-md-1") Avatar
+                            div(class="col-md-10")
+                                input(accept="image/*", type="file", name="editAvatar", id="editAvatar", class="form-control", required) 
                         .form-group.row
                             .col-md-12.justify-content-center.d-flex
                                     p(id="editManagementMessage")
                             .col-md-12.justify-content-end.d-flex
-                                button.btn.btn-primary(type='submit', id='btnUpdateManagement', disabled='disabled') Update
+                                button.btn.btn-primary(type='button', id='btnUpdateManagement', disabled='disabled') Update
                                 button.btn.btn-default.ml-3(type='button', data-dismiss='modal') Close
