@@ -33,7 +33,7 @@ http://tdtu-social-network-05.herokuapp.com/
 ```
 <br /> Given Accounts:
 <br /> adminsocialnetwork@tdtu.edu.vn
-<br /> admin
+<br /> admin01
 <br /> staff01@tdtu.edu.vn
 <br /> 123456
 
