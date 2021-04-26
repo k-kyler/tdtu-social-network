@@ -10,7 +10,7 @@ To Vinh Khang, Bui Quang Khai, Ha Hai Dang
 <br />• GoogleAuthLibrary 7.0.2
 <br />• PugEngine 3.0.0
 
-# Run Project Step-by-Step:
+# Run Project Local Step-by-Step:
 <br />1/ Clone project: 
 ```
 git clone https://github.com/K-Kyler/school-web-app.git
@@ -22,7 +22,15 @@ npm install
 ```
 <br />3/ Setup database by MongoDB with name "school-web-app"
 
-<br />4/ Run:
+<br />4/ Import all these file in folder "db" to database just created
+```
+ListOfficeFaculty.json
+notifications.json
+posts.json
+users.json
+```
+
+<br />5/ Run:
 ```
 npm start
 ```
