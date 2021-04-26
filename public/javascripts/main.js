@@ -224,7 +224,7 @@ $(document).ready(() => {
         $("#NotifDetailsModal").modal("toggle");
     });
 
-    // Dispaly edit notification modal
+    // Display edit notification modal
     $(".EditNotif").click((event) => {
         let notificationId = event.target.dataset.notificationid;
 
@@ -248,6 +248,26 @@ $(document).ready(() => {
             .catch((error) => console.log(error));
 
         $("#EditNotifModal").modal("toggle");
+    });
+
+    // Display delete notification modal
+    $(".DeleteNotif").click((event) => {
+        let notificationId = event.target.dataset.notificationid;
+
+        $("#deleteNotifBtn").attr("data-notificationId", notificationId);
+
+        fetch(`/dashboard/notification/${notificationId}`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#deleteNotifTitle").html(
+                        "Delete " + result.data.title + "?"
+                    );
+                }
+            })
+            .catch((error) => console.log(error));
+
+        $("#deleteNotifModal").modal("toggle");
     });
 
     // Display edit management user modal
@@ -1152,6 +1172,40 @@ $(document).ready(() => {
         );
         $("#deleteAttachmentBool").val("yes");
         $("#btnUpdateNotif").attr("disabled", false);
+    });
+
+    // Delete notification handler
+    $("body").on("click", "#deleteNotifBtn", (event) => {
+        event.preventDefault();
+
+        let notificationId = event.target.dataset.notificationid;
+
+        $("#deleteNotificationMessage").html("");
+
+        fetch(`/dashboard/notification/${notificationId}`, {
+            method: "DELETE",
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#deleteNotificationMessage").attr(
+                        "class",
+                        "text-success text-center"
+                    );
+                    $("#deleteNotificationMessage").html(result.message);
+
+                    setTimeout(() => {
+                        window.location.href = "/dashboard/notification";
+                    }, 1500);
+                } else if (result.code === 0) {
+                    $("#deleteNotificationMessage").attr(
+                        "class",
+                        "text-danger text-center"
+                    );
+                    $("#deleteNotificationMessage").html(result.message);
+                }
+            })
+            .catch((error) => console.log(error));
     });
 
     // Notification list filter and pagination handler
