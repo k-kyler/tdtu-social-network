@@ -1,0 +1,11 @@
+#deleteNotifModal.modal.fade(role='dialog')
+    .modal-dialog.modal-lg(role='content')
+        .modal-content
+            .modal-header
+                h4.modal-title#deleteNotifTitle
+                button.close(type='close', data-dismiss='modal') &times;
+            .modal-body
+                    p#deleteNotificationMessage
+                    div.d-flex.justify-content-end
+                        button(type="button" class="btn btn-danger", id="deleteNotifBtn") Confirm
+                        button(class="btn btn-default ml-3", data-dismiss="modal") Close
