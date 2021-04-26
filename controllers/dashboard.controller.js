@@ -20,7 +20,7 @@ const upload = multer({
             callback(null, false); // Reject upload file that is not an image
         }
     },
-    limits: { fileSize: 5000000 }, // 5 MB limit
+    limits: { fileSize: 10000000 }, // 10 MB limit
 });
 
 // Dashboard
@@ -40,7 +40,7 @@ module.exports.dashboard = async (req, res) => {
     });
 };
 
-// Get user info
+// Get user info for dashboard
 module.exports.getUserInfo = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
 
@@ -64,6 +64,48 @@ module.exports.getUserInfo = async (req, res) => {
                 class: user.class,
                 faculty: user.faculty,
                 avatar: user.avatar,
+            },
+        });
+    } else {
+        res.json({
+            code: 0,
+            message: "No user!",
+        });
+    }
+};
+
+// Get user info by id
+module.exports.getUserInfoById = async (req, res) => {
+    let user = await User.findById(req.params.id);
+
+    if (user && !user.avatar) {
+        res.json({
+            code: 1,
+            data: {
+                email: user.email,
+                workplace: user.workplace,
+                permission: user.permission,
+                name: user.name,
+                phone: user.phone,
+                class: user.class,
+                faculty: user.faculty,
+                avatar: "/images/default_avatar.svg",
+                type: user.type,
+            },
+        });
+    } else if (user && user.avatar) {
+        res.json({
+            code: 1,
+            data: {
+                email: user.email,
+                workplace: user.workplace,
+                permission: user.permission,
+                name: user.name,
+                phone: user.phone,
+                class: user.class,
+                faculty: user.faculty,
+                avatar: user.avatar,
+                type: user.type,
             },
         });
     } else {
@@ -897,7 +939,13 @@ module.exports.editUser = async (req, res) => {
 
 // Delete user in management
 module.exports.deleteUser = async (req, res) => {
-    // Write code here
+    let { id } = req.params;
+    let deleteUser = await User.deleteOne({ _id: id });
+
+    res.json({
+        code: 1,
+        message: "Delete user successful",
+    });
 };
 
 // Get post

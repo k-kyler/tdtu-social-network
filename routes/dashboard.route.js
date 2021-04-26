@@ -12,6 +12,7 @@ router.get("/user", controller.getUserInfo);
 
 router.get("/users", controller.users);
 router.post("/users", controller.createNewStaff);
+router.get("/users/:id", controller.getUserInfoById);
 router.put("/users/:id", controller.editUser);
 router.delete("/users/:id", controller.deleteUser);
 

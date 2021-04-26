@@ -24,10 +24,10 @@ $(document).ready(() => {
             .catch((error) => console.error(error));
     });
 
-    // Select workplace handler
+    // Select workplace for staff handler
     $("#workplace").val($("#workplaceHidden").val());
 
-    // Select permission handler
+    // Select permission for staff handler
     let permission = $("#permissionHidden").val();
 
     if (permission) {
@@ -47,7 +47,7 @@ $(document).ready(() => {
         );
     }
 
-    // Edit info form field handler
+    // Edit info form field on change event handler
     $("label[for='userName']").click(() => {
         $("#userName").attr("disabled", false);
         $("#btnDefault").attr("disabled", false);
@@ -138,6 +138,7 @@ $(document).ready(() => {
         }
     });
 
+    // Edit info form restore all info button
     $("#btnDefault").click(() => {
         $("#btnUpdate").attr("disabled", true);
         $("#btnDefault").attr("disabled", true);
@@ -174,20 +175,6 @@ $(document).ready(() => {
                 }
             })
             .catch((error) => console.log(error));
-    });
-
-    // Edit management user form field handler
-    $("label[for='editPassword']").click(() => {
-        $("#editPassword").attr("disabled", false);
-        $("#btnUpdateManagement").attr("disabled", false);
-    });
-    $("label[for='editWorkplace']").click(() => {
-        $("#editWorkplace").attr("disabled", false);
-        $("#btnUpdateManagement").attr("disabled", false);
-    });
-    $("label[for='editPermission']").click(() => {
-        $("#editPermission").attr("disabled", false);
-        $("#btnUpdateManagement").attr("disabled", false);
     });
 
     // Display notification details modal
@@ -271,12 +258,72 @@ $(document).ready(() => {
     });
 
     // Display edit management user modal
-    $(".EditManagement").click(() => {
+    $(".EditManagement").click((event) => {
+        let userId = event.target.dataset.userid;
+
+        $("#btnUpdateManagement").attr("data-userId", userId);
+
+        fetch(`/dashboard/users/${userId}`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#facultyClassRow").css("display", "none");
+                    $("#permissionRow").css("display", "none");
+                    $("#workplaceRow").css("display", "none");
+                    $("label[for='editPassword']").css("display", "none");
+                    $("#editPassword").css("display", "none");
+                    $("#editEmail").val(result.data.email);
+                    $("#editPhone").val(result.data.phone);
+                    $("#editName").val(result.data.name);
+
+                    if (result.data.type === "Staff") {
+                        $("#permissionRow").css("display", "flex");
+                        $("#workplaceRow").css("display", "flex");
+                        $("label[for='editPassword']").css("display", "block");
+                        $("#editPassword").css("display", "block");
+                        $("#editWorkplace").val(result.data.workplace);
+
+                        // Edit select permission for staff handler
+                        if (result.data.permission) {
+                            $.each(result.data.permission, (index, element) => {
+                                $(
+                                    "#editPermission option[value='" +
+                                        element.postName +
+                                        "']"
+                                ).prop("selected", true);
+                            });
+                        }
+                    } else if (result.data.type === "Student") {
+                        $("#facultyClassRow").css("display", "flex");
+                        $("#editClass").val(result.data.class);
+                        $("#editFaculty").val(result.data.faculty);
+                    }
+                }
+            })
+            .catch((error) => console.log(error));
+
         $("#EditManagementModal").modal("toggle");
     });
 
-    // Edit staff management handler
-    // HERE
+    // Display delete management user modal
+    $(".DeleteManagement").click((event) => {
+        let userId = event.target.dataset.userid;
+
+        $("#deleteManagementBtn").attr("data-userId", userId);
+
+        fetch(`/dashboard/users/${userId}`)
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#deleteManagementTitle").html(
+                        "Delete " + result.data.name + "?"
+                    );
+                }
+            })
+            .catch((error) => console.log(error));
+
+        $("#deleteManagementModal").modal("toggle");
+    });
 
     // Display post modal and focus on content field
     $("#textThinking").click(() => {
@@ -1397,6 +1444,43 @@ $(document).ready(() => {
             "3px solid rgba(128, 189, 255, 0.4)"
         );
     }
+
+    // Edit management user handler
+    // ...
+
+    // Delete management user handler
+    $("body").on("click", "#deleteManagementBtn", (event) => {
+        event.preventDefault();
+
+        let userId = event.target.dataset.userid;
+
+        $("#deleteManagementMessage").html("");
+
+        fetch(`/dashboard/users/${userId}`, {
+            method: "DELETE",
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#deleteManagementMessage").attr(
+                        "class",
+                        "text-success text-center"
+                    );
+                    $("#deleteManagementMessage").html(result.message);
+
+                    setTimeout(() => {
+                        window.location.href = "/dashboard/users";
+                    }, 1500);
+                } else if (result.code === 0) {
+                    $("#deleteManagementMessage").attr(
+                        "class",
+                        "text-danger text-center"
+                    );
+                    $("#deleteManagementMessage").html(result.message);
+                }
+            })
+            .catch((error) => console.log(error));
+    });
 
     // Client listen to the rendering message from server to render new post
     socket.on("Rendering new post", (post) => {

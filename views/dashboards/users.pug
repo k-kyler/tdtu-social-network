@@ -26,7 +26,7 @@ block dashboardContent
     div(class="dashboard__contentUsers row")
         div(class="container dashboard__contentUsersForm bg-white col-md-12")
             form(action="/dashboard/users", method="POST", class="p-3", enctype="multipart/form-data")
-                h3(class="mb-4 text-primary text-center") Create Account Office/Faculty (O/F) Staff
+                h3(class="mb-4 text-primary text-center") Create Account Office/Faculty Staff
 
                 div(class="form-group row")
                     label(for="email", class="col-form-label col-md-1") Email
@@ -90,7 +90,7 @@ block dashboardContent
                     if users
                         - var index = 0
                         each user in users 
-                            if user.type !== "Admin" && user.type !== "Student"
+                            if user.type !== "Admin"
                                 - index = index + 1
 
                                 tr
@@ -105,6 +105,8 @@ block dashboardContent
                                     td= user.email
                                     td= user.phone
                                     td= user.type
-                                    td
-                                        img(class="mr-1 EditManagement", src="/images/edit_icon.png", width="28", height="28")
-                                        img(class="DeleteManagement", onclick="alert('Clicked Delete')", src="/images/delete_icon.png", width="28", height="28")
+                                    td.d-flex
+                                        div(class="text-center EditManagement", data-userId=user._id)
+                                            i(class="h5 fas fa-edit text-primary", data-userId=user._id)
+                                        div(class="text-center ml-3 DeleteManagement", data-userId=user._id)
+                                            i(class="h5 fas fa-trash-alt text-danger", data-userId=user._id)
