@@ -75,20 +75,45 @@ block dashboardContent
                             th(scope='col') Handler
                     tbody
                         if notifications
-                            each notification, index in notifications
-                                tr
-                                    th(scope='row')= index + 1
-                                    td(class="td-justify")= notification.title
-                                    td(class="td-justify") 
-                                        p= notification.content
-                                    td
-                                        p= notification.type
+                            - var index = 1
 
-                                    td  
-                                        if notification.attachment
-                                            a(download, href=notification.attachment) Download
-                                    td
-                                        div(class="col-md-4 text-center px-3 pb-3 EditNotif", data-notificationId=notification._id)
-                                            i(class="h5 fas fa-edit text-primary", data-notificationId=notification._id)
-                                        div(class="col-md-4 text-center px-3 pb-3 DeleteNotif", data-notificationId=notification._id)
-                                            i(class="h5 fas fa-trash-alt text-danger", data-notificationId=notification._id)
+                            if user.type === "Admin"
+                                each notification in notifications
+                                    tr
+                                        th(scope='row')= index++
+                                        td(class="td-justify")= notification.title
+                                        td(class="td-justify") 
+                                            p= notification.content
+                                        td
+                                            p= notification.type
+
+                                        td  
+                                            if notification.attachment
+                                                a(download, href=notification.attachment, class="d-flex align-items-center justify-content-center")
+                                                    i(class="fas fa-file-download h5 mb-0 p-1 text-success")
+                                        td.d-flex
+                                            div(class="text-center p-1 EditNotif", data-notificationId=notification._id)
+                                                i(class="h5 fas fa-edit text-primary", data-notificationId=notification._id)
+                                            div(class="text-center p-1 ml-2 DeleteNotif", data-notificationId=notification._id)
+                                                i(class="h5 fas fa-trash-alt text-danger", data-notificationId=notification._id)
+
+                            else if user.type === "Staff"
+                                each notification in notifications
+                                    if notification.ownerId == user._id
+                                        tr
+                                            th(scope='row')= index++
+                                            td(class="td-justify")= notification.title
+                                            td(class="td-justify") 
+                                                p= notification.content
+                                            td
+                                                p= notification.type
+
+                                            td  
+                                                if notification.attachment
+                                                    a(download, href=notification.attachment, class="d-flex align-items-center justify-content-center")
+                                                        i(class="fas fa-file-download h5 mb-0 p-1 text-success")
+                                            td.d-flex
+                                                div(class="text-center p-1 EditNotif", data-notificationId=notification._id)
+                                                    i(class="h5 fas fa-edit text-primary", data-notificationId=notification._id)
+                                                div(class="text-center p-1 ml-2 DeleteNotif", data-notificationId=notification._id)
+                                                    i(class="h5 fas fa-trash-alt text-danger", data-notificationId=notification._id)

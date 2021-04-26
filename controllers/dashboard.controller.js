@@ -423,7 +423,7 @@ module.exports.getUserWall = async (req, res) => {
 // Notification
 module.exports.notification = async (req, res) => {
     let user = await User.findById(req.signedCookies.userId);
-    let notifications = await Notification.find();
+    let notifications = await Notification.find().sort({ timeSort: -1 });
 
     res.render("dashboards/notification", {
         user: user,
@@ -633,7 +633,143 @@ module.exports.addNewNotification = async (req, res) => {
 
 // Edit notification
 module.exports.editNotification = async (req, res) => {
-    // Write code here
+    let { id } = req.params;
+    let {
+        notificationTitle,
+        notificationContent,
+        notificationType,
+        notificationAttachment,
+        notificationDate,
+        deleteAttachment,
+    } = req.body;
+
+    if (
+        notificationTitle &&
+        notificationContent &&
+        notificationType &&
+        notificationDate &&
+        !notificationAttachment
+    ) {
+        // Case for no attachment...........
+
+        if (deleteAttachment === "no") {
+            // Edit notification details
+            let editNotification = await Notification.findOneAndUpdate(
+                {
+                    _id: id,
+                },
+                {
+                    title: notificationTitle,
+                    content: notificationContent,
+                    type: notificationType,
+                    date: notificationDate,
+                },
+                {
+                    new: true,
+                }
+            );
+        } else if (deleteAttachment === "yes") {
+            // Edit notification details
+            let editNotification = await Notification.findOneAndUpdate(
+                {
+                    _id: id,
+                },
+                {
+                    title: notificationTitle,
+                    content: notificationContent,
+                    type: notificationType,
+                    date: notificationDate,
+                    attachment: "",
+                },
+                {
+                    new: true,
+                }
+            );
+        }
+
+        res.json({
+            code: 1,
+            message: "Edit notification successful",
+        });
+    } else if (
+        notificationTitle &&
+        notificationContent &&
+        notificationType &&
+        notificationDate &&
+        notificationAttachment
+    ) {
+        let fetchResponse = await fetch(notificationAttachment);
+        let buffer = await fetchResponse.buffer();
+        let attachmentExt = await fileType.fromBuffer(buffer);
+        let attachmentSize = Buffer.byteLength(buffer);
+        let attachmentDest = `./public/uploads/${v4UniqueId()}.${
+            attachmentExt.ext
+        }`;
+
+        // Check file extension
+        if (
+            new RegExp(
+                ["zip", "rar", "xlsx", "png", "jpg", "pdf", "docx"].join("|")
+            ).test(attachmentExt.ext) === false
+        ) {
+            res.json({
+                code: 0,
+                message: "Your type of attachment is not supported",
+            });
+        }
+        // Limit file size is 30 MB
+        else if (attachmentSize > 30000000) {
+            res.json({
+                code: 0,
+                message: "Your attachment is over 30 MB",
+            });
+        } else {
+            // Edit notification details
+            let editNotification = await Notification.findOneAndUpdate(
+                {
+                    _id: id,
+                },
+                {
+                    title: notificationTitle,
+                    content: notificationContent,
+                    type: notificationType,
+                    date: notificationDate,
+                    attachment: attachmentDest.split("./public")[1],
+                },
+                {
+                    new: true,
+                }
+            );
+
+            // Download file from file.io API then response back to client
+            fs.writeFile(attachmentDest, buffer, () => {
+                res.json({
+                    code: 1,
+                    message: "Edit notification successful",
+                });
+            });
+        }
+    } else if (!notificationTitle) {
+        res.json({
+            code: 0,
+            message: "Title is required!",
+        });
+    } else if (!notificationContent) {
+        res.json({
+            code: 0,
+            message: "Content is required!",
+        });
+    } else if (!notificationType) {
+        res.json({
+            code: 0,
+            message: "Notification type is required!",
+        });
+    } else if (!notificationDate) {
+        res.json({
+            code: 0,
+            message: "Notification date is required!",
+        });
+    }
 };
 
 // Delete notification

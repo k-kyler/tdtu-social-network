@@ -237,6 +237,12 @@ $(document).ready(() => {
                     $("#editTitle").val(result.data.title);
                     $("#editContent").val(result.data.content);
                     $("#editType").val(result.data.type);
+
+                    if (result.data.attachment) {
+                        $("#deleteAttachmentRow").css("display", "block");
+                    } else {
+                        $("#deleteAttachmentRow").css("display", "none");
+                    }
                 }
             })
             .catch((error) => console.log(error));
@@ -1067,7 +1073,86 @@ $(document).ready(() => {
     });
 
     // Edit notification handler
-    $("body").on("click", "#btnUpdateNotif", (event) => {});
+    $("body").on("click", "#btnUpdateNotif", (event) => {
+        event.preventDefault();
+
+        let notificationId = event.target.dataset.notificationid;
+
+        $("#editNotificationMessage").html("Processing...");
+
+        fetch(`/dashboard/notification/${notificationId}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "PUT",
+            body: JSON.stringify({
+                notificationTitle: $("#editTitle").val(),
+                notificationContent: $("#editContent").val(),
+                notificationAttachment: $("#hiddenEditAttachmentURL").val(),
+                notificationDate: new Date().toDateString() + " (Đã chỉnh sửa)",
+                notificationType: $("#editType").val(),
+                deleteAttachment: $("#deleteAttachmentBool").val(),
+            }),
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.code === 1) {
+                    $("#editNotificationMessage").attr("class", "text-success");
+                    $("#editNotificationMessage").html(result.message);
+
+                    setTimeout(() => {
+                        window.location.href = "/dashboard/notification";
+                    }, 1500);
+                } else if (result.code === 0) {
+                    $("#editNotificationMessage").attr("class", "text-danger");
+                    $("#editNotificationMessage").html(result.message);
+                }
+            })
+            .catch((error) => console.log(error));
+    });
+
+    // Edit notification on change input event to enable update button
+    $("body").on("keydown", "#editTitle", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateNotif").attr("disabled", false);
+        } else {
+            $("#btnUpdateNotif").attr("disabled", true);
+        }
+    });
+
+    $("body").on("keydown", "#editContent", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateNotif").attr("disabled", false);
+        } else {
+            $("#btnUpdateNotif").attr("disabled", true);
+        }
+    });
+
+    $("body").on("change", "#editType", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateNotif").attr("disabled", false);
+        } else {
+            $("#btnUpdateNotif").attr("disabled", true);
+        }
+    });
+
+    $("body").on("change", "#editAttachment", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateNotif").attr("disabled", false);
+        } else {
+            $("#btnUpdateNotif").attr("disabled", true);
+        }
+    });
+
+    // Delete attachment of edit notification
+    $("body").on("click", "#deleteNotificationAttachment", () => {
+        $("#editNotificationMessage").attr("class", "text-success");
+        $("#editNotificationMessage").html(
+            "Delete attachment of notification successful"
+        );
+        $("#deleteAttachmentBool").val("yes");
+        $("#btnUpdateNotif").attr("disabled", false);
+    });
 
     // Notification list filter and pagination handler
     $("body").on("change", "#notifs", (event) => {
