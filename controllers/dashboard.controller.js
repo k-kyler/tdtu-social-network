@@ -774,14 +774,7 @@ module.exports.editNotification = async (req, res) => {
 
 // Delete notification
 module.exports.deleteNotification = async (req, res) => {
-    let { id } = req.params;
-
-    let deleteNotification = await Notification.deleteOne({ _id: id });
-
-    res.json({
-        code: 1,
-        message: "Delete notification successful",
-    });
+    // Write code here
 };
 
 // Users
