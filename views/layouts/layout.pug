@@ -6,10 +6,10 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
 
         //- For development
-        meta(name="google-signin-client_id" content="1041474457742-c79qab5j7ctbig74p1qps8eejocqm2ve.apps.googleusercontent.com")
+        //- meta(name="google-signin-client_id" content="1041474457742-c79qab5j7ctbig74p1qps8eejocqm2ve.apps.googleusercontent.com")
         
         //- For production
-        //- meta(name="google-signin-client_id" content="1041474457742-6urjpvuse8o9rr453vjiq689k2vk0iak.apps.googleusercontent.com")
+        meta(name="google-signin-client_id" content="1041474457742-6urjpvuse8o9rr453vjiq689k2vk0iak.apps.googleusercontent.com")
         
         title TDTU Social Network
         link(rel='icon' sizes='16x16' href='/images/logo.svg')
@@ -73,5 +73,8 @@ html(lang="en")
         script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js", integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q", crossorigin="anonymous")
         script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js", integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl", crossorigin="anonymous")
         
-        //- App scripts
-        script(src="/javascripts/main.js") 
+        //- App scripts for development
+        //- script(src="/javascripts/main.js")
+
+        //- App scripts for production
+        script(src="/javascripts/production.js")
