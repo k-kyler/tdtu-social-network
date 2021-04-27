@@ -217,6 +217,7 @@ $(document).ready(() => {
 
         $("#btnUpdateNotif").attr("data-notificationId", notificationId);
         $("#btnUpdateNotif").attr("disabled", true);
+        $("#editNotificationMessage").html("");
 
         fetch(`/dashboard/notification/${notificationId}`)
             .then((response) => response.json())
@@ -265,6 +266,7 @@ $(document).ready(() => {
         $("#btnUpdateManagement").attr("data-userId", userId);
         $("#btnUpdateManagement").attr("disabled", true);
         $("#editPermission").val("");
+        $("#editManagementMessage").html("");
 
         fetch(`/dashboard/users/${userId}`)
             .then((response) => response.json())
@@ -1513,6 +1515,14 @@ $(document).ready(() => {
         }
     });
 
+    $("body").on("change", "#editAvatar", (event) => {
+        if (event.target.value) {
+            $("#btnUpdateManagement").attr("disabled", false);
+        } else {
+            $("#btnUpdateManagement").attr("disabled", true);
+        }
+    });
+
     // Edit management user handler
     $("body").on("click", "#btnUpdateManagement", (event) => {
         event.preventDefault();
@@ -1521,7 +1531,6 @@ $(document).ready(() => {
         let formData = new FormData();
         let editAvatar = document.getElementById("editAvatar");
 
-        formData.append("email", $("#editEmail").val());
         formData.append("phone", $("#editPhone").val());
         formData.append("name", $("#editName").val());
         formData.append("workplace", $("#editWorkplace").val());
@@ -1538,7 +1547,7 @@ $(document).ready(() => {
             "password",
             $("#editPassword") && $("#editPassword").val()
         );
-        formData.append("avatar", editAvatar.files[0]);
+        formData.append("editAvatar", editAvatar.files[0]);
 
         fetch(`/dashboard/users/${userId}`, {
             method: "PUT",
@@ -1547,7 +1556,15 @@ $(document).ready(() => {
             .then((response) => response.json())
             .then((result) => {
                 if (result.code === 1) {
+                    $("#editManagementMessage").attr("class", "text-success");
+                    $("#editManagementMessage").html(result.message);
+
+                    setTimeout(() => {
+                        window.location.href = "/dashboard/users";
+                    }, 1500);
                 } else if (result.code === 0) {
+                    $("#editManagementMessage").attr("class", "text-danger");
+                    $("#editManagementMessage").html(result.message);
                 }
             })
             .catch((error) => console.log(error));

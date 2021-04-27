@@ -15,9 +15,9 @@
                             .col-md-5
                                 input(class="form-control", type="text", name="editClass", id="editClass")
                         .form-group.row
-                            label.col-md-1.col-form-label(for='editEmail') Email
+                            label.col-md-1.col-form-label Email
                             .col-md-5
-                                input(class="form-control", type="text", name="editEmail", id="editEmail")
+                                input(class="form-control", type="text", name="editEmail", id="editEmail", disabled)
                             label.col-md-1.col-form-label(for='editPhone') Phone
                             .col-md-5
                                 input(class="form-control", type="text", name="editPhone", id="editPhone")
@@ -27,7 +27,7 @@
                                 input(class="form-control", type="text", name="editName", id="editName")
                             label.col-md-2.col-form-label(for='editPassword') Re-password
                             .col-md-4
-                                input(class="form-control", type="text", name="editPassword", id="editPassword", placeholder="Enter new password...")
+                                input(class="form-control", type="password", name="editPassword", id="editPassword", placeholder="Enter new password...")
                         .form-group.row#workplaceRow
                             label.col-md-2.col-form-label(for='editWorkplace') Workplace
                             .col-md-10
@@ -38,7 +38,6 @@
                         .form-group.row#permissionRow
                             label.col-md-2.col-form-label(for='editPermission') Permission (Multiple)
                             .col-md-10
-                                input(type="hidden", id="editPermissionHidden")
                                 select(name="editPermission", id="editPermission", class="form-control", multiple) 
 
                                     if listOfficeFaculty 
@@ -46,7 +45,7 @@
                                             option(value=item.name)= item.name
                         .form-group.row
                             label(for="editAvatar", class="col-form-label col-md-1") Avatar
-                            div(class="col-md-10")
+                            div(class="col-md-11")
                                 input(accept="image/*", type="file", name="editAvatar", id="editAvatar", class="form-control", required) 
                         .form-group.row
                             .col-md-12.justify-content-center.d-flex
