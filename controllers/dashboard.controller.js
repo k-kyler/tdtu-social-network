@@ -590,8 +590,7 @@ module.exports.addNewNotification = async (req, res) => {
         res.json({
             code: 1,
             ownerId: req.signedCookies.userId,
-            message:
-                "You have received new notification. <a href='/dashboard'>Refresh</a>",
+            message: `<span id="notificationAlertMessage">${notificationType}. </span><a class="text-success" href='/dashboard'>Refresh</a>`,
             alertId: shortid.generate(),
         });
     } else if (
@@ -644,8 +643,7 @@ module.exports.addNewNotification = async (req, res) => {
                 res.json({
                     code: 1,
                     ownerId: req.signedCookies.userId,
-                    message:
-                        "You have received new notification. <a href='/dashboard'>Refresh</a>",
+                    message: `<span id="notificationAlertMessage">${notificationType}. </span><a class="text-success" href='/dashboard'>Refresh</a>`,
                     alertId: shortid.generate(),
                 });
             });

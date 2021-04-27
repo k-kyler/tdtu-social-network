@@ -2054,14 +2054,15 @@ $(document).ready(() => {
         ) {
             // Display alert
             $("#alertContainer").prepend(`
-                <div class="alert alert-warning alert-dismissible fade show ${notification.alertId}" role="alert">
-                    <i class="fas fa-bell h5 mr-2 text-warning"></i>
-                    <span>${notification.message}</span>
+                <div class="alert alert-warning alert-dismissible fade show d-flex ${notification.alertId}" role="alert">
+                    <i class="fas fa-bell h5 mr-2 text-warning mb-0"></i>
+                    <div class="d-flex align-items-center">${notification.message}</div>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             `);
+
             setTimeout(() => {
                 $(`.${notification.alertId}`).alert("close");
             }, 4000);

@@ -528,6 +528,13 @@ hr {
     text-decoration: none;
 }
 
+#notificationAlertMessage {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 15rem;
+}
+
 /* Post image */
 .post-image {
     width: 100%;
