@@ -1,6 +1,6 @@
 # School Web App - TDTU
 @Authors:
-To Vinh Khang, Bui Quang Khai, Ha Hai Dang
+To Vinh Khang, Bui Quang Khai, Ha Nguyen Hai Dang
 
 # Description
 A social network for the community of Ton Duc Thang University (TDTU). This is a school project in building a private social network only for TDTU residents, the main purpose of this project is to build up a place for students and school can easily communicate with each other through news feed, self wall and school's announcements.  My team and I have been creating a realtime protocol by Socket.io to allow everyone can post anything like text, image and Youtube video or comment on this site in realtime. We also have allowed school's staffs to have permission in creating school's announcements and managing students and teachers information. Additionally, we have integrated the Google Sign In feature for student to sign in and File.io API to handle almost all uploading processes.
