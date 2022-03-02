@@ -50,12 +50,6 @@ users.json
 npm start
 ```
 
-## Live Product
-
-```
-http://tdtu-social-network-05.herokuapp.com/
-```
-
 ## System Roles
 
 ### Admin
@@ -78,6 +72,11 @@ staff01@tdtu.edu.vn
 
 Sign in through Google Education Account for student of Ton Duc Thang university
 
+## Live Product
+
+```
+http://tdtu-social-network-05.herokuapp.com/
+```
 ---
 
 Producted by KKD Software Team
