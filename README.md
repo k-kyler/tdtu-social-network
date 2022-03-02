@@ -20,22 +20,22 @@ A social network for the community of Ton Duc Thang University (TDTU). This is a
 
 ## Run Project Local Step-by-Step
 
-1. Clone project
+#### 1. Clone project
 
-```
+```bash
 git clone https://github.com/K-Kyler/school-web-app.git
 ```
 
-2. Install packages
+#### 2. Install packages
 
-```
+```bash
 cd school-web-app
 npm install
 ```
 
-3. Setup MongoDB database named **school-web-app**
+#### 3. Setup MongoDB database named **_school-web-app_**
 
-4. Import all collections in folder **db** to the created database
+#### 4. Import all collections in folder **_db_** to the created database
 
 ```
 ListOfficeFaculty.json
@@ -44,13 +44,14 @@ posts.json
 users.json
 ```
 
-5. Run project
+#### 5. Run project
 
-```
+```bash
 npm start
 ```
 
 ## Live Product
+
 ```
 http://tdtu-social-network-05.herokuapp.com/
 ```
@@ -59,18 +60,16 @@ http://tdtu-social-network-05.herokuapp.com/
 
 ### Admin
 
-Given account
-
 ```
+# Given account
 adminsocialnetwork@tdtu.edu.vn
 admin01
 ```
 
 ### Faculty staff
 
-Given account
-
 ```
+# Given account
 staff01@tdtu.edu.vn
 123456
 ```
