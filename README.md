@@ -60,7 +60,7 @@ http://tdtu-social-network-05.herokuapp.com/
 
 ### Admin
 
-```
+```python
 # Given account
 adminsocialnetwork@tdtu.edu.vn
 admin01
@@ -68,7 +68,7 @@ admin01
 
 ### Faculty staff
 
-```
+```python
 # Given account
 staff01@tdtu.edu.vn
 123456
